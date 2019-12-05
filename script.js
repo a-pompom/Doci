@@ -1,8 +1,12 @@
-console.log('hello')
+import PointRectangle from './pointRectangle.js'
+import DrawingHandler from './drawingHandler.js'
+
 
 const canvas = document.getElementById('myCanvas')
 const ctx = canvas.getContext('2d')
 const pastedImage = new Image()
+
+const drawingHandler = new DrawingHandler(ctx)
 
 document.addEventListener('paste', (event) => {
 
@@ -36,11 +40,43 @@ document.addEventListener('paste', (event) => {
 
 })
 
+let isMouseDown = false
+let testX = 0
+let testY = 0
 
-canvas.addEventListener('click', (event) => {
-    console.log(event.clientX)
+
+canvas.addEventListener('mousedown', (event) => {
+    console.log('mouseDown')
+    isMouseDown = true
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.drawImage(pastedImage, 100, 100)
-    ctx.strokeStyle = '#FF0000'
-    ctx.strokeRect(event.clientX, event.clientY -30, 150, 100)
+    const pointRectangle = new PointRectangle(event.clientX, event.clientY)
+    testX = event.clientX
+    testY = event.clientY
+
+    drawingHandler.drawRectangle(pointRectangle)
+})
+
+canvas.addEventListener('mouseup', (event) => {
+    console.log('mouse up...')
+    isMouseDown = false
+})
+
+canvas.addEventListener('mousemove', (event) => {
+    if (!isMouseDown) {
+        return
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(pastedImage, 100, 100)
+    const pointRectangle = new PointRectangle(event.clientX, event.clientY)
+    console.log('startX')
+    console.log(testX)
+    console.log('startY')
+    console.log(testY)
+
+    pointRectangle.modifyScale(Math.abs(testX - event.clientX), Math.abs(testY - event.clientY))
+
+    drawingHandler.drawRectangle(pointRectangle)
+
 })
