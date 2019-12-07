@@ -48,15 +48,20 @@ export default class DrawingHandler {
             })
 
         })
-        const textbox = document.getElementById('inputText')
-        textbox.focus()
+        const inputText = document.getElementById('inputText')
+        inputText.focus()
 
         document.addEventListener('keydown', (event) => {
             this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
+            const textBox = new TextBox(this._context, 200)
+            textBox.update(inputText.value)
+
+            textBox.text.forEach((item, index) => {
+                this._context.fillText(item, 100, 100 + index* 20)
+
+            })
+
             
-            console.log('key pressed!!')
-            console.log(textbox.value)
-            this._context.fillText(textbox.value, 100, 100)
         })
     }
 
