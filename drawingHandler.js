@@ -1,4 +1,5 @@
 import PointRectangle from './pointRectangle.js'
+import TextBox from './textBox.js'
 import DrawStack from './drawStack.js'
 
 export default class DrawingHandler {
@@ -46,6 +47,16 @@ export default class DrawingHandler {
                 this.drawRectangle(rect)
             })
 
+        })
+        const textbox = document.getElementById('inputText')
+        textbox.focus()
+
+        document.addEventListener('keydown', (event) => {
+            this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
+            
+            console.log('key pressed!!')
+            console.log(textbox.value)
+            this._context.fillText(textbox.value, 100, 100)
         })
     }
 
