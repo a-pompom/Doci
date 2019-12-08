@@ -2,26 +2,67 @@ import PointRectangle from './pointRectangle.js'
 import BoxText from './boxText.js'
 import DrawStack from './drawStack.js'
 
+import MenuHandler from './menuHandler.js'
+import {DrawMode} from './mode.js'
+
 export default class DrawingHandler {
 
     constructor() {
         this._isMousedown = false
+
         this._canvas = document.getElementById('myCanvas')
         this._context = this._canvas.getContext('2d')
-        this._drawStack = new DrawStack()
+        this._drawStack = new DrawStack(this._context)
+
+        this._menuHandler = new MenuHandler()
 
         this.init()
     }
 
     init() {
+
+        this._canvas.addEventListener('click', (event) => {
+            // クリックされた段階でモードに応じてオブジェクトを生成
+            if (this._menuHandler.activeMode === DrawMode.TEXT) {
+
+                const boxText = new BoxText(this._context, event.clientX, event.clientY, 200)
+                this._drawStack.append(boxText)
+                this.inspectTextHandle(boxText)
+
+            }
+
+            if (this._menuHandler.activeMode === DrawMode.RECTANGLE) {
+
+                const pointRectangle = new PointRectangle(event.clientX, event.clientY, this._context)
+                this._drawStack.append(pointRectangle)
+                this.inspectRectHandle(pointRectangle)
+
+            }
+        })
+
+
+    }
+    inspectTextHandle() {
+
+        document.addEventListener('keydown', () => {
+            if (this._menuHandler.activeMode !== DrawMode.TEXT) {
+                return 
+            }
+            const boxText = this._drawStack.getCurrent()
+
+            this.clearCanvas()
+
+            this._drawStack.drawStack()
+            boxText.update()
+            boxText.draw()
+
+        })
+    }
+
+    inspectRectHandle() {
         this._canvas.addEventListener('mousedown', (event) => {
             this._isMousedown = true
 
-            const pointRectangle = new PointRectangle(event.clientX, event.clientY)
-            
-            this._drawStack.append(pointRectangle)
-
-            this.drawRectangle(pointRectangle)
         })
 
         this._canvas.addEventListener('mouseup', (event) => {
@@ -29,11 +70,15 @@ export default class DrawingHandler {
         })
 
         this._canvas.addEventListener('mousemove', (event) => {
+
+            if (this._menuHandler._activeMode !== DrawMode.RECTANGLE) {
+                return
+            }
+
             if (!this._isMousedown) {
                 return
             }
 
-            this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
             const pointRectangle = this._drawStack.getCurrent()
 
             let posX = event.clientX >= pointRectangle.originX ? pointRectangle.originX : event.clientX
@@ -41,45 +86,21 @@ export default class DrawingHandler {
 
             pointRectangle.updatePos(posX, posY)
 
-
             pointRectangle.modifyScale(Math.abs(pointRectangle.originX - event.clientX), Math.abs(pointRectangle.originY - event.clientY))
-            this._drawStack.drawStack.forEach((rect) => {
-                this.drawRectangle(rect)
-            })
 
+            this.clearCanvas()
+
+            this._drawStack.drawStack()
+            pointRectangle.draw()
         })
-        const inputText = document.getElementById('inputText')
-        inputText.focus()
 
-        document.addEventListener('keydown', (event) => {
-            this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
-            const boxText = new BoxText(this._context, 200)
-            boxText.update(inputText.value)
+    }
 
-            boxText.text.forEach((rowText, index) => {
-                this._context.fillText(rowText, 100, 100 + index* 20)
-
-            })
-
-            
-        })
+    clearCanvas() {
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
     }
 
     drawImage(image) {
         this._context.drawImage(image, 100, 100)
     }
-
-    /**
-     * 赤枠の四角を描画
-     * 
-     * @param {PointRectangle} rect 描画対象の赤枠四角
-     */
-    drawRectangle(rect) {
-
-        this._context.strokeStyle = rect.color
-        this._context.strokeRect(rect.x, rect.y -30, rect.width, rect.height)
-        
-
-    }
-    
 }

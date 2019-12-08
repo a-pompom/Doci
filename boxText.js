@@ -7,12 +7,28 @@
  */
 export default class BoxText {
 
-    constructor(context, boxWidth) {
+    constructor(context, startX, startY, boxWidth) {
 
         this._text = []
+        this._originTextDOM = document.getElementById('inputText')
+        this._originText = this._originTextDOM.value
+
+        this._startX = startX
+        this._startY = startY
 
         this._boxWidth = boxWidth
         this._context = context
+
+        this._originTextDOM.value = ''
+        this._originTextDOM.focus()
+    }
+
+    draw() {
+
+        this._text.forEach((rowText, index) => {
+            this._context.fillText(rowText, this._startX, this._startY + index* 20)
+
+        })
     }
 
     /**
@@ -20,11 +36,12 @@ export default class BoxText {
      * 
      * @param {string} inputValue 入力された文字列
      */
-    update(inputValue) {
+    update() {
+        this._originText = this._originTextDOM.value
 
         this._text = []
 
-        const paragraphText = inputValue.split(/\r?\n/g)
+        const paragraphText = this._originText.split(/\r?\n/g)
 
         paragraphText.forEach((rowText) => {
                 
