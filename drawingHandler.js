@@ -1,5 +1,5 @@
 import PointRectangle from './pointRectangle.js'
-import TextBox from './textBox.js'
+import BoxText from './boxText.js'
 import DrawStack from './drawStack.js'
 
 export default class DrawingHandler {
@@ -53,11 +53,11 @@ export default class DrawingHandler {
 
         document.addEventListener('keydown', (event) => {
             this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
-            const textBox = new TextBox(this._context, 200)
-            textBox.update(inputText.value)
+            const boxText = new BoxText(this._context, 200)
+            boxText.update(inputText.value)
 
-            textBox.text.forEach((item, index) => {
-                this._context.fillText(item, 100, 100 + index* 20)
+            boxText.text.forEach((rowText, index) => {
+                this._context.fillText(rowText, 100, 100 + index* 20)
 
             })
 
