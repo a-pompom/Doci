@@ -13,24 +13,33 @@ export default class DrawStack {
     }
 
     /**
-     * 
+     * 描画スタックへ要素を追加
+     * @param {Shape} 描画要素
      */
     append(shape) {
         this._drawStack.push(shape)
     }
 
+    /**
+     * 現在描画中の要素を取得
+     */
     getCurrent() {
         return this._drawStack[this._drawStack.length-1]
     }
 
+    /**
+     * キャンバス上の要素は、更新の度に初期化されてしまうので、
+     * 既存要素を保持したスタックをもとに再描画
+     */
     drawStack() {
 
-        this._drawStack.forEach((element) => {
-            if (element === this.getCurrent()) {
+        this._drawStack.forEach((shape) => {
+            // 現在参照中の要素は、更新で別途描画されるので、対象外とする
+            if (shape === this.getCurrent()) {
                 return
             }
 
-            element.draw()
+            shape.draw()
         })
 
         

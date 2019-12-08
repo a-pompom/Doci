@@ -19,11 +19,21 @@ export default class BoxText {
         this._boxWidth = boxWidth
         this._context = context
 
-        this._originTextDOM.value = ''
-        this._originTextDOM.focus()
 
+        this.init()
     }
 
+    /**
+     * 初期処理として、前の入力文字列を初期化し、文字入力が可能となるよう透明なテキストエリアへフォーカス
+     */
+    init() {
+        this._originTextDOM.value = ''
+        this._originTextDOM.focus()
+    }
+
+    /**
+     * 領域文字列を描画
+     */
     draw() {
 
         this._text.forEach((rowText, index) => {

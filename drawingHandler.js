@@ -78,7 +78,6 @@ export default class DrawingHandler {
             if (!this._isMousedown) {
                 return
             }
-            console.log('mouse move called!!')
 
             const pointRectangle = this._drawStack.getCurrent()
 
@@ -86,7 +85,6 @@ export default class DrawingHandler {
             let posY = event.clientY >= pointRectangle.originY ? pointRectangle.originY : event.clientY
 
             pointRectangle.updatePos(posX, posY)
-            console.log(pointRectangle.originX)
 
             pointRectangle.modifyScale(Math.abs(pointRectangle.originX - event.clientX), Math.abs(pointRectangle.originY - event.clientY))
 
@@ -102,7 +100,4 @@ export default class DrawingHandler {
         this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
     }
 
-    drawImage(image) {
-        this._context.drawImage(image, 100, 100)
-    }
 }
