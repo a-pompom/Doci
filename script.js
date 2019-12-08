@@ -35,9 +35,6 @@ const pointDrawer = (() => {
                 if (is_image) {
                     event.preventDefault()
                 }
-
-
-
             })
         }
     }

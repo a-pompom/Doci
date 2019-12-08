@@ -4,7 +4,9 @@
  */
 export default class PointRectangle {
 
-    constructor(startX, startY) {
+    constructor(startX, startY, context) {
+
+        this._context = context
 
         this._originX = startX
         this._originY = startY
@@ -16,6 +18,11 @@ export default class PointRectangle {
         this._height = 0
 
         this._color = '#FF0000'
+    }
+
+    draw() {
+        this._context.strokeStyle = this._color
+        this._context.strokeRect(this._x, this._y -30, this._width, this._height)
     }
 
     /**
