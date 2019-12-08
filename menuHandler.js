@@ -10,6 +10,7 @@ export default class MenuHandler {
     
     constructor() {
         this._activeMode = ''
+        this._messageForFocusDOM = document.getElementById('focusText')
 
         this._rectMenuButton = document.getElementById('rectangleModeButton')
         this._textMenuButton = document.getElementById('textModeButton')
@@ -34,6 +35,10 @@ export default class MenuHandler {
 
         })
 
+    }
+
+    modifyFocusMessage(modifyedText) {
+        this._messageForFocusDOM.textContent = modifyedText
     }
 
     get activeMode() {

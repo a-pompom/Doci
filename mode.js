@@ -7,3 +7,11 @@ export const DrawMode = {
     RECTANGLE: Symbol('rect'),
     TEXT: Symbol('text')
 }
+
+export const FocusAngle = {
+    TOP: Symbol('top'),
+    RIGHT: Symbol('right'),
+    BOTTOM: Symbol('bottom'),
+    LEFT: Symbol('left')
+
+}

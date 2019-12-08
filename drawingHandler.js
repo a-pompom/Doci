@@ -3,7 +3,7 @@ import BoxText from './boxText.js'
 import DrawStack from './drawStack.js'
 
 import MenuHandler from './menuHandler.js'
-import {DrawMode} from './mode.js'
+import {DrawMode, FocusAngle} from './mode.js'
 
 export default class DrawingHandler {
 
@@ -37,6 +37,7 @@ export default class DrawingHandler {
                 this._isMousedown = true
 
                 if (this._focusedIndex !== -1) {
+                    this._drawStack.modifyCurrent(this._focusedIndex)
                     return
                 }
 
@@ -76,16 +77,15 @@ export default class DrawingHandler {
         })
 
         this._canvas.addEventListener('mousemove', (event) => {
-
-            this.inspectShapeFocus(event.clientX, event.clientY)
+            if (!this._isMousedown) {
+                this.inspectShapeFocus(event.clientX, event.clientY)
+                return
+            }
 
             if (this._menuHandler._activeMode !== DrawMode.RECTANGLE) {
                 return
             }
 
-            if (!this._isMousedown) {
-                return
-            }
 
             const pointRectangle = this._drawStack.getCurrent()
 
@@ -108,38 +108,49 @@ export default class DrawingHandler {
         const drawStack = this._drawStack.stack
         let focusedIndex = -1
 
-        for (let i = drawStack.length-1; i > 0; i--) {
+        for (let i = drawStack.length-1; i >= 0; i--) {
             let shape = drawStack[i]
             const canvasRect = this._canvas.getBoundingClientRect();
             mouseX = mouseX - canvasRect.left
-            mouseY = mouseY - canvasRect.top
-           
+            mouseY = mouseY - canvasRect.top + 30
+
+            const height = shape.height
+            const width = shape.width
+            console.log(mouseY)
+            console.log(shape.y)
+
             // 上横
-            if (shape.x - 20 <= mouseX && shape.x + 20 + shape.width >= mouseX && shape.y -20 <= mouseY && shape.y + 20 >= mouseY)  {
+            if (mouseX >= shape.x-20 && mouseX <= shape.x+20 + width && mouseY >= shape.y-20 && mouseY <= shape.y + 20)  {
                 console.log('上横')
                 focusedIndex = i
+                shape.changeFocusedAngle(FocusAngle.TOP)
                 break
             }
             // 左縦
-            if (shape.y -20 <= mouseY && shape.y + 20 + shape.height >= mouseY && shape.x -20 <= mouseX && shape.x + 20 >= mouseX) {
+            if (mouseY >= shape.y-20 && mouseY  <= shape.y + 20 + height && mouseX >= shape.x-20 && mouseX <= shape.x+20) {
                 console.log('左縦')
                 focusedIndex = i
+                shape.changeFocusedAngle(FocusAngle.LEFT)
                 break
             }
             // 右縦
-            if (shape.y -20 <= mouseY && shape.y + 20 + shape.height >= mouseY && shape.x + shape.width -20 <= mouseX && shape.x + shape.width + 20 >= mouseX) {
+            if (mouseY >= shape.y-20 && mouseY  <= shape.y + 20 + height && mouseX >= shape.x-20 + width && mouseX <= shape.x+20 + width) {
                 console.log('右縦')
                 focusedIndex = i
+                shape.changeFocusedAngle(FocusAngle.RIGHT)
                 break
             }
             // 下横
-            if (shape.x - 20 <= mouseX && shape.x + 20 + shape.width >= mouseX && shape.y + shape.height -20 <= mouseY && shape.y + shape.height + 20 >= mouseY)  {
+            if (mouseX >= shape.x-20 && mouseX <= shape.x+20 + width && mouseY >= shape.y-20 + height && mouseY <= shape.y + 20 + height)  {
                 console.log('下横')
                 focusedIndex = i
+                shape.changeFocusedAngle(FocusAngle.BOTTOM)
+                
                 break
             }
            
         }
+        console.log(focusedIndex)
 
         this._focusedIndex = focusedIndex
 

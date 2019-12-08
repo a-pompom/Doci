@@ -10,6 +10,7 @@ export default class DrawStack {
 
         this._drawStack = []
         this._selectedDrawing = 0
+        this._currentIndex = 0
     }
 
     /**
@@ -18,13 +19,18 @@ export default class DrawStack {
      */
     append(shape) {
         this._drawStack.push(shape)
+        this._currentIndex = this._drawStack.length-1
     }
 
     /**
      * 現在描画中の要素を取得
      */
     getCurrent() {
-        return this._drawStack[this._drawStack.length-1]
+        return this._drawStack[this._currentIndex]
+
+    }
+    modifyCurrent(index) {
+        this._currentIndex = index
     }
 
     /**

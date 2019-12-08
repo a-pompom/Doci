@@ -1,3 +1,4 @@
+import {FocusAngle} from './mode.js'
 /**
  * 赤枠の四角を表すクラス
  * 位置・大きさ・色を状態として持ち、伸縮を可能とする
@@ -18,6 +19,8 @@ export default class PointRectangle {
         this._height = 0
 
         this._color = '#FF0000'
+
+        this._focusAngle = ''
     }
 
     draw() {
@@ -31,8 +34,14 @@ export default class PointRectangle {
      * @param {number} scaledY 
      */
     modifyScale(scaledX, scaledY) {
-        this._width = scaledX
-        this._height = scaledY 
+        if (this._focusAngle === '') {
+            this._width = scaledX
+            this._height = scaledY 
+
+        }
+        if (this._focusAngle === FocusAngle.BOTTOM) {
+            this._height += scaledY
+        }
     }
 
     /**
@@ -41,6 +50,10 @@ export default class PointRectangle {
     updatePos(posX, posY) {
         this._x = posX
         this._y = posY
+    }
+
+    changeFocusedAngle(modifier) {
+        this._focusAngle = modifier
     }
 
     get originX() {
