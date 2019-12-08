@@ -21,6 +21,7 @@ export default class BoxText {
 
         this._originTextDOM.value = ''
         this._originTextDOM.focus()
+
     }
 
     draw() {

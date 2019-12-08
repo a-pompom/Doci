@@ -20,29 +20,33 @@ export default class DrawingHandler {
     }
 
     init() {
-
         this._canvas.addEventListener('click', (event) => {
-            // クリックされた段階でモードに応じてオブジェクトを生成
             if (this._menuHandler.activeMode === DrawMode.TEXT) {
 
                 const boxText = new BoxText(this._context, event.clientX, event.clientY, 200)
                 this._drawStack.append(boxText)
-                this.inspectTextHandle(boxText)
 
             }
 
+        })
+
+        this._canvas.addEventListener('mousedown', (event) => {
+
             if (this._menuHandler.activeMode === DrawMode.RECTANGLE) {
+                this._isMousedown = true
 
                 const pointRectangle = new PointRectangle(event.clientX, event.clientY, this._context)
-                this._drawStack.append(pointRectangle)
-                this.inspectRectHandle(pointRectangle)
 
+                this._drawStack.append(pointRectangle)
             }
         })
 
+        this.initTextHandle()
+        this.initRectHandle()
+
 
     }
-    inspectTextHandle() {
+    initTextHandle() {
 
         document.addEventListener('keydown', () => {
             if (this._menuHandler.activeMode !== DrawMode.TEXT) {
@@ -59,11 +63,7 @@ export default class DrawingHandler {
         })
     }
 
-    inspectRectHandle() {
-        this._canvas.addEventListener('mousedown', (event) => {
-            this._isMousedown = true
-
-        })
+    initRectHandle() {
 
         this._canvas.addEventListener('mouseup', (event) => {
             this._isMousedown = false
@@ -78,6 +78,7 @@ export default class DrawingHandler {
             if (!this._isMousedown) {
                 return
             }
+            console.log('mouse move called!!')
 
             const pointRectangle = this._drawStack.getCurrent()
 
@@ -85,6 +86,7 @@ export default class DrawingHandler {
             let posY = event.clientY >= pointRectangle.originY ? pointRectangle.originY : event.clientY
 
             pointRectangle.updatePos(posX, posY)
+            console.log(pointRectangle.originX)
 
             pointRectangle.modifyScale(Math.abs(pointRectangle.originX - event.clientX), Math.abs(pointRectangle.originY - event.clientY))
 
