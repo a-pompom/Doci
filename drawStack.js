@@ -44,4 +44,8 @@ export default class DrawStack {
 
         
     }
+
+    get stack() {
+        return this._drawStack
+    }
 }
