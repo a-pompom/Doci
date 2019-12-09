@@ -42,18 +42,23 @@ export default class PointRectangle {
 
         }
         if (this._focusAngle === FocusAngle.BOTTOM) {
-            this._height = scaledY
+            this._height = scaledY + 30
         }
-        console.log(this._focusAngle)
 
         if (this._focusAngle === FocusAngle.TOP) {
-            console.log('y')
-            console.log(this._y)
-            console.log('originy')
-            console.log(this._originY)
             if (this._y === this._originY) {
-                this._y = this._originY + scaledY
-                this._height = this._originY - scaledY
+                console.log('same')
+                console.log('scaledY' + scaledY)
+                if (scaledY > this._originHeight) {
+                    this._y = this._originY + this._originHeight
+                    this._height = scaledY - this._originHeight
+
+                }
+                else {
+                    this._y = this._originY + scaledY
+                    this._height = this._originHeight - scaledY
+
+                }
             }
             else {
                 this._height = scaledY + this._originHeight
@@ -82,13 +87,18 @@ export default class PointRectangle {
     get originY() {
         return this._originY
     }
+    
     get x() {
         return this._x
     }
     get y() {
         return this._y
     }
+    set originY(value) {
+        this._originY = value
+    }
     get width() {
+
         return this._width
     }
     get height() {

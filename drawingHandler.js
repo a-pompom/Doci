@@ -73,6 +73,7 @@ export default class DrawingHandler {
     initRectHandle() {
 
         this._canvas.addEventListener('mouseup', (event) => {
+            this._drawStack.getCurrent().originY = this._drawStack.getCurrent().y
             this._focusedIndex = -1
             this._isMousedown = false
         })
@@ -121,28 +122,28 @@ export default class DrawingHandler {
             console.log(shape.y)
 
             // 上横
-            if (mouseX >= shape.x-20 && mouseX <= shape.x+20 + width && mouseY >= shape.y-20 && mouseY <= shape.y + 20)  {
+            if (mouseX >= shape.x-10 && mouseX <= shape.x+10 + width && mouseY >= shape.y-10 && mouseY <= shape.y + 10)  {
                 console.log('上横')
                 focusedIndex = i
                 shape.changeFocusedAngle(FocusAngle.TOP)
                 break
             }
             // 左縦
-            if (mouseY >= shape.y-20 && mouseY  <= shape.y + 20 + height && mouseX >= shape.x-20 && mouseX <= shape.x+20) {
+            if (mouseY >= shape.y-10 && mouseY  <= shape.y + 10 + height && mouseX >= shape.x-10 && mouseX <= shape.x+10) {
                 console.log('左縦')
                 focusedIndex = i
                 shape.changeFocusedAngle(FocusAngle.LEFT)
                 break
             }
             // 右縦
-            if (mouseY >= shape.y-20 && mouseY  <= shape.y + 20 + height && mouseX >= shape.x-20 + width && mouseX <= shape.x+20 + width) {
+            if (mouseY >= shape.y-10 && mouseY  <= shape.y + 10 + height && mouseX >= shape.x-10 + width && mouseX <= shape.x+10 + width) {
                 console.log('右縦')
                 focusedIndex = i
                 shape.changeFocusedAngle(FocusAngle.RIGHT)
                 break
             }
             // 下横
-            if (mouseX >= shape.x-20 && mouseX <= shape.x+20 + width && mouseY >= shape.y-20 + height && mouseY <= shape.y + 20 + height)  {
+            if (mouseX >= shape.x-10 && mouseX <= shape.x+10 + width && mouseY >= shape.y-10 + height && mouseY <= shape.y + 10 + height)  {
                 console.log('下横')
                 focusedIndex = i
                 shape.changeFocusedAngle(FocusAngle.BOTTOM)
