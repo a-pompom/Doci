@@ -38,6 +38,7 @@ export default class DrawingHandler {
 
                 if (this._focusedIndex !== -1) {
                     this._drawStack.modifyCurrent(this._focusedIndex)
+                    this._drawStack.getCurrent().setOriginHeight(this._drawStack.getCurrent().height)
                     return
                 }
 

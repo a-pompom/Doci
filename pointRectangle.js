@@ -17,6 +17,8 @@ export default class PointRectangle {
 
         this._width = 0
         this._height = 0
+        this._originHeight = 0
+        
 
         this._color = '#FF0000'
 
@@ -40,7 +42,22 @@ export default class PointRectangle {
 
         }
         if (this._focusAngle === FocusAngle.BOTTOM) {
-            this._height += scaledY
+            this._height = scaledY
+        }
+        console.log(this._focusAngle)
+
+        if (this._focusAngle === FocusAngle.TOP) {
+            console.log('y')
+            console.log(this._y)
+            console.log('originy')
+            console.log(this._originY)
+            if (this._y === this._originY) {
+                this._y = this._originY + scaledY
+                this._height = this._originY - scaledY
+            }
+            else {
+                this._height = scaledY + this._originHeight
+            }
         }
     }
 
@@ -54,6 +71,9 @@ export default class PointRectangle {
 
     changeFocusedAngle(modifier) {
         this._focusAngle = modifier
+    }
+    setOriginHeight(originHeight) {
+        this._originHeight = originHeight
     }
 
     get originX() {
