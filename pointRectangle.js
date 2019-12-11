@@ -22,7 +22,6 @@ export default class PointRectangle {
 
         this._color = '#FF0000'
 
-        this._focusAngle = ''
     }
 
     draw() {
@@ -35,17 +34,17 @@ export default class PointRectangle {
      * @param {number} scaledX 
      * @param {number} scaledY 
      */
-    modifyScale(scaledX, scaledY) {
-        if (this._focusAngle === '') {
+    modifyScale(scaledX, scaledY, focusAngle) {
+        if (focusAngle === FocusAngle.NONE) {
             this._width = scaledX
             this._height = scaledY 
 
         }
-        if (this._focusAngle === FocusAngle.BOTTOM) {
+        if (focusAngle === FocusAngle.BOTTOM) {
             this._height = scaledY + 30
         }
 
-        if (this._focusAngle === FocusAngle.TOP) {
+        if (focusAngle === FocusAngle.TOP) {
             if (this._y === this._originY) {
                 console.log('same')
                 console.log('scaledY' + scaledY)

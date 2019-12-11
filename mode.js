@@ -12,6 +12,7 @@ export const FocusAngle = {
     TOP: Symbol('top'),
     RIGHT: Symbol('right'),
     BOTTOM: Symbol('bottom'),
-    LEFT: Symbol('left')
+    LEFT: Symbol('left'),
+    NONE: Symbol('none-focused')
 
 }
