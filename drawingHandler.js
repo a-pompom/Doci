@@ -5,16 +5,21 @@ import BaseHandler from './baseHandler.js'
 import MenuHandler from './menuHandler.js'
 import FocusHandler from './focusHandler.js'
 import {DrawMode, FocusAngle} from './mode.js'
+import DrawStack from './drawStack.js'
 
+/**
+ * 描画機能を扱うハンドラ
+ */
 export default class DrawingHandler extends BaseHandler{
 
     constructor() {
         super()
 
+        this._drawStack = new DrawStack(this._context)
         this._isMousedown = false
 
         this._menuHandler = new MenuHandler()
-        this._focusHandler = new FocusHandler()
+        this._focusHandler = new FocusHandler(this._drawStack)
 
         this.init()
     }
@@ -36,7 +41,7 @@ export default class DrawingHandler extends BaseHandler{
                 this._isMousedown = true
 
                 if (this._focusHandler.isFocused()) {
-                    this._drawStack.modifyCurrent(this.focusHandler.focusedIndex)
+                    this._drawStack.modifyCurrent(this._focusHandler.focusedIndex)
                     this._drawStack.getCurrent().setOriginHeight(this._drawStack.getCurrent().height)
                     return
                 }
@@ -73,7 +78,8 @@ export default class DrawingHandler extends BaseHandler{
 
         this._canvas.addEventListener('mouseup', (event) => {
             this._drawStack.getCurrent().originY = this._drawStack.getCurrent().y
-            this._focusedIndex = -1
+            this._focusHandler.outFocus()
+
             this._isMousedown = false
         })
 

@@ -1,13 +1,17 @@
 import {FocusAngle} from './mode.js'
 import BaseHandler from './baseHandler.js'
 
+/**
+ * フォーカス機能を管理するためのハンドラ
+ */
 export default class FocusHandler extends BaseHandler {
     
-    constructor() {
+    constructor(drawStack) {
         super()
+        this._drawStack = drawStack
 
         this._focusedIndex = -1
-        this._focusedAngle = ''
+        this._focusedAngle = FocusAngle.NONE
     }
 
     inspectShapeFocus(mouseX, mouseY) {
@@ -55,6 +59,9 @@ export default class FocusHandler extends BaseHandler {
     setFocusTarget(index, angle) {
         this._focusedIndex = index
         this._focusedAngle = angle
+    }
+    outFocus() {
+        this._focusedIndex = -1
     }
     isFocused() {
         return this._focusedIndex !== -1
