@@ -10,30 +10,30 @@ import DrawStack from './drawStack.js'
 /**
  * 描画機能を扱うハンドラ
  */
-export default class DrawingHandler extends BaseHandler{
+export default class DrawingHandler{
 
     constructor() {
-        super()
+        this._context = {
+            canvas: document.getElementById('myCanvas'),
+            canvasContext: canvas.getContext('2d'),
 
-        this._drawStack = new DrawStack(this._context)
+            drawStack: new DrawStack(this._context),
+            menu: new MenuHandler(),
+            focus: new FocusHandler(),
+        }
+
+        this._rectDrawing = new RectangleDrawing(this._context)
+        this._textDrawing = new this._textDrawing(this._text)
+
         this._isMousedown = false
-
-        this._menuHandler = new MenuHandler()
-        this._focusHandler = new FocusHandler(this._drawStack)
 
         this.init()
     }
 
     init() {
-        this._canvas.addEventListener('click', (event) => {
-            if (this._menuHandler.activeMode === DrawMode.TEXT) {
 
-                const boxText = new BoxText(this._context, event.clientX, event.clientY, 200)
-                this._drawStack.append(boxText)
+        this._textDrawing.init()
 
-            }
-
-        })
 
         this._canvas.addEventListener('mousedown', (event) => {
 
@@ -57,22 +57,6 @@ export default class DrawingHandler extends BaseHandler{
 
 
     }
-    initTextHandle() {
-
-        document.addEventListener('keydown', () => {
-            if (this._menuHandler.activeMode !== DrawMode.TEXT) {
-                return 
-            }
-            const boxText = this._drawStack.getCurrent()
-
-            this.clearCanvas()
-
-            this._drawStack.drawStack()
-            boxText.update()
-            boxText.draw()
-
-        })
-    }
 
     initRectHandle() {
 
@@ -85,7 +69,11 @@ export default class DrawingHandler extends BaseHandler{
 
         this._canvas.addEventListener('mousemove', (event) => {
             if (!this._isMousedown) {
-                this._focusHandler.inspectShapeFocus(event.clientX, event.clientY)
+                const shapeList = this._drawStack.stack
+
+                const canvasRect = this._canvas.getBoundingClientRect();
+                
+                this._focusHandler.inspectShapeFocus(shapeList, event.clientX - canvasRect.left, event.clientY - canvasRect.top +30)
                 return
             }
 

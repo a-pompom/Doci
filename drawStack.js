@@ -29,6 +29,12 @@ export default class DrawStack {
         return this._drawStack[this._currentIndex]
 
     }
+
+    /**
+     * スタックの現在参照中の要素を変更
+     * 
+     * @param {number} index スタックを更新するインデックス
+     */
     modifyCurrent(index) {
         this._currentIndex = index
     }
