@@ -41,6 +41,21 @@ export default class MenuHandler {
         this._messageForFocusDOM.textContent = modifyedText
     }
 
+    /**
+     * 現在のモードが「テキスト」かどうかを判定
+     * @return true→Text false→!Text
+     */
+    isTextActive() {
+        return this._activeMode === DrawMode.TEXT
+    }
+    /**
+     * 現在のモードが「枠」かどうかを判定
+     * @return true→Rectangle false→!Rectangle
+     */
+    isRectangleActive() {
+        return this._activeMode === DrawMode.RECTANGLE
+    }
+
     get activeMode() {
         return this._activeMode
     }

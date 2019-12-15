@@ -1,13 +1,14 @@
+import Shape from './shape.js'
 import {FocusAngle} from './mode.js'
 /**
  * 赤枠の四角を表すクラス
  * 位置・大きさ・色を状態として持ち、伸縮を可能とする
  */
-export default class PointRectangle {
+export default class PointRectangle extends Shape{
 
-    constructor(startX, startY, context) {
+    constructor(context, startX, startY) {
 
-        this._context = context
+        super(context)
 
         this._originX = startX
         this._originY = startY
@@ -25,8 +26,11 @@ export default class PointRectangle {
     }
 
     draw() {
-        this._context.strokeStyle = this._color
-        this._context.strokeRect(this._x, this._y -30, this._width, this._height)
+
+        super.drawBase() 
+
+        this._context.canvasContext.strokeStyle = this._color
+        this._context.canvasContext.strokeRect(this._x, this._y -30, this._width, this._height)
     }
 
     /**
@@ -93,11 +97,13 @@ export default class PointRectangle {
     get y() {
         return this._y
     }
+    set originX(value) {
+        this._originX = value
+    }
     set originY(value) {
         this._originY = value
     }
     get width() {
-
         return this._width
     }
     get height() {

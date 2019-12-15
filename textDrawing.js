@@ -1,4 +1,4 @@
-export default class TextDrawing {
+export default class TextDrawing{
 
     constructor(context) {
         this._context = context
@@ -7,8 +7,8 @@ export default class TextDrawing {
     init() {
 
         this._context.canvas.addEventListener('click', (event) => {
-            // TODO isTextActive実装
-            if (this._context.menu.isTextActive) {
+
+            if (this._context.menu.isTextActive()) {
 
                 const boxText = new BoxText(this._context, event.clientX, event.clientY, 200)
 
@@ -22,17 +22,12 @@ export default class TextDrawing {
     initTextHandle() {
 
         document.addEventListener('keydown', () => {
-            if (this._menuHandler.activeMode !== DrawMode.TEXT) {
+            if (!this._context.menu.isTextActive()) {
                 return 
             }
-            const boxText = this._drawStack.getCurrent()
+            const boxText = this._context.drawStack.getCurrent()
 
-            this.clearCanvas()
-
-            this._drawStack.drawStack()
-            boxText.update()
             boxText.draw()
-
         })
     }
 

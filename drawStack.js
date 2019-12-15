@@ -5,8 +5,7 @@
  * ・既存の描画済みオブジェクトを保持 リサイズ時にはキャンバスを一度クリアする必要があるため、状態として保持しておく
  */
 export default class DrawStack {
-    constructor(context) {
-        this._context = context
+    constructor() {
 
         this._drawStack = []
         this._selectedDrawing = 0
