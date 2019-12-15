@@ -16,7 +16,7 @@ export default class MetaDrawing {
 
         const canvasRect = this._context.canvas.getBoundingClientRect();
         
-        this._context.focus.inspectShapeFocus(shapeList, event.clientX - canvasRect.left, event.clientY - canvasRect.top +30)
+        this._context.focus.inspectShapeFocus(shapeList, event.clientX - canvasRect.left, event.clientY - canvasRect.top)
     }
 
 }

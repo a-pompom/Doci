@@ -1,17 +1,12 @@
 import PointRectangle from './pointRectangle.js'
+import ResizeHandler from './resizeHandler.js'
 
 export default class RetangleDrawing {
     constructor(context) {
         this._context = context
         this._isMousedown = false
-    }
 
-    init() {
-        this.initRectHandle()
-    }
-
-    initRectHandle() {
-
+        this._resizeHandler = new ResizeHandler()
     }
 
     mousedownEvent(event) {
@@ -26,12 +21,12 @@ export default class RetangleDrawing {
             this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
 
             const focusedRectangle = this._context.drawStack.getCurrent()
-            focusedRectangle.setOriginHeight(focusedRectangle.height)
+            focusedRectangle.setOriginPos()
 
             return
         }
 
-        const pointRectangle = new PointRectangle(this._context, event.clientX, event.clientY)
+        const pointRectangle = new PointRectangle(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
         this._context.drawStack.append(pointRectangle)
 
@@ -42,15 +37,7 @@ export default class RetangleDrawing {
             return
         }
 
-        // 描画orリサイズイベント
-        const pointRectangle = this._context.drawStack.getCurrent()
-
-        let posX = event.clientX >= pointRectangle.originX ? pointRectangle.originX : event.clientX
-        let posY = event.clientY >= pointRectangle.originY ? pointRectangle.originY : event.clientY
-
-        pointRectangle.updatePos(posX, posY)
-
-        pointRectangle.modifyScale(Math.abs(pointRectangle.originX - event.clientX), Math.abs(pointRectangle.originY - event.clientY), this._context.focus.focusedAngle)
+        this.resize(event)
 
         pointRectangle.fullDraw()
 
@@ -59,10 +46,38 @@ export default class RetangleDrawing {
     mouseupEvent(event) {
         const currentRectangle = this._context.drawStack.getCurrent()
         currentRectangle.originY = currentRectangle.y
+        currentRectangle.originX = currentRectangle.x
 
         this._context.focus.outFocus()
 
         this._context.isMousedown = false
 
+    }
+
+    resize(event) {
+        const pointRectangle = this._context.drawStack.getCurrent()
+
+        const x = this.getCanvasX(event.clientX)
+        const y = this.getCanvasY(event.clientY)
+
+        let posX = x >= pointRectangle.originX ? pointRectangle.originX : x
+        let posY = y >= pointRectangle.originY ? pointRectangle.originY : y
+
+        this._resizeHandler.updatePos(pointRectangle, posX, posY, this._context.focus.focusedAngle)
+
+        const scaleX = Math.abs(pointRectangle.originX - x)
+        const scaleY = Math.abs(pointRectangle.originY - y)
+
+        this._resizeHandler.modifyScale(pointRectangle, scaleX, scaleY, this._context.focus.focusedAngle)
+
+    }
+
+
+    getCanvasX(mouseX) {
+        return mouseX - this._context.canvas.getBoundingClientRect().left
+    }
+
+    getCanvasY(mouseY) {
+        return mouseY - this._context.canvas.getBoundingClientRect().top
     }
 }

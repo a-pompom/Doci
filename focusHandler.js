@@ -10,7 +10,7 @@ export default class FocusHandler extends BaseHandler {
         super()
 
         this._focusedIndex = -1
-        this._focusedAngle = FocusAngle.NONE
+        this._focusedAngle = []
     }
 
     /**
@@ -28,35 +28,36 @@ export default class FocusHandler extends BaseHandler {
             const height = shape.height
             const width = shape.width
 
-            // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±10pxを対象範囲とする
+            // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±5pxを対象範囲とする
             const range = 10
+
+            this.outFocus()
 
             // 上横 
             if ((posX >= shape.x - range && posX <= shape.x + range + width)    && (posY >= shape.y-range && posY <= shape.y + range))  {
                 console.log('上横')
                 this.setFocusTarget(i, FocusAngle.TOP)
-                break
             }
             // 左縦
             if ((posY >= shape.y - range && posY  <= shape.y + range + height)  && (posX >= shape.x-range && posX <= shape.x+range)) {
                 console.log('左縦')
                 this.setFocusTarget(i, FocusAngle.LEFT)
-                break
             }
             // 右縦
             if ((posY >= shape.y - range && posY  <= shape.y + range + height)  && (posX >= shape.x-range + width && posX <= shape.x+range + width)) {
                 console.log('右縦')
                 this.setFocusTarget(i, FocusAngle.RIGHT)
-                break
             }
             // 下横
             if ((posX >= shape.x - range && posX <= shape.x + range + width )   && (posY >= shape.y-range + height && posY <= shape.y + range + height))  {
                 console.log('下横')
                 this.setFocusTarget(i, FocusAngle.BOTTOM)
+            }
+
+            if (this.isFocused()) {
                 break
             }
         }
-
     }
 
     /**
@@ -66,7 +67,7 @@ export default class FocusHandler extends BaseHandler {
      */
     setFocusTarget(index, angle) {
         this._focusedIndex = index
-        this._focusedAngle = angle
+        this._focusedAngle.push(angle)
     }
 
     /**
@@ -74,7 +75,7 @@ export default class FocusHandler extends BaseHandler {
      */
     outFocus() {
         this._focusedIndex = -1
-        this._focusedAngle = FocusAngle.NONE
+        this._focusedAngle = []
     }
 
     /**
@@ -90,6 +91,6 @@ export default class FocusHandler extends BaseHandler {
         return this._focusedIndex
     }
     get focusedAngle() {
-        return this._focusedAngle
+        return this.isFocused() ? this._focusedAngle : [FocusAngle.NONE]
     }
 }
