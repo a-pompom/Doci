@@ -24,10 +24,12 @@ export default class PointRectangle extends Shape{
         this._color = '#FF0000'
 
     }
+    fullDraw() {
+        super.drawBase()
+        this.draw()
+    }
 
     draw() {
-
-        super.drawBase() 
 
         this._context.canvasContext.strokeStyle = this._color
         this._context.canvasContext.strokeRect(this._x, this._y -30, this._width, this._height)

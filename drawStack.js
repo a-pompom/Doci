@@ -7,7 +7,7 @@
 export default class DrawStack {
     constructor() {
 
-        this._drawStack = []
+        this._stack = []
         this._selectedDrawing = 0
         this._currentIndex = 0
     }
@@ -17,15 +17,15 @@ export default class DrawStack {
      * @param {Shape} 描画要素
      */
     append(shape) {
-        this._drawStack.push(shape)
-        this._currentIndex = this._drawStack.length-1
+        this._stack.push(shape)
+        this._currentIndex = this._stack.length-1
     }
 
     /**
      * 現在描画中の要素を取得
      */
     getCurrent() {
-        return this._drawStack[this._currentIndex]
+        return this._stack[this._currentIndex]
 
     }
 
@@ -42,9 +42,9 @@ export default class DrawStack {
      * キャンバス上の要素は、更新の度に初期化されてしまうので、
      * 既存要素を保持したスタックをもとに再描画
      */
-    drawStack() {
+    draw() {
 
-        this._drawStack.forEach((shape) => {
+        this._stack.forEach((shape) => {
             // 現在参照中の要素は、更新で別途描画されるので、対象外とする
             if (shape === this.getCurrent()) {
                 return
@@ -57,6 +57,6 @@ export default class DrawStack {
     }
 
     get stack() {
-        return this._drawStack
+        return this._stack
     }
 }
