@@ -1,24 +1,30 @@
 /**
  * キャンバス上に描画される図形を表す
+ * @property {Object} context 描画用コンテキスト
+ * 
+ * @property {number} x 描画開始x座標
+ * @property {number} y 描画開始y座標
+ * @property {number} width 幅
+ * @property {number} height 高さ
+ * 
+ * @property {number} originX 描画開始時点でのx座標 キャンバスで描画方向を反転させた場合にも滑らかに描画するために利用
+ * @property {number} originY 描画開始時点でのy座標
+ * @property {number} originWidth リサイズ前の幅 リサイズ時の動きを滑らかにするために利用
+ * @property {number} originHeight リサイズ前の高さ
  */
 export default class Shape {
 
     constructor(context, startX, startY) {
         this._context = context
-        this._Direction = {
-            FORWARD: Symbol('forward'),
-            BETWEEN: Symbol('between'),
-            REVERSE: Symbol('reverse')
-        }
-
-        this._originX = startX
-        this._originY = startY
 
         this._x = startX
         this._y = startY
 
         this._width = 0 
         this._height = 0
+
+        this._originX = startX
+        this._originY = startY
         this._originWidth = 0
         this._originHeight = 0
 
@@ -48,14 +54,15 @@ export default class Shape {
         this._context.canvasContext.clearRect(0, 0, canvasWidth, canvasHeight)
     }
 
+    /**
+     * リサイズ時に参照する元の図形の描画スケールを設定
+     */
     setOriginPos() {
         this._originWidth = this._width
         this._originHeight = this._height
     }
 
-    get Direction() {
-        return this._Direction
-    }
+
     get x() {
         return this._x
     }

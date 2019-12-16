@@ -1,19 +1,47 @@
 import {FocusAngle} from './mode.js'
 
+/**
+ * リサイズ機能を扱うためのハンドラ
+ * @property {Shape} shape リサイズ対象の図形
+ * @property {Direction} Direction リサイズの方向 [進行方向に沿う, 既存図形の範囲内, 進行方向の逆向き]
+ */
 export default class ResizeHandler {
 
     constructor() {
+        this._shape = null
+
+        this._Direction = {
+            FORWARD: Symbol('forward'),
+            BETWEEN: Symbol('between'),
+            REVERSE: Symbol('reverse')
+        }
     }
 
-    updatePos(shape, posX, posY, focusAngle) {
+    /**
+     * リサイズによって更新された図形の描画開始座標を反映
+     * 
+     * @param {number} posX x座標の起点
+     * @param {number} posY y座標の起点
+     * @param {FocusAngle} focusAngle 図形の上下左右いずれにフォーカスしているか
+     */
+    updatePos(posX, posY, focusAngle) {
+        // 上下左右のうち、一方向のみでのリサイズの場合、他の軸の座標を固定するために利用
+        // ex) 上方向にリサイズする場合、X方向に動かしても図形のx軸方向での大きさは不変
         const yFocused = this.isYFocused(focusAngle)
         const xFocused = this.isXFocused(focusAngle)
 
-        shape.x = yFocused ? shape.originX : posX
-        shape.y = xFocused ? shape.originY : posY
+        this._shape.x = yFocused ? shape.originX : posX
+        this._shape.y = xFocused ? shape.originY : posY
     }
 
+    /**
+     * X方向にのみフォーカスしているか判定 
+     * 
+     * @param {FocusAngle} focusAngle 図形の上下左右いずれにフォーカスしているか 
+     * @return {boolean} true→X方向にのみフォーカス
+     */
     isXFocused(focusAngle) {
+        // 左上・右下のように、複数方向にフォーカスしている場合は、座標の固定は不要
         if (focusAngle.length > 1) {
             return false
         }
@@ -25,7 +53,14 @@ export default class ResizeHandler {
         return false
     }
 
+    /**
+     * Y方向にのみフォーカスしているか判定 
+     * 
+     * @param {FocusAngle} focusAngle 図形の上下左右いずれにフォーカスしているか 
+     * @return {boolean} true→Y方向にのみフォーカス
+     */
     isYFocused(focusAngle) {
+        // 左上・右下のように、複数方向にフォーカスしている場合は、座標の固定は不要
         if (focusAngle.length > 1) {
             return false
         }
@@ -39,85 +74,112 @@ export default class ResizeHandler {
 
     /**
      * リサイズによる幅・高さの変動を反映
-     * @param {number} scaledX 
-     * @param {number} scaledY 
+     * 
+     * @param {number} scaledX 伸縮後の幅の変動分
+     * @param {number} scaledY 伸縮後の高さの変動分
+     * @param {FocusAngle} focusAngle 図形の上下左右いずれにフォーカスしているか
      */
-    modifyScale(shape, scaledX, scaledY, focusAngle) {
+    modifyScale(scaledX, scaledY, focusAngle) {
+        // フォーカス対象は、上下・左右等複数方向存在し得るので、ループで処理
         focusAngle.forEach( (angle) => {
 
+            // フォーカスなし 全方向にリサイズ可能
             if (angle === FocusAngle.NONE) {
-                shape.width = scaledX
-                shape.height = scaledY 
+                this._shape.width = scaledX
+                this._shape.height = scaledY 
 
             }
+            // 下 下方向に伸縮可能
             if (angle === FocusAngle.BOTTOM) {
-                shape.height = scaledY
+                this._shape.height = scaledY
             }
 
+            // 上 伸縮の位置によって、高さ・描画開始y座標を変動
             if (angle === FocusAngle.TOP) {
 
-                switch(this.getScaleDirection(shape, scaledY, 'y')) {
+                switch(this.getScaleDirection(scaledY, 'y')) {
 
-                    case shape.Direction.FORWARD:
-                        shape.height = scaledY + shape.originHeight
+                    // 上 高さを増分だけ伸ばす
+                    case this._Direction.FORWARD:
+                        this._shape.height = scaledY + this._shape.originHeight
                         break
                     
-                    case shape.Direction.BETWEEN:
-                        shape.y = shape.originY + scaledY
-                        shape.height = shape.originHeight - scaledY
+                    // 元の図形内 描画開始位置・高さを縮める
+                    case this._Direction.BETWEEN:
+                        this._shape.y = this._shape.originY + scaledY
+                        this._shape.height = this._shape.originHeight - scaledY
                         break
 
-                    case shape.Direction.REVERSE:
-                        shape.y = shape.originY + shape.originHeight
-                        shape.height = scaledY - shape.originHeight
+                    // 元の図形より下 元の図形の底辺を基準に増分だけ下方向に伸ばす
+                    case this._Direction.REVERSE:
+                        this._shape.y = this._shape.originY + this._shape.originHeight
+                        this._shape.height = scaledY - this._shape.originHeight
                         break
 
                 }
 
             }
 
+            // 右 右方向に伸縮可能
             if (angle === FocusAngle.RIGHT) {
-                shape.width = scaledX
+                this._shape.width = scaledX
             }
 
+            // 左 伸縮の位置によって、幅・描画開始x座標を変動
             if (angle === FocusAngle.LEFT) {
 
-                switch(this.getScaleDirection(shape, scaledX, 'x')) {
+                switch(this.getScaleDirection(this._shape, scaledX, 'x')) {
 
-                    case shape.Direction.FORWARD:
-                        shape.width = scaledX + shape.originWidth
+                    // 左 幅を増分だけ伸ばす
+                    case this._Direction.FORWARD:
+                        this._shape.width = scaledX + this._shape.originWidth
                         break
                     
-                    case shape.Direction.BETWEEN:
-                        shape.x = shape.originX + scaledX
-                        shape.width = shape.originWidth - scaledX
+                    // 元の図形内 幅・描画開始位置を縮小
+                    case this._Direction.BETWEEN:
+                        this._shape.x = this._shape.originX + scaledX
+                        this._shape.width = this._shape.originWidth - scaledX
                         break
 
-                    case shape.Direction.REVERSE:
-                        shape.x = shape.originX + shape.originWidth
-                        shape.width = scaledX - shape.originWidth
+                    // 元の図形より右 元の図形の右辺を基準に増分だけ右方向に伸ばす
+                    case this._Direction.REVERSE:
+                        this._shape.x = this._shape.originX + this._shape.originWidth
+                        this._shape.width = scaledX - this._shape.originWidth
                         break
 
                 }
 
             }
-
         })
-
     }
 
-    getScaleDirection(shape, scale, xyDirection) {
-        const pos = shape[`${xyDirection}`]
-        const originPos = shape[`origin${xyDirection.toUpperCase()}`]
-        const originScale = xyDirection === 'x' ? shape.originWidth : shape.originHeight
+    /**
+     * リサイズの方向に応じて処理を分岐させるため、方向を取得
+     * 
+     * @param {number} scale 伸縮の大きさ 元の図形に対する比率で、どの方向での伸縮かを判定
+     * @param {string} xyDirection X方向・Y方向
+     * 
+     * @return {Direction} 伸縮方向
+     */
+    getScaleDirection(scale, xyDirection) {
+        const pos = this._shape[`${xyDirection}`]
+        const originPos = this._shape[`origin${xyDirection.toUpperCase()}`]
+        const originScale = xyDirection === 'x' ? this._shape.originWidth : this._shape.originHeight
 
+        // フォーカス方向に準ずる
         if (pos !== originPos) {
-            return shape.Direction.FORWARD
+            return this._Direction.FORWARD
         }
+        // フォーカスとは逆向き 元の図形の範囲内
         if (scale <= originScale) {
-            return shape.Direction.BETWEEN
+            return this._Direction.BETWEEN
         }
 
-        return shape.Direction.REVERSE
+        // フォーカスとは逆向き 元の図形の範囲外
+        return this._Direction.REVERSE
+    }
+
+    set shape(shape) {
+        this._shape = shape
     }
 }
