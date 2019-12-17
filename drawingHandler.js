@@ -9,6 +9,14 @@ import RectangleDrawing from './rectangleDrawing.js'
 
 /**
  * 描画機能を扱うハンドラ
+ * 
+ * @property {Object} context 描画コンテキスト
+ *     ・canvas: キャンバス
+ *     ・canvasContext: キャンバスのコンテキスト
+ *     ・isMousedown: マウスが押下されているか
+ *     ・drawStack: 描画スタック
+ *     ・menu: メニューを管理
+ *     ・focus: フォーカス機能を管理
  */
 export default class DrawingHandler{
 
@@ -23,21 +31,20 @@ export default class DrawingHandler{
             focus: new FocusHandler(),
         }
 
-        this._metaDrawing = new MetaDrawing(this._context)
-        this._rectDrawing = new RectangleDrawing(this._context)
-        this._textDrawing = new TextDrawing(this._context)
-
         this.init()
     }
 
     init() {
 
+        // アプリで実行され得るイベントの種類
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'keydown', 'click']
-        const drawingList = [this._rectDrawing, this._textDrawing, this._metaDrawing]
+        // アプリで描画されるオブジェクト
+        const drawingList = [new RectangleDrawing(this._context), new TextDrawing(this._context), new MetaDrawing(this._context)]
 
         occurEvents.forEach((event) => {
             const targetEvents = []
 
+            // 各描画機能で扱うイベントを取得
             drawingList.forEach((drawing, index) => {
                 if (typeof drawing[`${event}Event`] === 'function') {
 
@@ -45,6 +52,7 @@ export default class DrawingHandler{
                 }
             })
 
+            // イベントリスナーで発火させるべきイベントを設定
             this._context.canvas.addEventListener(event, (eventArg) => {
 
                 targetEvents.forEach((targetIndex) => {

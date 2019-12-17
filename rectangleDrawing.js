@@ -15,6 +15,8 @@ export default class RetangleDrawing {
         this._resizeHandler = new ResizeHandler()
     }
 
+    // ----------------------------------------------- イベント処理 ----------------------------------------------- 
+
     /**
      * マウス押下時の処理 描画開始イベントを発火
      * @param {Event} event イベントオブジェクト
@@ -82,6 +84,8 @@ export default class RetangleDrawing {
 
     }
 
+    // ----------------------------------------------- メソッド ----------------------------------------------- 
+
     /**
      * 描画モードで四角が選択されているか判定
      */
@@ -103,12 +107,14 @@ export default class RetangleDrawing {
         const x = this.getCanvasX(event.clientX)
         const y = this.getCanvasY(event.clientY)
 
-        // 描画開始位置を決定 キャンバスではx,yは左上が指定されるので、
+        // キャンバスではx,yは左上が指定されるので、上向き/左向きにリサイズする場合、
+        // 描画開始位置をカーソルに合わせる
         let posX = x >= pointRectangle.originX ? pointRectangle.originX : x
         let posY = y >= pointRectangle.originY ? pointRectangle.originY : y
 
         this._resizeHandler.updatePos(posX, posY, this._context.focus.focusedAngle)
 
+        // 元の位置と現在の位置の差分から、リサイズの変動分を導出し、描画位置・スケールに反映
         const scaleX = Math.abs(pointRectangle.originX - x)
         const scaleY = Math.abs(pointRectangle.originY - y)
 

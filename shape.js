@@ -62,6 +62,8 @@ export default class Shape {
         this._originHeight = this._height
     }
 
+    //  ------------------------------------------------getter setter ----------------------------------------------------
+
 
     get x() {
         return this._x
