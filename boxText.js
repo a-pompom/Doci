@@ -1,3 +1,5 @@
+import Shape from './shape.js'
+
 /**
  * 領域内の文字列を扱うためのクラス
  * @property {Array} text 入力文字列を改行及びキャンバス上の領域の幅をもとに分割したもの
@@ -5,9 +7,11 @@
  * @property {number} boxWidth キャンバス上の文字列を挿入する領域の幅
  * @property {object} context キャンバスのコンテキスト 文字列長を取得するために利用
  */
-export default class BoxText {
+export default class BoxText extends Shape {
 
     constructor(context, startX, startY, boxWidth) {
+
+        super(context)
 
         this._text = []
         this._originTextDOM = document.getElementById('inputText')
@@ -17,8 +21,6 @@ export default class BoxText {
         this._startY = startY
 
         this._boxWidth = boxWidth
-        this._context = context
-
 
         this.init()
     }
@@ -35,6 +37,9 @@ export default class BoxText {
      * 領域文字列を描画
      */
     draw() {
+        this.drawBase()
+
+        this.update()
 
         this._text.forEach((rowText, index) => {
             this._context.fillText(rowText, this._startX, this._startY + index* 20)
@@ -44,8 +49,6 @@ export default class BoxText {
 
     /**
      * 入力された文字列をもとに、現在有効な領域内のテキストを更新
-     * 
-     * @param {string} inputValue 入力された文字列
      */
     update() {
         this._originText = this._originTextDOM.value
@@ -104,7 +107,6 @@ export default class BoxText {
 
         return fragmentTextWidth > this._boxWidth
     }
-
 
     get text() {
         return this._text
