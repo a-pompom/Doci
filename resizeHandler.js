@@ -30,8 +30,8 @@ export default class ResizeHandler {
         const yFocused = this.isYFocused(focusAngle)
         const xFocused = this.isXFocused(focusAngle)
 
-        this._shape.x = yFocused ? shape.originX : posX
-        this._shape.y = xFocused ? shape.originY : posY
+        this._shape.x = yFocused ? this._shape.originX : posX
+        this._shape.y = xFocused ? this._shape.originY : posY
     }
 
     /**
@@ -128,7 +128,7 @@ export default class ResizeHandler {
             // 左 伸縮の位置によって、幅・描画開始x座標を変動
             if (angle === FocusAngle.LEFT) {
 
-                switch(this.getScaleDirection(this._shape, scaledX, 'x')) {
+                switch(this.getScaleDirection(scaledX, 'x')) {
 
                     // 左 幅を増分だけ伸ばす
                     case this._Direction.FORWARD:

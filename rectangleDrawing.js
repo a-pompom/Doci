@@ -1,4 +1,6 @@
 import PointRectangle from './pointRectangle.js'
+import WordBalloon from './WordBalloon.js'
+
 import ResizeHandler from './resizeHandler.js'
 
 /**
@@ -40,9 +42,9 @@ export default class RetangleDrawing {
         }
 
         // 新規描画
-        const pointRectangle = new PointRectangle(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
+        const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
-        this._context.drawStack.append(pointRectangle)
+        this._context.drawStack.append(rectangle)
 
     }
 
@@ -57,10 +59,10 @@ export default class RetangleDrawing {
         }
 
         // リサイズした後、画面上に図形を描画
-        const pointRectangle = this._context.drawStack.getCurrent()
-        this.resize(pointRectangle, event)
+        const rectangle = this._context.drawStack.getCurrent()
+        this.resize(rectangle, event)
 
-        pointRectangle.fullDraw()
+        rectangle.fullDraw()
 
     }
     
@@ -90,7 +92,7 @@ export default class RetangleDrawing {
      * 描画モードで四角が選択されているか判定
      */
     isRectangleActive() {
-        return this._context.menu.isRectangleActive()
+        return this._context.menu.isRectangleActive() || this._context.menu.isWordBalloonActive()
     }
 
 
@@ -120,6 +122,24 @@ export default class RetangleDrawing {
 
         this._resizeHandler.modifyScale(scaleX, scaleY, this._context.focus.focusedAngle)
 
+    }
+
+    /**
+     * 描画対象となる四角を取得
+     * 
+     * @param {number} x 描画開始x座標
+     * @param {number} y 描画開始y座標
+     */
+    getRectangle(x, y) {
+        if (this._context.menu.isRectangleActive()) {
+            return new PointRectangle(this._context, x, y)
+        }
+
+        if (this._context.menu.isWordBalloonActive()) {
+            return new WordBalloon(this._context, x, y)
+        }
+
+        return
     }
 
 
