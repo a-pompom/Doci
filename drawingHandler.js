@@ -1,6 +1,7 @@
 import MenuHandler from './menuHandler.js'
 
 import FocusHandler from './focusHandler.js'
+import TextFocusHandler from './textFocusHandler.js'
 import DrawStack from './drawStack.js'
 
 import MetaDrawing from './metaDrawing.js'
@@ -29,6 +30,7 @@ export default class DrawingHandler{
             drawStack: new DrawStack(),
             menu: new MenuHandler(),
             focus: new FocusHandler(),
+            textFocus: new TextFocusHandler()
         }
 
         this.init()
@@ -37,7 +39,7 @@ export default class DrawingHandler{
     init() {
 
         // アプリで実行され得るイベントの種類
-        const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'keydown', 'click']
+        const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
         // アプリで描画されるオブジェクト
         const drawingList = [new RectangleDrawing(this._context), new TextDrawing(this._context), new MetaDrawing(this._context)]
 
@@ -53,12 +55,8 @@ export default class DrawingHandler{
 
             // イベントリスナーで発火させるべきイベントを設定
             this._context.canvas.addEventListener(event, (eventArg) => {
-                console.log(targetEvents.length)
-                //TODO keydownが発火していない
 
                 targetEvents.forEach((targetIndex) => {
-                    console.log(event)
-                    console.log(targetIndex)
                     drawingList[targetIndex][`${event}Event`].call(drawingList[targetIndex],eventArg)
                 })
 

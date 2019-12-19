@@ -19,6 +19,8 @@ export default class BoxText extends Shape {
 
         this._boxWidth = 200
 
+        //TODO width, heightを設定
+
         this.init()
     }
 
@@ -44,6 +46,7 @@ export default class BoxText extends Shape {
 
         console.log('draw called')
         this.text.forEach((rowText, index) => {
+            this._context.canvasContext.font = '12px sans-serif'
             this._context.canvasContext.fillText(rowText, this.x, this.y + index* 20)
 
         })
