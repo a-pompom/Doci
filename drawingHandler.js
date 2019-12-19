@@ -47,15 +47,18 @@ export default class DrawingHandler{
             // 各描画機能で扱うイベントを取得
             drawingList.forEach((drawing, index) => {
                 if (typeof drawing[`${event}Event`] === 'function') {
-
                     targetEvents.push(index)
                 }
             })
 
             // イベントリスナーで発火させるべきイベントを設定
             this._context.canvas.addEventListener(event, (eventArg) => {
+                console.log(targetEvents.length)
+                //TODO keydownが発火していない
 
                 targetEvents.forEach((targetIndex) => {
+                    console.log(event)
+                    console.log(targetIndex)
                     drawingList[targetIndex][`${event}Event`].call(drawingList[targetIndex],eventArg)
                 })
 

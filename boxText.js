@@ -9,18 +9,15 @@ import Shape from './shape.js'
  */
 export default class BoxText extends Shape {
 
-    constructor(context, startX, startY, boxWidth) {
+    constructor(context, startX, startY) {
 
-        super(context)
+        super(context, startX, startY)
 
         this._text = []
         this._originTextDOM = document.getElementById('inputText')
         this._originText = this._originTextDOM.value
 
-        this._startX = startX
-        this._startY = startY
-
-        this._boxWidth = boxWidth
+        this._boxWidth = 200
 
         this.init()
     }
@@ -33,16 +30,21 @@ export default class BoxText extends Shape {
         this._originTextDOM.focus()
     }
 
+    fullDraw() {
+        this.drawBase()
+        this.update()
+
+        this.draw()
+    }
+
     /**
      * 領域文字列を描画
      */
     draw() {
-        this.drawBase()
 
-        this.update()
-
-        this._text.forEach((rowText, index) => {
-            this._context.fillText(rowText, this._startX, this._startY + index* 20)
+        console.log('draw called')
+        this.text.forEach((rowText, index) => {
+            this._context.canvasContext.fillText(rowText, this.x, this.y + index* 20)
 
         })
     }
@@ -103,7 +105,7 @@ export default class BoxText extends Shape {
      */
     isOverFit(fragmentText) {
 
-        const fragmentTextWidth = this._context.measureText(fragmentText).width
+        const fragmentTextWidth = this._context.canvasContext.measureText(fragmentText).width
 
         return fragmentTextWidth > this._boxWidth
     }

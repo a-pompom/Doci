@@ -1,3 +1,5 @@
+import BoxText from './boxText.js'
+
 export default class TextDrawing{
 
     constructor(context) {
@@ -9,9 +11,10 @@ export default class TextDrawing{
     }
 
     clickEvent(event) {
+        console.log('text click called')
         if (this._context.menu.isTextActive()) {
 
-            const boxText = new BoxText(this._context, event.clientX, event.clientY, 200)
+            const boxText = new BoxText(this._context, event.clientX, event.clientY)
 
             this._context.drawStack.append(boxText)
 
@@ -20,12 +23,13 @@ export default class TextDrawing{
     }
 
     keydownEvent(evnet) {
+        console.log('key down')
         if (!this._context.menu.isTextActive()) {
             return 
         }
         const boxText = this._context.drawStack.getCurrent()
 
-        boxText.draw()
+        boxText.fullDraw()
 
     }
 
