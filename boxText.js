@@ -9,17 +9,16 @@ import Shape from './shape.js'
  */
 export default class BoxText extends Shape {
 
-    constructor(context, startX, startY) {
+    constructor(context, startX, startY, boxWidth) {
 
         super(context, startX, startY)
+        this.defineAsText()
 
         this._text = []
         this._originTextDOM = document.getElementById('inputText')
-        this._originText = this._originTextDOM.value
+        this._originText = ''
 
-        this._boxWidth = 200
-
-        //TODO width, heightを設定
+        this._boxWidth = boxWidth ? boxWidth : 200
 
         this.init()
     }
@@ -29,13 +28,14 @@ export default class BoxText extends Shape {
      */
     init() {
         this._originTextDOM.value = ''
+        this._originTextDOM.style.width = '20px'
+        this._originTextDOM.style.height = '20px'
         this._originTextDOM.focus()
     }
 
+
     fullDraw() {
         this.drawBase()
-        this.update()
-
         this.draw()
     }
 
@@ -43,9 +43,7 @@ export default class BoxText extends Shape {
      * 領域文字列を描画
      */
     draw() {
-
-        console.log('draw called')
-        this.text.forEach((rowText, index) => {
+        this._text.forEach((rowText, index) => {
             this._context.canvasContext.font = '12px sans-serif'
             this._context.canvasContext.fillText(rowText, this.x, this.y + index* 20)
 
@@ -65,7 +63,7 @@ export default class BoxText extends Shape {
         paragraphText.forEach((rowText) => {
                 
             // 1行の文字列が領域内に収まるようになるまで切り出しを繰り返す
-            while (this.isOverFit(rowText)) {
+            while (this.isOverFit(this.getFragmentTextWidth(rowText))) {
 
                 let breakPoint = this.getFittedTailIndex(rowText)
 
@@ -77,6 +75,19 @@ export default class BoxText extends Shape {
             // 領域内に最初から収まっている文字列も追加
             this._text.push(rowText)
         })
+
+        this.width = 100
+        this._text.forEach((fragmentText) => {
+            let fragmentWidth = this.getFragmentTextWidth(fragmentText)
+
+            this.width = fragmentWidth >= this.width ? fragmentWidth : this.width
+            
+        })
+
+        this.height = (this._text.length) * 20
+
+        this._originTextDOM.style.width = this.width + 'px'
+        this._originTextDOM.style.height = this.height + 50 + 'px'
 
     }
 
@@ -92,7 +103,7 @@ export default class BoxText extends Shape {
         let index = 0
 
         // 領域内に収まる文字列に切り出すため、範囲内に収まる先頭からの文字数を導出
-        while (!this.isOverFit(rowText.substring(0,index))) {
+        while (!this.isOverFit(this.getFragmentTextWidth(rowText.substring(0,index)))) {
             index ++
         }
 
@@ -103,18 +114,26 @@ export default class BoxText extends Shape {
     /**
      * 指定された文字列の幅がキャンバス上の領域を超過しているか判定
      * 
-     * @param {string} fragmentText 領域内に収められる部分文字列
-     * @return {boolean} true→ 超過 false→範囲内
      */
-    isOverFit(fragmentText) {
+    isOverFit(fragmentTextWidth) {
+        return fragmentTextWidth >= this._boxWidth
+    }
 
-        const fragmentTextWidth = this._context.canvasContext.measureText(fragmentText).width
-
-        return fragmentTextWidth > this._boxWidth
+    /**
+     * 部分文字列のキャンバス上の幅を取得
+     * 
+     * @param {string} fragmentText 測定対象文字列
+     */
+    getFragmentTextWidth(fragmentText) {
+        return this._context.canvasContext.measureText(fragmentText).width
     }
 
     get text() {
         return this._text
+    }
+
+    get originText() {
+        return this._originText
     }
 
 }

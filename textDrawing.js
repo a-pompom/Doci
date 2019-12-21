@@ -13,48 +13,98 @@ export default class TextDrawing{
 
         // キャンバスに文字を描画する際、透明なテキストエリアを利用しており、当該要素はキャンバスの外に存在するので、
         // 別途イベントを登録
-        this._originTextDOM.addEventListener('keydown', () => {
-            this.keydownEvent()
+        this._originTextDOM.addEventListener('keydown', (event) => {
+            this.keydownEvent(event)
+        })
+
+        this._originTextDOM.addEventListener('blur', (event) => {
+            this.blurEvent(event)
         })
 
     }
 
     clickEvent(event) {
-        console.log('text click called')
-        if (this._context.menu.isTextActive()) {
+        if (!this._context.menu.isTextActive()) {
+            return 
+        }
 
-            console.log(this._context.textFocus.isFocused())
-
-            if (this._context.textFocus.isFocused()) {
-                this._context.drawStack.modifyCurrent(this._context.textFocus.getFocusedIndex())
-
-                const boxText = this._context.drawStack.getCurrent()
-
-                this._originTextDOM.style.top = (boxText.y -10) + 'px'
-                this._originTextDOM.style.left = boxText.x + 'px'
-
-                return
-            }
-
-            const boxText = new BoxText(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
-
-            this._originTextDOM.style.top = (event.clientY -10) + 'px'
-            this._originTextDOM.style.left = event.clientX + 'px'
+        if (!this._context.focus.isFocused()) {
+            const boxText = new BoxText(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY)) 
+            this.setTextDOMPos(boxText.x, boxText.y)
 
             this._context.drawStack.append(boxText)
+
+            return
+        }
+        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+
+        const shape = this._context.drawStack.getCurrent()
+
+        if (shape.isText()) {
+            this.setTextDOMPos(shape.x, shape.y)
+            this.setTextDOMScale(shape.width, shape.height)
+
+            this._originTextDOM.value = shape.originText
+
+            this._originTextDOM.focus()
+
+        }
+
+        if (shape.isBox() && this._context.focus.isInsideFocused()) {
+            if (shape.boxText === null) {
+                shape.boxText = new BoxText(this._context, shape.x +15, shape.y + 20, shape.width)
+            }
+
+            this.setTextDOMPos(shape.x + 15, shape.y + 20)
+            this.setTextDOMScale(shape.width, shape.height)
+
+            this._originTextDOM.value = shape.boxText.originText
+            this._originTextDOM.focus()
 
         }
 
     }
 
-    keydownEvent() {
-        console.log('key down')
+    keydownEvent(event) {
         if (!this._context.menu.isTextActive()) {
             return 
         }
-        const boxText = this._context.drawStack.getCurrent()
 
-        boxText.fullDraw()
+        if (event.keyCode === 27) {
+            this._originTextDOM.blur()
+
+        }
+        const shape = this._context.drawStack.getCurrent()
+        if (shape.isBox()) {
+
+            this.setTextDOMPos(shape.x + 15, shape.y + 20)
+
+            shape.updateText()
+            shape.fullDraw()
+            return
+        }
+
+        shape.update()
+        shape.fullDraw()
+
+    }
+
+    blurEvent(event) {
+        this._originTextDOM.style.top = 0
+        this._originTextDOM.style.left = 0
+        this._originTextDOM.style.width = 0
+        this._originTextDOM.style.height = 0
+
+    }
+
+    setTextDOMPos(posX, posY) {
+        this._originTextDOM.style.top = posY + 60 + 'px'
+        this._originTextDOM.style.left = posX + 'px'
+    }
+
+    setTextDOMScale(scaleX, scaleY) {
+        this._originTextDOM.style.width = scaleX + 'px'
+        this._originTextDOM.style.height = scaleY + 50 + 'px'
 
     }
 

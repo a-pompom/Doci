@@ -28,6 +28,13 @@ export default class Shape {
         this._originWidth = 0
         this._originHeight = 0
 
+        this.ShapeType = {
+            RECT: Symbol('shape-rect'),
+            BOX: Symbol('shape-box'),
+            TEXT: Symbol('shape-text')
+        }
+
+        this._shapeType = null
     }
 
     /**
@@ -60,6 +67,26 @@ export default class Shape {
     setOriginPos() {
         this._originWidth = this._width
         this._originHeight = this._height
+    }
+
+    defineAsRect(){
+        this._shapeType = this.ShapeType.RECT
+    }
+    defineAsBox() {
+        this._shapeType = this.ShapeType.BOX
+    }
+    defineAsText() {
+        this._shapeType = this.ShapeType.TEXT
+    }
+
+    isRect() {
+        return this._shapeType === this.ShapeType.RECT
+    }
+    isBox() {
+        return this._shapeType === this.ShapeType.BOX
+    }
+    isText() {
+        return this._shapeType === this.ShapeType.TEXT
     }
 
     //  ------------------------------------------------getter setter ----------------------------------------------------

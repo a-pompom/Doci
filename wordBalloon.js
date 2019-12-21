@@ -11,9 +11,12 @@ export default class WordBalloon extends Shape{
     constructor(context, startX, startY) {
 
         super(context, startX, startY)
+        this.defineAsBox()
 
         this._color = '#FF0000'
         this._fillColor = '#FFFFFF'
+
+        this._boxText = null
 
     }
 
@@ -38,6 +41,21 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.strokeRect(this.x, this.y, this.width, this.height)
 
         this.drawTail()
+
+        this._context.canvasContext.fillStyle = '#000000'
+
+        if (this._boxText !== null) {
+
+            this._boxText.draw()
+        }
+    }
+
+    updateText() {
+        this._boxText.update()
+    }
+
+    isBoxShape() {
+        return true
     }
 
     /**
@@ -63,9 +81,8 @@ export default class WordBalloon extends Shape{
         // 吹き出しのしっぽ部分と四角の共通部分、すなわち、底辺部分の線は消しておく方が吹き出しとして自然なので、消去
         // 三角形の辺と同一の長さで描画すると、微細な隙間が生じてしまうので、少し幅を持たせる
         const DELTA_X = 2
-        this._context.canvasContext.globalCompositeOperation = 'destination-out'
         this._context.canvasContext.beginPath()
-        this._context.canvasContext.strokeStyle = this._fillColor
+        this._context.canvasContext.globalCompositeOperation = 'destination-out'
         this._context.canvasContext.moveTo(headX, headY)
         this._context.canvasContext.lineTo(tailX - DELTA_X, headY)
         this._context.canvasContext.closePath()
@@ -76,6 +93,14 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.stroke()
 
         this._context.canvasContext.globalCompositeOperation = 'source-over'
+        this._context.canvasContext.strokeStyle = '#FF0000'
+    }
+    get boxText() {
+        return this._boxText
+    }
+
+    set boxText(boxText) {
+        this._boxText = boxText
     }
 
 }

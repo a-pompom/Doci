@@ -1,7 +1,6 @@
 import MenuHandler from './menuHandler.js'
 
 import FocusHandler from './focusHandler.js'
-import TextFocusHandler from './textFocusHandler.js'
 import DrawStack from './drawStack.js'
 
 import MetaDrawing from './metaDrawing.js'
@@ -29,8 +28,7 @@ export default class DrawingHandler{
 
             drawStack: new DrawStack(),
             menu: new MenuHandler(),
-            focus: new FocusHandler(),
-            textFocus: new TextFocusHandler()
+            focus: new FocusHandler()
         }
 
         this.init()

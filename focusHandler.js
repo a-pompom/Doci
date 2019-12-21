@@ -11,6 +11,14 @@ export default class FocusHandler extends BaseHandler {
 
         this._focusedIndex = -1
         this._focusedAngle = []
+
+        this.FocusMode = {
+            NONE: Symbol('focus-none'),
+            BORDER: Symbol('border'),
+            INSIDE: Symbol('inside')
+        }
+
+        this._focusMode = this.FocusMode.NONE
     }
 
     /**
@@ -27,31 +35,40 @@ export default class FocusHandler extends BaseHandler {
 
             const height = shape.height
             const width = shape.width
+            const isInsideX = shape.x < posX && posX < shape.x + width
+            const isInsideY = shape.y < posY && posY < shape.y + height
 
             // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±5pxを対象範囲とする
             const range = 10
 
             this.outFocus()
 
+
             // 上横 
             if ((posX >= shape.x - range && posX <= shape.x + range + width)    && (posY >= shape.y-range && posY <= shape.y + range))  {
-                console.log('上横')
+                console.log('border')
                 this.setFocusTarget(i, FocusAngle.TOP)
             }
             // 左縦
             if ((posY >= shape.y - range && posY  <= shape.y + range + height)  && (posX >= shape.x-range && posX <= shape.x+range)) {
-                console.log('左縦')
+                console.log('border')
                 this.setFocusTarget(i, FocusAngle.LEFT)
             }
             // 右縦
             if ((posY >= shape.y - range && posY  <= shape.y + range + height)  && (posX >= shape.x-range + width && posX <= shape.x+range + width)) {
-                console.log('右縦')
+                console.log('border')
                 this.setFocusTarget(i, FocusAngle.RIGHT)
             }
             // 下横
             if ((posX >= shape.x - range && posX <= shape.x + range + width )   && (posY >= shape.y-range + height && posY <= shape.y + range + height))  {
-                console.log('下横')
+                console.log('border')
                 this.setFocusTarget(i, FocusAngle.BOTTOM)
+            }
+
+            if (isInsideX && isInsideY) {
+                console.log('inside')
+                this.setInsideFocusTarget(i)
+                break
             }
 
             if (this.isFocused()) {
@@ -68,6 +85,13 @@ export default class FocusHandler extends BaseHandler {
     setFocusTarget(index, angle) {
         this._focusedIndex = index
         this._focusedAngle.push(angle)
+
+        this._focusMode = this.FocusMode.BORDER
+    }
+
+    setInsideFocusTarget(index) {
+        this._focusedIndex = index
+        this._focusMode = this.FocusMode.INSIDE
     }
 
     /**
@@ -76,6 +100,7 @@ export default class FocusHandler extends BaseHandler {
     outFocus() {
         this._focusedIndex = -1
         this._focusedAngle = []
+        this._focusMode = this.FocusMode.NONE
     }
 
     /**
@@ -86,6 +111,13 @@ export default class FocusHandler extends BaseHandler {
         return this._focusedIndex !== -1
     }
 
+    isBorderFocused() {
+        return this._focusMode === this.FocusMode.BORDER
+    }
+
+    isInsideFocused() {
+        return this._focusMode === this.FocusMode.INSIDE
+    }
 
     get focusedIndex() {
         return this._focusedIndex

@@ -10,6 +10,7 @@ export default class PointRectangle extends Shape{
     constructor(context, startX, startY) {
 
         super(context, startX, startY)
+        this.defineAsRect()
 
         this._color = '#FF0000'
 
