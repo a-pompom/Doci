@@ -11,6 +11,9 @@
  * @property {number} originY 描画開始時点でのy座標
  * @property {number} originWidth リサイズ前の幅 リサイズ時の動きを滑らかにするために利用
  * @property {number} originHeight リサイズ前の高さ
+ * 
+ * @property {ShapeType} shapeType 図形の種類
+ * @property {boolean} hasArea 領域を持つか 領域を持たないものは、内側を図形とみなさないよう区別するために利用
  */
 export default class Shape {
 
@@ -28,6 +31,8 @@ export default class Shape {
         this._originWidth = 0
         this._originHeight = 0
 
+        this._shapeType = null
+        this._hasArea = false
     }
 
     /**
@@ -60,6 +65,19 @@ export default class Shape {
     setOriginPos() {
         this._originWidth = this._width
         this._originHeight = this._height
+    }
+
+    /**
+     * 属性値を設定 実装は各サブクラスに委譲
+     */
+    defineAttribute() {
+    }
+
+    /**
+     * 領域を有するかを取得
+     */
+    hasArea() {
+        return this._hasArea
     }
 
     //  ------------------------------------------------getter setter ----------------------------------------------------
@@ -109,5 +127,9 @@ export default class Shape {
     
     get color() {
         return this._color
+    }
+
+    get shapeType() {
+        return this._shapeType
     }
 }

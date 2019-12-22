@@ -37,7 +37,7 @@ export default class DrawingHandler{
     init() {
 
         // アプリで実行され得るイベントの種類
-        const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'keydown', 'click']
+        const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
         // アプリで描画されるオブジェクト
         const drawingList = [new RectangleDrawing(this._context), new TextDrawing(this._context), new MetaDrawing(this._context)]
 
@@ -47,7 +47,6 @@ export default class DrawingHandler{
             // 各描画機能で扱うイベントを取得
             drawingList.forEach((drawing, index) => {
                 if (typeof drawing[`${event}Event`] === 'function') {
-
                     targetEvents.push(index)
                 }
             })

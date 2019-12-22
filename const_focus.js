@@ -1,13 +1,7 @@
-/**
- * 描画モード
- * ・RECTANGLE 赤枠の四角
- * ・TEXT 文字列
- * ・WORD_BALLOON 吹き出し
- */
-export const DrawMode = {
-    RECTANGLE: Symbol('rect'),
-    TEXT: Symbol('text'),
-    WORD_BALLOON: Symbol('balloon')
+export const FocusMode = {
+    NONE: Symbol('focus-none'),
+    BORDER: Symbol('border'),
+    INSIDE: Symbol('inside')
 }
 
 /**

@@ -1,20 +1,13 @@
-import {FocusAngle} from './mode.js'
+import { DrawConst } from './drawingConst.js'
 
 /**
  * リサイズ機能を扱うためのハンドラ
  * @property {Shape} shape リサイズ対象の図形
- * @property {Direction} Direction リサイズの方向 [進行方向に沿う, 既存図形の範囲内, 進行方向の逆向き]
  */
 export default class ResizeHandler {
 
     constructor() {
         this._shape = null
-
-        this._Direction = {
-            FORWARD: Symbol('forward'),
-            BETWEEN: Symbol('between'),
-            REVERSE: Symbol('reverse')
-        }
     }
 
     /**
@@ -46,7 +39,7 @@ export default class ResizeHandler {
             return false
         }
 
-        if (focusAngle[0] === FocusAngle.LEFT || focusAngle[0] === FocusAngle.RIGHT) {
+        if (focusAngle[0] === DrawConst.focus.FocusAngle.LEFT || focusAngle[0] === DrawConst.focus.FocusAngle.RIGHT) {
             return true
         }
 
@@ -65,7 +58,7 @@ export default class ResizeHandler {
             return false
         }
 
-        if (focusAngle[0] === FocusAngle.TOP || focusAngle[0] === FocusAngle.BOTTOM) {
+        if (focusAngle[0] === DrawConst.focus.FocusAngle.TOP || focusAngle[0] === DrawConst.focus.FocusAngle.BOTTOM) {
             return true
         }
 
@@ -84,65 +77,64 @@ export default class ResizeHandler {
         focusAngle.forEach( (angle) => {
 
             // フォーカスなし 全方向にリサイズ可能
-            if (angle === FocusAngle.NONE) {
+            if (angle === DrawConst.focus.FocusAngle.NONE) {
                 this._shape.width = scaledX
                 this._shape.height = scaledY 
 
             }
             // 下 下方向に伸縮可能
-            if (angle === FocusAngle.BOTTOM) {
+            if (angle === DrawConst.focus.FocusAngle.BOTTOM) {
                 this._shape.height = scaledY
             }
 
             // 上 伸縮の位置によって、高さ・描画開始y座標を変動
-            if (angle === FocusAngle.TOP) {
+            if (angle === DrawConst.focus.FocusAngle.TOP) {
 
                 switch(this.getScaleDirection(scaledY, 'y')) {
 
                     // 上 高さを増分だけ伸ばす
-                    case this._Direction.FORWARD:
+                    case DrawConst.resize.Direction.FORWARD:
                         this._shape.height = scaledY + this._shape.originHeight
                         break
                     
                     // 元の図形内 描画開始位置・高さを縮める
-                    case this._Direction.BETWEEN:
+                    case DrawConst.resize.Direction.BETWEEN:
                         this._shape.y = this._shape.originY + scaledY
                         this._shape.height = this._shape.originHeight - scaledY
                         break
 
                     // 元の図形より下 元の図形の底辺を基準に増分だけ下方向に伸ばす
-                    case this._Direction.REVERSE:
+                    case DrawConst.resize.Direction.REVERSE:
                         this._shape.y = this._shape.originY + this._shape.originHeight
                         this._shape.height = scaledY - this._shape.originHeight
                         break
 
                 }
-
             }
 
             // 右 右方向に伸縮可能
-            if (angle === FocusAngle.RIGHT) {
+            if (angle === DrawConst.focus.FocusAngle.RIGHT) {
                 this._shape.width = scaledX
             }
 
             // 左 伸縮の位置によって、幅・描画開始x座標を変動
-            if (angle === FocusAngle.LEFT) {
+            if (angle === DrawConst.focus.FocusAngle.LEFT) {
 
                 switch(this.getScaleDirection(scaledX, 'x')) {
 
                     // 左 幅を増分だけ伸ばす
-                    case this._Direction.FORWARD:
+                    case DrawConst.resize.Direction.FORWARD:
                         this._shape.width = scaledX + this._shape.originWidth
                         break
                     
                     // 元の図形内 幅・描画開始位置を縮小
-                    case this._Direction.BETWEEN:
+                    case DrawConst.resize.Direction.BETWEEN:
                         this._shape.x = this._shape.originX + scaledX
                         this._shape.width = this._shape.originWidth - scaledX
                         break
 
                     // 元の図形より右 元の図形の右辺を基準に増分だけ右方向に伸ばす
-                    case this._Direction.REVERSE:
+                    case DrawConst.resize.Direction.REVERSE:
                         this._shape.x = this._shape.originX + this._shape.originWidth
                         this._shape.width = scaledX - this._shape.originWidth
                         break
@@ -168,15 +160,15 @@ export default class ResizeHandler {
 
         // フォーカス方向に準ずる
         if (pos !== originPos) {
-            return this._Direction.FORWARD
+            return DrawConst.resize.Direction.FORWARD
         }
         // フォーカスとは逆向き 元の図形の範囲内
         if (scale <= originScale) {
-            return this._Direction.BETWEEN
+            return DrawConst.resize.Direction.BETWEEN
         }
 
         // フォーカスとは逆向き 元の図形の範囲外
-        return this._Direction.REVERSE
+        return DrawConst.resize.Direction.REVERSE
     }
 
     set shape(shape) {
