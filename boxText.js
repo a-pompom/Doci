@@ -1,18 +1,18 @@
+import { DrawConst } from './drawingConst.js'
 import Shape from './shape.js'
 
 /**
  * 領域内の文字列を扱うためのクラス
  * @property {Array} text 入力文字列を改行及びキャンバス上の領域の幅をもとに分割したもの
- * 
+ * @property {string} originText 元の文字列 編集する際に利用
  * @property {number} boxWidth キャンバス上の文字列を挿入する領域の幅
- * @property {object} context キャンバスのコンテキスト 文字列長を取得するために利用
  */
 export default class BoxText extends Shape {
 
     constructor(context, startX, startY, boxWidth) {
 
         super(context, startX, startY)
-        this.defineAsText()
+        this.defineAttribute()
 
         this._text = []
         this._originTextDOM = document.getElementById('inputText')
@@ -31,6 +31,8 @@ export default class BoxText extends Shape {
         this._originTextDOM.style.width = '20px'
         this._originTextDOM.style.height = '20px'
         this._originTextDOM.focus()
+
+        this.width = 20
     }
 
 
@@ -43,10 +45,10 @@ export default class BoxText extends Shape {
      * 領域文字列を描画
      */
     draw() {
+
         this._text.forEach((rowText, index) => {
             this._context.canvasContext.font = '12px sans-serif'
             this._context.canvasContext.fillText(rowText, this.x, this.y + index* 20)
-
         })
     }
 
@@ -76,19 +78,18 @@ export default class BoxText extends Shape {
             this._text.push(rowText)
         })
 
-        this.width = 100
+        // 文字列の入力エリアの幅・高さを設定 あまり領域を広げ過ぎると、既存の図形が隠れてしまうため、入力に必要最低限な領域のみを確保
         this._text.forEach((fragmentText) => {
+
             let fragmentWidth = this.getFragmentTextWidth(fragmentText)
 
             this.width = fragmentWidth >= this.width ? fragmentWidth : this.width
-            
         })
 
         this.height = (this._text.length) * 20
 
         this._originTextDOM.style.width = this.width + 'px'
-        this._originTextDOM.style.height = this.height + 50 + 'px'
-
+        this._originTextDOM.style.height = this.height + 'px'
     }
 
     /**
@@ -126,6 +127,14 @@ export default class BoxText extends Shape {
      */
     getFragmentTextWidth(fragmentText) {
         return this._context.canvasContext.measureText(fragmentText).width
+    }
+
+    /**
+     * 属性値を設定 領域を持つテキストとして定義
+     */
+    defineAttribute() {
+        this._shapeType = DrawConst.shape.ShapeType.TEXT
+        this._hasArea = true
     }
 
     get text() {

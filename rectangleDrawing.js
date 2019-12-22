@@ -1,3 +1,5 @@
+import { DrawConst } from './drawingConst.js'
+
 import PointRectangle from './pointRectangle.js'
 import WordBalloon from './WordBalloon.js'
 
@@ -28,24 +30,22 @@ export default class RetangleDrawing {
         if (!this.isRectangleActive()) {
             return
         }
-
         this._context.isMousedown = true
 
-        // フォーカス中の場合、画面上の図形をリサイズ可能とする
-        if (this._context.focus.isFocused()) {
-            this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+        // 新規描画
+        if (!this._context.focus.isFocused()) {
 
-            const focusedRectangle = this._context.drawStack.getCurrent()
-            focusedRectangle.setOriginPos()
+            const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
+            this._context.drawStack.append(rectangle)
             return
         }
 
-        // 新規描画
-        const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
+        // フォーカス中の場合、画面上の図形をリサイズ可能とする
+        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
 
-        this._context.drawStack.append(rectangle)
-
+        const focusedRectangle = this._context.drawStack.getCurrent()
+        focusedRectangle.setOriginPos()
     }
 
     /**
@@ -63,7 +63,6 @@ export default class RetangleDrawing {
         this.resize(rectangle, event)
 
         rectangle.fullDraw()
-
     }
     
     /**
@@ -83,7 +82,6 @@ export default class RetangleDrawing {
         this._context.focus.outFocus()
 
         this._context.isMousedown = false
-
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 
@@ -92,9 +90,8 @@ export default class RetangleDrawing {
      * 描画モードで四角が選択されているか判定
      */
     isRectangleActive() {
-        return this._context.menu.isRectangleActive() || this._context.menu.isWordBalloonActive()
+        return this._context.menu.activeType === DrawConst.menu.DrawType.RECTANGLE
     }
-
 
     /**
      * 図形のリサイズを実行
@@ -121,7 +118,6 @@ export default class RetangleDrawing {
         const scaleY = Math.abs(pointRectangle.originY - y)
 
         this._resizeHandler.modifyScale(scaleX, scaleY, this._context.focus.focusedAngle)
-
     }
 
     /**
@@ -131,17 +127,16 @@ export default class RetangleDrawing {
      * @param {number} y 描画開始y座標
      */
     getRectangle(x, y) {
-        if (this._context.menu.isRectangleActive()) {
+        if (this._context.menu.activeMode === DrawConst.menu.DrawMode.RECTANGLE) {
             return new PointRectangle(this._context, x, y)
         }
 
-        if (this._context.menu.isWordBalloonActive()) {
+        if (this._context.menu.activeMode === DrawConst.menu.DrawMode.WORD_BALLOON) {
             return new WordBalloon(this._context, x, y)
         }
 
         return
     }
-
 
     /**
      * マウスの画面上のx座標をキャンバスでのx座標に変換

@@ -1,4 +1,4 @@
-
+import { DrawConst } from './drawingConst.js'
 import Shape from './shape.js'
 /**
  * 赤枠の四角を表すクラス
@@ -11,13 +11,12 @@ export default class WordBalloon extends Shape{
     constructor(context, startX, startY) {
 
         super(context, startX, startY)
-        this.defineAsBox()
+        this.defineAttribute()
 
         this._color = '#FF0000'
         this._fillColor = '#FFFFFF'
 
         this._boxText = null
-
     }
 
     /**
@@ -50,19 +49,14 @@ export default class WordBalloon extends Shape{
         }
     }
 
-    updateText() {
-        this._boxText.update()
-    }
-
-    isBoxShape() {
-        return true
-    }
 
     /**
      * 吹き出しのいわゆる「しっぽ」部分を描画
      * しっぽ部分は、今回は三角形として扱う。
      */
     drawTail() {
+
+        // 各要素の乗数は、吹き出しのしっぽとして自然に見える感覚値を設定　
         const headX = this.x + (this.width) * 0.1
         const tailX = this.x + (this.width) * 0.3
         const headY = this.y + this.height
@@ -86,6 +80,7 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.moveTo(headX, headY)
         this._context.canvasContext.lineTo(tailX - DELTA_X, headY)
         this._context.canvasContext.closePath()
+
         // destination-outでの上書きは、複数回行わないと色が薄まる程度になってしまうので、完全に消去される4回程度実行
         this._context.canvasContext.stroke()
         this._context.canvasContext.stroke()
@@ -93,8 +88,23 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.stroke()
 
         this._context.canvasContext.globalCompositeOperation = 'source-over'
-        this._context.canvasContext.strokeStyle = '#FF0000'
     }
+
+    /**
+     * 属性を設定 文字列つきの図形で、領域を有する
+     */
+    defineAttribute() {
+        this._shapeType = DrawConst.shape.ShapeType.BOX
+        this._hasArea = true
+    }
+
+    /**
+     * 吹き出し内の文字列を更新
+     */
+    updateText() {
+        this._boxText.update()
+    }
+
     get boxText() {
         return this._boxText
     }

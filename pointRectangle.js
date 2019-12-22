@@ -1,3 +1,4 @@
+import { DrawConst } from './drawingConst.js'
 import Shape from './shape.js'
 /**
  * 赤枠の四角を表すクラス
@@ -10,10 +11,9 @@ export default class PointRectangle extends Shape{
     constructor(context, startX, startY) {
 
         super(context, startX, startY)
-        this.defineAsRect()
+        this.defineAttribute()
 
         this._color = '#FF0000'
-
     }
 
     /**
@@ -32,6 +32,14 @@ export default class PointRectangle extends Shape{
     draw() {
         this._context.canvasContext.strokeStyle = this._color
         this._context.canvasContext.strokeRect(this.x, this.y, this.width, this.height)
+    }
+
+    /**
+     * 属性を定義 四角で、領域を持たないものとする
+     */
+    defineAttribute() {
+        this._shapeType = DrawConst.shape.ShapeType.RECT
+        this._hasArea = false
     }
 
 }

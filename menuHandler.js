@@ -1,4 +1,4 @@
-import {DrawMode} from './mode.js'
+import { DrawConst } from './drawingConst.js'
 
 /**
  * キャンバスを操作する際のメニュー管理するクラス
@@ -9,7 +9,9 @@ import {DrawMode} from './mode.js'
 export default class MenuHandler {
     
     constructor() {
-        this._activeMode = ''
+        this._activeMode = DrawConst.menu.DrawMode.NONE
+        this._activeType = DrawConst.menu.DrawType.NONE
+
         this._messageForFocusDOM = document.getElementById('focusText')
 
         this._rectMenuButton = document.getElementById('rectangleModeButton')
@@ -27,18 +29,18 @@ export default class MenuHandler {
 
         this._rectMenuButton.addEventListener('click', () => {
 
-            this._activeMode = DrawMode.RECTANGLE
-
+            this._activeMode = DrawConst.menu.DrawMode.RECTANGLE
+            this._activeType = DrawConst.menu.DrawType.RECTANGLE
         })
 
         this._textMenuButton.addEventListener('click', () => {
-            this._activeMode = DrawMode.TEXT
-
+            this._activeMode = DrawConst.menu.DrawMode.TEXT
+            this._activeType = DrawConst.menu.DrawMode.TEXT
         })
 
         this._wordBalloonMenuButton.addEventListener('click', () => {
-            this._activeMode = DrawMode.WORD_BALLOON
-
+            this._activeMode = DrawConst.menu.DrawMode.WORD_BALLOON
+            this._activeType = DrawConst.menu.DrawType.RECTANGLE
         })
 
     }
@@ -47,27 +49,12 @@ export default class MenuHandler {
         this._messageForFocusDOM.textContent = modifyedText
     }
 
-    /**
-     * 現在のモードが「テキスト」かどうかを判定
-     * @return true→Text false→!Text
-     */
-    isTextActive() {
-        return this._activeMode === DrawMode.TEXT
-    }
-    /**
-     * 現在のモードが「枠」かどうかを判定
-     * @return true→Rectangle false→!Rectangle
-     */
-    isRectangleActive() {
-        return this._activeMode === DrawMode.RECTANGLE
-    }
-
-    isWordBalloonActive() {
-        return this._activeMode === DrawMode.WORD_BALLOON
-    }
-
     get activeMode() {
         return this._activeMode
+    }
+
+    get activeType() {
+        return this._activeType
     }
 
 }

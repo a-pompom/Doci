@@ -28,7 +28,7 @@ export default class DrawingHandler{
 
             drawStack: new DrawStack(),
             menu: new MenuHandler(),
-            focus: new FocusHandler()
+            focus: new FocusHandler(),
         }
 
         this.init()
