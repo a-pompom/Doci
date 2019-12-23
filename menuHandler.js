@@ -17,6 +17,7 @@ export default class MenuHandler {
         this._rectMenuButton = document.getElementById('rectangleModeButton')
         this._textMenuButton = document.getElementById('textModeButton')
         this._wordBalloonMenuButton = document.getElementById('wordBalloonModeButton')
+        this._moveMenuButton = document.getElementById('moveModeButton')
 
         this.initMenu()
 
@@ -35,12 +36,18 @@ export default class MenuHandler {
 
         this._textMenuButton.addEventListener('click', () => {
             this._activeMode = DrawConst.menu.DrawMode.TEXT
-            this._activeType = DrawConst.menu.DrawMode.TEXT
+            this._activeType = DrawConst.menu.DrawType.TEXT
         })
 
         this._wordBalloonMenuButton.addEventListener('click', () => {
             this._activeMode = DrawConst.menu.DrawMode.WORD_BALLOON
             this._activeType = DrawConst.menu.DrawType.RECTANGLE
+        })
+
+        this._moveMenuButton.addEventListener(('click'), () => {
+            this._activeMode = DrawConst.menu.DrawMode.MOVE
+            this._activeType = DrawConst.menu.DrawType.NONE
+
         })
 
     }
