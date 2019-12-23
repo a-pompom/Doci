@@ -5,6 +5,7 @@ import DrawStack from './drawStack.js'
 
 import MetaDrawing from './metaDrawing.js'
 import MoveDrawing from './moveDrawing.js'
+import DeleteDrawing from './deleteDrawing.js'
 import TextDrawing from './textDrawing.js'
 import RectangleDrawing from './rectangleDrawing.js'
 
@@ -40,7 +41,11 @@ export default class DrawingHandler{
         // アプリで実行され得るイベントの種類
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
         // アプリで描画されるオブジェクト
-        const drawingList = [new RectangleDrawing(this._context), new TextDrawing(this._context), new MetaDrawing(this._context), new MoveDrawing(this._context)]
+        const drawingList = [
+            new RectangleDrawing(this._context), new TextDrawing(this._context),
+            new MetaDrawing(this._context),
+            new MoveDrawing(this._context), new DeleteDrawing(this._context)
+        ]
 
         occurEvents.forEach((event) => {
             const targetEvents = []

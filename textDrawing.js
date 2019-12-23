@@ -41,7 +41,7 @@ export default class TextDrawing extends BaseDrawing{
      */
     clickEvent(event) {
 
-        if (!this.isActiveMode(DrawConst.menu.DrawMode.TEXT)) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
             return 
         }
 
@@ -96,7 +96,7 @@ export default class TextDrawing extends BaseDrawing{
      */
     keydownEvent(event) {
 
-        if (!this.isActiveMode(DrawConst.menu.DrawMode.TEXT)) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
             return 
         }
 

@@ -14,13 +14,36 @@ export default class MenuHandler {
 
         this._messageForFocusDOM = document.getElementById('focusText')
 
-        this._rectMenuButton = document.getElementById('rectangleModeButton')
-        this._textMenuButton = document.getElementById('textModeButton')
-        this._wordBalloonMenuButton = document.getElementById('wordBalloonModeButton')
-        this._moveMenuButton = document.getElementById('moveModeButton')
+        this._menuList = [
+            {
+                element: document.getElementById('rectangleModeButton'),
+                mode: DrawConst.menu.DrawMode.RECTANGLE,
+                type: DrawConst.menu.DrawType.RECTANGLE
+            },
+            {
+                element: document.getElementById('textModeButton'),
+                mode: DrawConst.menu.DrawMode.TEXT,
+                type: DrawConst.menu.DrawType.TEXT
+            },
+            {
+                element: document.getElementById('wordBalloonModeButton'),
+                mode: DrawConst.menu.DrawMode.WORD_BALLOON,
+                type: DrawConst.menu.DrawType.RECTANGLE
+            },
+
+            {
+                element: document.getElementById('moveModeButton'),
+                mode: DrawConst.menu.DrawMode.MOVE,
+                type: DrawConst.menu.DrawType.NONE
+            },
+            {
+                element: document.getElementById('deleteModeButton'),
+                mode: DrawConst.menu.DrawMode.DELETE,
+                type: DrawConst.menu.DrawType.NONE
+            },
+        ]
 
         this.initMenu()
-
     }
 
     /**
@@ -28,26 +51,12 @@ export default class MenuHandler {
      */
     initMenu() {
 
-        this._rectMenuButton.addEventListener('click', () => {
+        this._menuList.forEach((menu) => {
+            menu.element.addEventListener('click', () => {
 
-            this._activeMode = DrawConst.menu.DrawMode.RECTANGLE
-            this._activeType = DrawConst.menu.DrawType.RECTANGLE
-        })
-
-        this._textMenuButton.addEventListener('click', () => {
-            this._activeMode = DrawConst.menu.DrawMode.TEXT
-            this._activeType = DrawConst.menu.DrawType.TEXT
-        })
-
-        this._wordBalloonMenuButton.addEventListener('click', () => {
-            this._activeMode = DrawConst.menu.DrawMode.WORD_BALLOON
-            this._activeType = DrawConst.menu.DrawType.RECTANGLE
-        })
-
-        this._moveMenuButton.addEventListener(('click'), () => {
-            this._activeMode = DrawConst.menu.DrawMode.MOVE
-            this._activeType = DrawConst.menu.DrawType.NONE
-
+                this._activeMode = menu.mode
+                this._activeType = menu.type
+            })
         })
 
     }

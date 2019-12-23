@@ -8,6 +8,7 @@
 export const DrawMode = {
     NONE: Symbol('draw-mode-none'),
     MOVE: Symbol('draw-mode-move'),
+    DELETE: Symbol('draw-mode-delete'),
     RECTANGLE: Symbol('draw-mode-rect'),
     TEXT: Symbol('draw-mode-text'),
     WORD_BALLOON: Symbol('draw-mode-balloon')

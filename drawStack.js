@@ -25,8 +25,12 @@ export default class DrawStack {
      * 現在描画中の要素を取得
      */
     getCurrent() {
-        return this._stack[this._currentIndex]
 
+        if (this._currentIndex === -1) {
+            return null
+        }
+
+        return this._stack[this._currentIndex]
     }
 
     /**
@@ -36,6 +40,17 @@ export default class DrawStack {
      */
     modifyCurrent(index) {
         this._currentIndex = index
+    }
+
+    /**
+     * 描画スタックから指定要素を削除
+     * 
+     * @param {number} index 削除対象のインデックス
+     */
+    delete(index) {
+        this._stack = this._stack.filter((element, elementIndex) => {
+            return elementIndex !== index
+        })
     }
 
     /**
@@ -52,8 +67,6 @@ export default class DrawStack {
 
             shape.draw()
         })
-
-        
     }
 
     get stack() {

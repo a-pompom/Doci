@@ -24,7 +24,7 @@ export default class MoveDrawing extends BaseDrawing{
      */
     mousedownEvent(event) {
 
-        if (!this.isModeActive(DrawConst.menu.DrawMode.MOVE)) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
             return
         }
 
@@ -47,7 +47,7 @@ export default class MoveDrawing extends BaseDrawing{
      */
     mousemoveEvent(event) {
 
-        if (this._context.menu.activeMode !== DrawConst.menu.DrawMode.MOVE) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
             return
         }
 
@@ -69,7 +69,7 @@ export default class MoveDrawing extends BaseDrawing{
      */
     mouseupEvent() {
 
-        if (this._context.menu.activeMode !== DrawConst.menu.DrawMode.MOVE) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
             return
         }
 
