@@ -1,4 +1,5 @@
 import { DrawConst } from './drawingConst.js'
+import BaseDrawing from './baseDrawing.js'
 
 /**
  * 図形の移動を描画
@@ -6,10 +7,10 @@ import { DrawConst } from './drawingConst.js'
  * @property {number} moveStartX 移動開始地点のx座標
  * @property {number} moveStartY 移動開始地点のy座標
  */
-export default class MoveDrawing{
+export default class MoveDrawing extends BaseDrawing{
 
     constructor(context) {
-        this._context = context
+        super(context)
 
         this._moveStartX = 0
         this._moveStartY = 0
@@ -23,7 +24,7 @@ export default class MoveDrawing{
      */
     mousedownEvent(event) {
 
-        if (this._context.menu.activeMode !== DrawConst.menu.DrawMode.MOVE) {
+        if (!this.isModeActive(DrawConst.menu.DrawMode.MOVE)) {
             return
         }
 
@@ -107,19 +108,4 @@ export default class MoveDrawing{
         this._moveStartY = canvasY
     }
 
-    /**
-     * マウスの画面上のx座標をキャンバスでのx座標に変換
-     * @param {number} mouseX マウスの画面上のx座標
-     */
-    getCanvasX(mouseX) {
-        return mouseX - this._context.canvas.getBoundingClientRect().left
-    }
-
-    /**
-     * マウスの画面上のy座標をキャンバスでのy座標に変換
-     * @param {number} mouseY マウスの画面上のy座標
-     */
-    getCanvasY(mouseY) {
-        return mouseY - this._context.canvas.getBoundingClientRect().top
-    }
 }

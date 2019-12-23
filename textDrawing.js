@@ -1,14 +1,15 @@
 import BoxText from './boxText.js'
 import { DrawConst } from './drawingConst.js'
+import BaseDrawing from './baseDrawing.js'
 
 /**
  * テキストの描画を管理
  * @property {DOM} originTextDOM 入力テキストを保持するためのテキストエリアのDOM
  */
-export default class TextDrawing{
+export default class TextDrawing extends BaseDrawing{
 
     constructor(context) {
-        this._context = context
+        super(context)
         this._originTextDOM = document.getElementById('inputText')
 
         this.init()
@@ -40,7 +41,7 @@ export default class TextDrawing{
      */
     clickEvent(event) {
 
-        if (this._context.menu.activeMode !== DrawConst.menu.DrawMode.TEXT) {
+        if (!this.isActiveMode(DrawConst.menu.DrawMode.TEXT)) {
             return 
         }
 
@@ -95,7 +96,7 @@ export default class TextDrawing{
      */
     keydownEvent(event) {
 
-        if (!this._context.menu.activeMode === DrawConst.menu.DrawMode.TEXT) {
+        if (!this.isActiveMode(DrawConst.menu.DrawMode.TEXT)) {
             return 
         }
 
@@ -157,19 +158,4 @@ export default class TextDrawing{
 
     }
 
-    /**
-     * マウスの画面上のx座標をキャンバスでのx座標に変換
-     * @param {number} mouseX マウスの画面上のx座標
-     */
-    getCanvasX(mouseX) {
-        return mouseX - this._context.canvas.getBoundingClientRect().left
-    }
-
-    /**
-     * マウスの画面上のy座標をキャンバスでのy座標に変換
-     * @param {number} mouseY マウスの画面上のy座標
-     */
-    getCanvasY(mouseY) {
-        return mouseY - this._context.canvas.getBoundingClientRect().top
-    }
 }

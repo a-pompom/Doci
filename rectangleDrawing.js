@@ -1,4 +1,5 @@
 import { DrawConst } from './drawingConst.js'
+import BaseDrawing from './baseDrawing.js'
 
 import PointRectangle from './pointRectangle.js'
 import WordBalloon from './WordBalloon.js'
@@ -11,9 +12,9 @@ import ResizeHandler from './resizeHandler.js'
  * @property {boolean} isMousedown マウスが押下されているか リサイズイベントの有無を判断
  * @property {ResizeHandler} resizeHandler リサイズを扱うハンドラ
  */
-export default class RetangleDrawing {
+export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
-        this._context = context
+        super(context)
         this._isMousedown = false
 
         this._resizeHandler = new ResizeHandler()
@@ -138,19 +139,4 @@ export default class RetangleDrawing {
         return
     }
 
-    /**
-     * マウスの画面上のx座標をキャンバスでのx座標に変換
-     * @param {number} mouseX マウスの画面上のx座標
-     */
-    getCanvasX(mouseX) {
-        return mouseX - this._context.canvas.getBoundingClientRect().left
-    }
-
-    /**
-     * マウスの画面上のy座標をキャンバスでのy座標に変換
-     * @param {number} mouseY マウスの画面上のy座標
-     */
-    getCanvasY(mouseY) {
-        return mouseY - this._context.canvas.getBoundingClientRect().top
-    }
 }
