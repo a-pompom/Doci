@@ -1,5 +1,5 @@
-import { DrawConst } from './drawingConst.js'
-import Shape from './shape.js'
+import { DrawConst } from '../const/drawingConst.js'
+import Shape from '../base/shape.js'
 
 /**
  * 領域内の文字列を扱うためのクラス

@@ -1,4 +1,4 @@
-import DrawingHandler from './drawingHandler.js'
+import DrawingHandler from './handler/drawingHandler.js'
 
 const pointDrawer = (() => {
 

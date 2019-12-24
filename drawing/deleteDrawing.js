@@ -1,8 +1,8 @@
 
-import { DrawConst } from './drawingConst.js'
-import BaseDrawing from './baseDrawing.js'
+import { DrawConst } from '../const/drawingConst.js'
+import BaseDrawing from '../base/baseDrawing.js'
 
-import MetaShape from './metaShape.js'
+import MetaShape from '../shape/metaShape.js'
 
 /**
  * 図形の移動を描画

@@ -1,4 +1,4 @@
-import Shape from './shape.js'
+import Shape from '../base/shape.js'
 
 /**
  * 削除された図形といった、キャンバス上に表れないメタ情報を描画するための図形

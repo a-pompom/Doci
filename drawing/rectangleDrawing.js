@@ -1,10 +1,10 @@
-import { DrawConst } from './drawingConst.js'
-import BaseDrawing from './baseDrawing.js'
+import { DrawConst } from '../const/drawingConst.js'
+import BaseDrawing from '../base/baseDrawing.js'
 
-import PointRectangle from './pointRectangle.js'
-import WordBalloon from './WordBalloon.js'
+import PointRectangle from '../shape/pointRectangle.js'
+import WordBalloon from '../shape/WordBalloon.js'
 
-import ResizeHandler from './resizeHandler.js'
+import ResizeHandler from '../handler/resizeHandler.js'
 
 /**
  * 四角の描画を管理

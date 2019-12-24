@@ -1,6 +1,6 @@
-import BoxText from './boxText.js'
-import { DrawConst } from './drawingConst.js'
-import BaseDrawing from './baseDrawing.js'
+import BoxText from '../shape/boxText.js'
+import { DrawConst } from '../const/drawingConst.js'
+import BaseDrawing from '../base/baseDrawing.js'
 
 /**
  * テキストの描画を管理
