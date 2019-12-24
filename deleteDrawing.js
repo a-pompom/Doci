@@ -2,6 +2,8 @@
 import { DrawConst } from './drawingConst.js'
 import BaseDrawing from './baseDrawing.js'
 
+import MetaShape from './metaShape.js'
+
 /**
  * 図形の移動を描画
  * 
@@ -12,6 +14,8 @@ export default class MoveDrawing extends BaseDrawing{
 
     constructor(context) {
         super(context)
+
+        this._metaShape = new MetaShape(context)
     }
     
 
@@ -33,21 +37,23 @@ export default class MoveDrawing extends BaseDrawing{
 
         this.delete()
 
-        this._context.focus.outFocus()
-
-        this._context.drawStack.draw()
 
     }
 
     /**
-     * 現在フォーカスしている図形をキャンバスから削除
+     * 現在フォーカスしている図形をキャンバス上から削除
      */
     delete() {
 
         const deleteTargetIndex = this._context.focus.focusedIndex
-        console.log(deleteTargetIndex)
 
+        // スタックでは、スタックの要素として除外するのみで、描画はしない
         this._context.drawStack.delete(deleteTargetIndex)
+
+        this._context.focus.outFocus()
+
+        // 削除された図形で再度描画するのは構造として不自然なので、メタ情報を管理する図形によって、スタック上のみの図形を再描画
+        this._metaShape.draw(this._metaShape.drawBase, this._metaShape)
     }
 
 

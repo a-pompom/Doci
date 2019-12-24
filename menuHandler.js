@@ -3,8 +3,10 @@ import { DrawConst } from './drawingConst.js'
 /**
  * キャンバスを操作する際のメニュー管理するクラス
  * @property {string} activeMode 現在有効なモード[赤枠・文字列・吹き出しが存在] 
- * @property {object} rectMenuButton 赤枠モードに移行するためのボタン
- * @property {object} textMenuButton テキストモードに移行するためのボタン
+ * @property {Array<Object>} menuList 各メニュー要素
+ *     element: メニューを表すDOM要素
+ *     mode: メニューと紐づくモード
+ *     type: メニューと紐づくタイプ
  */
 export default class MenuHandler {
     
