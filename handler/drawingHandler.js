@@ -1,13 +1,13 @@
 import MenuHandler from './menuHandler.js'
 
 import FocusHandler from './focusHandler.js'
-import DrawStack from './drawStack.js'
+import DrawStack from '../drawStack.js'
 
-import MetaDrawing from './metaDrawing.js'
-import MoveDrawing from './moveDrawing.js'
-import DeleteDrawing from './deleteDrawing.js'
-import TextDrawing from './textDrawing.js'
-import RectangleDrawing from './rectangleDrawing.js'
+import MetaDrawing from '../drawing/metaDrawing.js'
+import MoveDrawing from '../drawing/moveDrawing.js'
+import DeleteDrawing from '../drawing/deleteDrawing.js'
+import TextDrawing from '../drawing/textDrawing.js'
+import RectangleDrawing from '../drawing/rectangleDrawing.js'
 
 /**
  * 描画機能を扱うハンドラ

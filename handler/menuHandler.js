@@ -1,4 +1,4 @@
-import { DrawConst } from './drawingConst.js'
+import { DrawConst } from '../const/drawingConst.js'
 
 /**
  * キャンバスを操作する際のメニュー管理するクラス

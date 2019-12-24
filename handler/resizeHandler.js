@@ -1,4 +1,4 @@
-import { DrawConst } from './drawingConst.js'
+import { DrawConst } from '../const/drawingConst.js'
 
 /**
  * リサイズ機能を扱うためのハンドラ

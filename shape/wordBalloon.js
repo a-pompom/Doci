@@ -1,5 +1,5 @@
-import { DrawConst } from './drawingConst.js'
-import Shape from './shape.js'
+import { DrawConst } from '../const/drawingConst.js'
+import Shape from '../base/shape.js'
 /**
  * 赤枠の四角を表すクラス
  * 位置・大きさ・色を状態として持ち、伸縮を可能とする
