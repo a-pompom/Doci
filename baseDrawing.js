@@ -5,7 +5,7 @@ export default class BaseDrawing {
         this._context = context
     }
 
-    isModeActive(mode) {
+    isTheModeActive(mode) {
 
         if (this._context.menu.activeMode === mode) {
             return true
