@@ -16,6 +16,7 @@ export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
         super(context)
         this._isMousedown = false
+        this._rect = null
 
         this._resizeHandler = new ResizeHandler()
     }
@@ -42,11 +43,15 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
+        if (!this.isRectFocused()) {
+            return
+        }
+
         // フォーカス中の場合、画面上の図形をリサイズ可能とする
         this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+        this._rect = this._context.drawStack.getCurrent()
 
-        const focusedRectangle = this._context.drawStack.getCurrent()
-        focusedRectangle.setOriginPos()
+        this._rect.setOriginPos()
     }
 
     /**
@@ -56,6 +61,10 @@ export default class RetangleDrawing extends BaseDrawing{
     mousemoveEvent(event) {
 
         if (!this.isRectangleActive() || !this._context.isMousedown) {
+            return
+        }
+
+        if (this._rect === null) {
             return
         }
 
@@ -94,6 +103,16 @@ export default class RetangleDrawing extends BaseDrawing{
         return this._context.menu.activeType === DrawConst.menu.DrawType.RECTANGLE
     }
 
+    isRectFocused() {
+        if (this._context.focus.focusedIndex === -1) {
+            return false
+        }
+        
+        const focusedShape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
+        console.log(focusedShape)
+
+        return focusedShape.shapeType === DrawConst.shape.ShapeType.RECT || focusedShape.shapeType === DrawConst.shape.ShapeType.BOX
+    }
     /**
      * 図形のリサイズを実行
      * 
@@ -102,23 +121,11 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     resize(pointRectangle, event) {
 
-        this._resizeHandler.shape = pointRectangle
-
         const x = this.getCanvasX(event.clientX)
         const y = this.getCanvasY(event.clientY)
 
-        // キャンバスではx,yは左上が指定されるので、上向き/左向きにリサイズする場合、
-        // 描画開始位置をカーソルに合わせる
-        let posX = x >= pointRectangle.originX ? pointRectangle.originX : x
-        let posY = y >= pointRectangle.originY ? pointRectangle.originY : y
-
-        this._resizeHandler.updatePos(posX, posY, this._context.focus.focusedAngle)
-
-        // 元の位置と現在の位置の差分から、リサイズの変動分を導出し、描画位置・スケールに反映
-        const scaleX = Math.abs(pointRectangle.originX - x)
-        const scaleY = Math.abs(pointRectangle.originY - y)
-
-        this._resizeHandler.modifyScale(scaleX, scaleY, this._context.focus.focusedAngle)
+        this._resizeHandler.shape = pointRectangle
+        this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
     }
 
     /**

@@ -3,6 +3,7 @@
 import { DrawConst } from '../const/drawingConst.js'
 import BaseDrawing from '../base/baseDrawing.js'
 
+import ImageShape from '../shape/imageShape.js'
 /**
  * 画像の描画を管理
  * 
@@ -28,6 +29,11 @@ export default class ImageDrawing extends BaseDrawing{
 
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
 
+    /**
+     * 貼り付け時に実行されるイベント
+     * 
+     * @param {Event} event 
+     */
     pasteEvent(event) {
 
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
@@ -42,14 +48,27 @@ export default class ImageDrawing extends BaseDrawing{
         const source = urlObj.createObjectURL(blob)
 
         pastedImage.onload = () => {
+            console.log(pastedImage)
+            console.log(pastedImage.width)
 
-            this._context.canvasContext.drawImage(pastedImage, this._posX, this._posY)
+            const imageShape = new ImageShape(this._context, this._posX, this._posY, pastedImage)
+            imageShape.width = pastedImage.width
+            imageShape.height = pastedImage.height
+
+            imageShape.fullDraw()
+
+            this._context.drawStack.append(imageShape)
         }
 
         pastedImage.src = source
     }
 
 
+    /**
+     * マウス移動イベント 画像を配置するキャンバス上の座標を監視
+     * 
+     * @param {Event} event 
+     */
     mousemoveEvent(event) {
         
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
