@@ -10,7 +10,7 @@ import MetaShape from '../shape/metaShape.js'
  * @property {number} moveStartX 移動開始地点のx座標
  * @property {number} moveStartY 移動開始地点のy座標
  */
-export default class MoveDrawing extends BaseDrawing{
+export default class DeleteDrawing extends BaseDrawing{
 
     constructor(context) {
         super(context)

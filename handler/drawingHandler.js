@@ -8,6 +8,7 @@ import MoveDrawing from '../drawing/moveDrawing.js'
 import DeleteDrawing from '../drawing/deleteDrawing.js'
 import TextDrawing from '../drawing/textDrawing.js'
 import RectangleDrawing from '../drawing/rectangleDrawing.js'
+import ImageDrawing from '../drawing/imageDrawing.js'
 
 /**
  * 描画機能を扱うハンドラ
@@ -42,7 +43,7 @@ export default class DrawingHandler{
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
         // アプリで描画されるオブジェクト
         const drawingList = [
-            new RectangleDrawing(this._context), new TextDrawing(this._context),
+            new RectangleDrawing(this._context), new TextDrawing(this._context), new ImageDrawing(this._context),
             new MetaDrawing(this._context),
             new MoveDrawing(this._context), new DeleteDrawing(this._context)
         ]
