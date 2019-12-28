@@ -16,7 +16,7 @@ export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
         super(context)
         this._isMousedown = false
-        this._rect = null
+        this._focusedRect = null
 
         this._resizeHandler = new ResizeHandler()
     }
@@ -40,6 +40,8 @@ export default class RetangleDrawing extends BaseDrawing{
             const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
             this._context.drawStack.append(rectangle)
+            this._focusedRect = rectangle
+
             return
         }
 
@@ -49,9 +51,9 @@ export default class RetangleDrawing extends BaseDrawing{
 
         // フォーカス中の場合、画面上の図形をリサイズ可能とする
         this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        this._rect = this._context.drawStack.getCurrent()
+        this._focusedRect = this._context.drawStack.getCurrent()
 
-        this._rect.setOriginPos()
+        this._focusedRect.setOriginPos()
     }
 
     /**
@@ -64,7 +66,7 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
-        if (this._rect === null) {
+        if (this._focusedRect === null) {
             return
         }
 
@@ -104,12 +106,12 @@ export default class RetangleDrawing extends BaseDrawing{
     }
 
     isRectFocused() {
+
         if (this._context.focus.focusedIndex === -1) {
             return false
         }
         
         const focusedShape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
-        console.log(focusedShape)
 
         return focusedShape.shapeType === DrawConst.shape.ShapeType.RECT || focusedShape.shapeType === DrawConst.shape.ShapeType.BOX
     }

@@ -25,7 +25,7 @@ export default class ImageShape extends Shape {
      */
     draw() {
         
-        this._context.canvasContext.drawImage(this._imageSource, this.x, this.y)
+        this._context.canvasContext.drawImage(this._imageSource, this.x, this.y, this.width, this.height)
     }
 
     /**
