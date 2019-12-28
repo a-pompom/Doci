@@ -57,8 +57,7 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        const focusedShape = this._context.drawStack.getCurrent()
+        const focusedShape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
 
         if (!focusedShape.resizable) {
             return

@@ -17,6 +17,10 @@ export default class BaseDrawing {
     setupEvent(eventType, event) {
     }
 
+    getFocusedShape() {
+        return this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
+    }
+
     /**
      * マウスの画面上のx座標をキャンバスでのx座標に変換
      * @param {number} mouseX マウスの画面上のx座標
