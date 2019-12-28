@@ -6,6 +6,17 @@ export default class MetaDrawing {
     constructor(context) {
         this._context = context
     }
+    
+    /**
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
+     * @param {Event} event イベントオブジェクト
+     */
+    setupEvent(eventType, event) {
+
+        this[`${eventType}Event`].call(this,event)
+    }
 
     mousemoveEvent(event) {
         if (this._context.isMousedown) {

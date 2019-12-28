@@ -5,12 +5,12 @@ import BaseDrawing from '../base/baseDrawing.js'
 import MetaShape from '../shape/metaShape.js'
 
 /**
- * 図形の移動を描画
+ * 図形の削除を描画
  * 
  * @property {number} moveStartX 移動開始地点のx座標
  * @property {number} moveStartY 移動開始地点のy座標
  */
-export default class MoveDrawing extends BaseDrawing{
+export default class DeleteDrawing extends BaseDrawing{
 
     constructor(context) {
         super(context)
@@ -18,6 +18,24 @@ export default class MoveDrawing extends BaseDrawing{
         this._metaShape = new MetaShape(context)
     }
     
+    /**
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
+     * @param {Event} event イベントオブジェクト
+     */
+    setupEvent(eventType, event) {
+
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.DELETE)) {
+            return
+        }
+
+        if (!this._context.focus.isFocused()) {
+            return
+        }
+        
+        this[`${eventType}Event`].call(this,event)
+    }
 
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
 
@@ -27,18 +45,10 @@ export default class MoveDrawing extends BaseDrawing{
      */
     clickEvent(event) {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.DELETE)) {
-            return
-        }
-
-        if (!this._context.focus.isFocused()) {
-            return
-        }
-
         this.delete()
-
-
     }
+
+    // ----------------------------------------------- メソッド ----------------------------------------------- 
 
     /**
      * 現在フォーカスしている図形をキャンバス上から削除
@@ -55,6 +65,5 @@ export default class MoveDrawing extends BaseDrawing{
         // 削除された図形で再度描画するのは構造として不自然なので、メタ情報を管理する図形によって、スタック上のみの図形を再描画
         this._metaShape.draw(this._metaShape.drawBase, this._metaShape)
     }
-
 
 }

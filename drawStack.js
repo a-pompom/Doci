@@ -33,6 +33,10 @@ export default class DrawStack {
         return this._stack[this._currentIndex]
     }
 
+    getByIndex(index) {
+        return this._stack[index]
+    }
+
     /**
      * スタックの現在参照中の要素を変更
      * 

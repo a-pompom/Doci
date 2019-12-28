@@ -134,6 +134,7 @@ export default class BoxText extends Shape {
      */
     defineAttribute() {
         this._shapeType = DrawConst.shape.ShapeType.TEXT
+        this._resizable = false
         this._hasArea = true
     }
 

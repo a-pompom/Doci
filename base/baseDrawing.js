@@ -14,6 +14,9 @@ export default class BaseDrawing {
         return false
     }
 
+    setupEvent(eventType, event) {
+    }
+
     /**
      * マウスの画面上のx座標をキャンバスでのx座標に変換
      * @param {number} mouseX マウスの画面上のx座標

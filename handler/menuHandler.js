@@ -32,7 +32,11 @@ export default class MenuHandler {
                 mode: DrawConst.menu.DrawMode.WORD_BALLOON,
                 type: DrawConst.menu.DrawType.RECTANGLE
             },
-
+            {
+                element: document.getElementById('imageModeButton'),
+                mode: DrawConst.menu.DrawMode.IMAGE,
+                type: DrawConst.menu.DrawType.IMAGE,
+            },
             {
                 element: document.getElementById('moveModeButton'),
                 mode: DrawConst.menu.DrawMode.MOVE,

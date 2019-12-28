@@ -16,13 +16,13 @@ export default class MoveDrawing extends BaseDrawing{
         this._moveStartY = 0
     }
 
-    // ----------------------------------------------- イベント処理 ----------------------------------------------- 
-
     /**
-     * マウス押下時の処理 描画開始イベントを発火
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
      * @param {Event} event イベントオブジェクト
      */
-    mousedownEvent(event) {
+    setupEvent(eventType, event) {
 
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
             return
@@ -31,6 +31,17 @@ export default class MoveDrawing extends BaseDrawing{
         if (!this._context.focus.isFocused()) {
             return
         }
+        
+        this[`${eventType}Event`].call(this,event)
+    }
+
+    // ----------------------------------------------- イベント処理 ----------------------------------------------- 
+
+    /**
+     * マウス押下時の処理 描画開始イベントを発火
+     * @param {Event} event イベントオブジェクト
+     */
+    mousedownEvent(event) {
 
         this._context.isMousedown = true
 
@@ -46,10 +57,6 @@ export default class MoveDrawing extends BaseDrawing{
      * @param {Event} event イベントオブジェクト
      */
     mousemoveEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
-            return
-        }
 
         if (!this._context.isMousedown) {
             return
@@ -68,10 +75,6 @@ export default class MoveDrawing extends BaseDrawing{
      * マウスを離したときの処理 フォーカス終了イベントを発火 
      */
     mouseupEvent() {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
-            return
-        }
 
         this._context.focus.outFocus()
 

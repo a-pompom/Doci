@@ -23,13 +23,28 @@ export default class TextDrawing extends BaseDrawing{
     init() {
 
         this._originTextDOM.addEventListener('keydown', (event) => {
-            this.keydownEvent(event)
+            this.setupEvent('keydown', event)
         })
 
         this._originTextDOM.addEventListener('blur', (event) => {
             this.blurEvent(event)
         })
 
+    }
+
+    /**
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
+     * @param {Event} event イベントオブジェクト
+     */
+    setupEvent(eventType, event) {
+
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
+            return
+        }
+        
+        this[`${eventType}Event`].call(this,event)
     }
 
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
@@ -40,10 +55,6 @@ export default class TextDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     clickEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
-            return 
-        }
 
         // 新規描画
         if (!this._context.focus.isFocused()) {
@@ -95,10 +106,6 @@ export default class TextDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     keydownEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
-            return 
-        }
 
         // Escキー押下でも終了可能とする
         if (event.keyCode === 27) {

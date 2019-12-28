@@ -16,8 +16,24 @@ export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
         super(context)
         this._isMousedown = false
+        this._focusedRect = null
 
         this._resizeHandler = new ResizeHandler()
+    }
+
+    /**
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
+     * @param {Event} event イベントオブジェクト
+     */
+    setupEvent(eventType, event) {
+
+        if (!this.isRectangleActive()) {
+            return
+        }
+        
+        this[`${eventType}Event`].call(this,event)
     }
 
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
@@ -28,9 +44,6 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     mousedownEvent(event) {
 
-        if (!this.isRectangleActive()) {
-            return
-        }
         this._context.isMousedown = true
 
         // 新規描画
@@ -39,14 +52,20 @@ export default class RetangleDrawing extends BaseDrawing{
             const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
             this._context.drawStack.append(rectangle)
+            this._focusedRect = rectangle
+
             return
         }
 
-        // フォーカス中の場合、画面上の図形をリサイズ可能とする
         this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+        const focusedShape = this._context.drawStack.getCurrent()
 
-        const focusedRectangle = this._context.drawStack.getCurrent()
-        focusedRectangle.setOriginPos()
+        if (!focusedShape.resizable) {
+            return
+        }
+
+        focusedShape.setOriginPos()
+        focusedShape.setOriginScale()
     }
 
     /**
@@ -55,7 +74,7 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     mousemoveEvent(event) {
 
-        if (!this.isRectangleActive() || !this._context.isMousedown) {
+        if (!this._context.isMousedown) {
             return
         }
 
@@ -70,15 +89,6 @@ export default class RetangleDrawing extends BaseDrawing{
      * マウスを離したときの処理 フォーカス終了イベントを発火 
      */
     mouseupEvent() {
-
-        if (!this.isRectangleActive()) {
-            return
-        }
-
-        // 別の図形へフォーカスを可能とするため、フォーカスを解放
-        const currentRectangle = this._context.drawStack.getCurrent()
-        currentRectangle.originY = currentRectangle.y
-        currentRectangle.originX = currentRectangle.x
 
         this._context.focus.outFocus()
 
@@ -97,28 +107,16 @@ export default class RetangleDrawing extends BaseDrawing{
     /**
      * 図形のリサイズを実行
      * 
-     * @param {PointRectangle} pointRectangle リサイズ対象の図形
+     * @param {Shape} resizeShape リサイズ対象の図形
      * @param {Event} event  イベントオブジェクト
      */
-    resize(pointRectangle, event) {
-
-        this._resizeHandler.shape = pointRectangle
+    resize(resizeShape, event) {
 
         const x = this.getCanvasX(event.clientX)
         const y = this.getCanvasY(event.clientY)
 
-        // キャンバスではx,yは左上が指定されるので、上向き/左向きにリサイズする場合、
-        // 描画開始位置をカーソルに合わせる
-        let posX = x >= pointRectangle.originX ? pointRectangle.originX : x
-        let posY = y >= pointRectangle.originY ? pointRectangle.originY : y
-
-        this._resizeHandler.updatePos(posX, posY, this._context.focus.focusedAngle)
-
-        // 元の位置と現在の位置の差分から、リサイズの変動分を導出し、描画位置・スケールに反映
-        const scaleX = Math.abs(pointRectangle.originX - x)
-        const scaleY = Math.abs(pointRectangle.originY - y)
-
-        this._resizeHandler.modifyScale(scaleX, scaleY, this._context.focus.focusedAngle)
+        this._resizeHandler.shape = resizeShape
+        this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
     }
 
     /**
