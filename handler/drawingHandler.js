@@ -62,7 +62,8 @@ export default class DrawingHandler{
             this._context.canvas.addEventListener(event, (eventArg) => {
 
                 targetEvents.forEach((targetIndex) => {
-                    drawingList[targetIndex][`${event}Event`].call(drawingList[targetIndex],eventArg)
+                    
+                    drawingList[targetIndex]['setupEvent'].call(drawingList[targetIndex],event, eventArg)
                 })
 
             })

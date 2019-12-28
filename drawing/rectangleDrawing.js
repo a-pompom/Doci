@@ -21,6 +21,21 @@ export default class RetangleDrawing extends BaseDrawing{
         this._resizeHandler = new ResizeHandler()
     }
 
+    /**
+     * イベントの前処理を実行 主に描画モードの判定で利用
+     * 
+     * @param {string} eventType 実行されるイベントの種類
+     * @param {Event} event イベントオブジェクト
+     */
+    setupEvent(eventType, event) {
+
+        if (!this.isRectangleActive()) {
+            return
+        }
+        
+        this[`${eventType}Event`].call(this,event)
+    }
+
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
 
     /**
@@ -29,9 +44,6 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     mousedownEvent(event) {
 
-        if (!this.isRectangleActive()) {
-            return
-        }
         this._context.isMousedown = true
 
         // 新規描画
@@ -54,6 +66,7 @@ export default class RetangleDrawing extends BaseDrawing{
         this._focusedRect = this._context.drawStack.getCurrent()
 
         this._focusedRect.setOriginPos()
+        this._focusedRect.setOriginScale()
     }
 
     /**
@@ -62,7 +75,7 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     mousemoveEvent(event) {
 
-        if (!this.isRectangleActive() || !this._context.isMousedown) {
+        if (!this._context.isMousedown) {
             return
         }
 
@@ -81,15 +94,6 @@ export default class RetangleDrawing extends BaseDrawing{
      * マウスを離したときの処理 フォーカス終了イベントを発火 
      */
     mouseupEvent() {
-
-        if (!this.isRectangleActive()) {
-            return
-        }
-
-        // 別の図形へフォーカスを可能とするため、フォーカスを解放
-        const currentRectangle = this._context.drawStack.getCurrent()
-        currentRectangle.originY = currentRectangle.y
-        currentRectangle.originX = currentRectangle.x
 
         this._context.focus.outFocus()
 

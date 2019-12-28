@@ -32,6 +32,7 @@ export default class Shape {
         this._originHeight = 0
 
         this._shapeType = null
+        this._resizable = false
         this._hasArea = false
     }
 
@@ -63,6 +64,11 @@ export default class Shape {
      * リサイズ時に参照する元の図形の描画スケールを設定
      */
     setOriginPos() {
+        this._originX = this._x
+        this._originY = this._y
+    }
+
+    setOriginScale() {
         this._originWidth = this._width
         this._originHeight = this._height
     }

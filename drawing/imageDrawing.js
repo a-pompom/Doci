@@ -28,9 +28,17 @@ export default class ImageDrawing extends BaseDrawing{
     init() {
         document.addEventListener('paste', (event) => {
 
-            this.pasteEvent(event)
-
+            this.setupEvent('paset', event)
         })
+    }
+
+    setupEvent(eventType, event) {
+
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
+            return
+        }
+        
+        this[`${eventType}Event`].call(this,event)
     }
 
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
@@ -41,10 +49,6 @@ export default class ImageDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     pasteEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
-            return
-        }
 
         const pastedImage = new Image()
         const clipboardItem = event.clipboardData.items[0]
@@ -74,10 +78,6 @@ export default class ImageDrawing extends BaseDrawing{
      */
     mousedownEvent(event) {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
-            return
-        }
-
         this._context.isMousedown = true
 
         if (!this.isImageFocused()) {
@@ -89,6 +89,7 @@ export default class ImageDrawing extends BaseDrawing{
         const focusedImage = this._context.drawStack.getCurrent()
 
         focusedImage.setOriginPos()
+        focusedImage.setOriginScale()
     }
 
     /**
@@ -97,7 +98,7 @@ export default class ImageDrawing extends BaseDrawing{
      */
     mousemoveEvent(event) {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE) || !this._context.isMousedown) {
+        if (!this._context.isMousedown) {
             return
         }
 
@@ -110,7 +111,6 @@ export default class ImageDrawing extends BaseDrawing{
 
         // リサイズした後、画面上に図形を描画
         const imageShape = this._context.drawStack.getCurrent()
-        console.log(imageShape)
         this.resize(imageShape, event)
 
         imageShape.fullDraw()
@@ -121,24 +121,16 @@ export default class ImageDrawing extends BaseDrawing{
      */
     mouseupEvent() {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
-            return
-        }
-
         this._context.isMousedown = false
 
         if (!this.isImageFocused()) {
             return
         }
 
-        // 別の図形へフォーカスを可能とするため、フォーカスを解放
-        const currentImage = this._context.drawStack.getCurrent()
-        currentImage.originY = currentImage.y
-        currentImage.originX = currentImage.x
-
         this._context.focus.outFocus()
-
     }
+
+    // ----------------------------------------------- メソッド ----------------------------------------------- 
 
     isImageFocused() {
 
