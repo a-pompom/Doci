@@ -5,7 +5,7 @@ import BaseDrawing from '../base/baseDrawing.js'
 import MetaShape from '../shape/metaShape.js'
 
 /**
- * 図形の移動を描画
+ * 図形の削除を描画
  * 
  * @property {number} moveStartX 移動開始地点のx座標
  * @property {number} moveStartY 移動開始地点のy座標
@@ -29,6 +29,10 @@ export default class DeleteDrawing extends BaseDrawing{
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.DELETE)) {
             return
         }
+
+        if (!this._context.focus.isFocused()) {
+            return
+        }
         
         this[`${eventType}Event`].call(this,event)
     }
@@ -41,12 +45,7 @@ export default class DeleteDrawing extends BaseDrawing{
      */
     clickEvent(event) {
 
-        if (!this._context.focus.isFocused()) {
-            return
-        }
-
         this.delete()
-
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 

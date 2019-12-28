@@ -28,13 +28,17 @@ export default class ImageDrawing extends BaseDrawing{
     init() {
         document.addEventListener('paste', (event) => {
 
-            this.setupEvent('paset', event)
+            this.pasteEvent(event)
         })
     }
 
     setupEvent(eventType, event) {
 
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
+            return
+        }
+
+        if (!this._context.focus.isFocused()) {
             return
         }
         
@@ -49,6 +53,7 @@ export default class ImageDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     pasteEvent(event) {
+        console.log('paste event called')
 
         const pastedImage = new Image()
         const clipboardItem = event.clipboardData.items[0]
@@ -80,16 +85,15 @@ export default class ImageDrawing extends BaseDrawing{
 
         this._context.isMousedown = true
 
-        if (!this.isImageFocused()) {
+        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+        const focusedShape = this._context.drawStack.getCurrent()
+
+        if (!focusedShape.resizable) {
             return
         }
 
-        // フォーカス中の場合、画面上の図形をリサイズ可能とする
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        const focusedImage = this._context.drawStack.getCurrent()
-
-        focusedImage.setOriginPos()
-        focusedImage.setOriginScale()
+        focusedShape.setOriginPos()
+        focusedShape.setOriginScale()
     }
 
     /**
@@ -105,10 +109,6 @@ export default class ImageDrawing extends BaseDrawing{
         this._posX = this.getCanvasX(event.clientX)
         this._posY = this.getCanvasY(event.clientY)
 
-        if (!this.isImageFocused()) {
-            return
-        }
-
         // リサイズした後、画面上に図形を描画
         const imageShape = this._context.drawStack.getCurrent()
         this.resize(imageShape, event)
@@ -123,38 +123,25 @@ export default class ImageDrawing extends BaseDrawing{
 
         this._context.isMousedown = false
 
-        if (!this.isImageFocused()) {
-            return
-        }
-
         this._context.focus.outFocus()
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 
 
-    isImageFocused() {
-
-        if (this._context.focus.focusedIndex === -1) {
-            return false
-        }
-        
-        const focusedShape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
-
-        return focusedShape.shapeType === DrawConst.shape.ShapeType.IMAGE
-    }
 
     /**
      * 図形のリサイズを実行
      * 
-     * @param {PointRectangle} pointRectangle リサイズ対象の図形
+     * @param {Shape} resizeShape リサイズ対象の図形
      * @param {Event} event  イベントオブジェクト
      */
-    resize(imageShape, event) {
+    resize(resizeShape, event) {
 
         const x = this.getCanvasX(event.clientX)
         const y = this.getCanvasY(event.clientY)
 
-        this._resizeHandler.shape = imageShape
+        this._resizeHandler.shape = resizeShape
         this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
     }
+
 }

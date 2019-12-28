@@ -57,16 +57,15 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
-        if (!this.isRectFocused()) {
+        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
+        const focusedShape = this._context.drawStack.getCurrent()
+
+        if (!focusedShape.resizable) {
             return
         }
 
-        // フォーカス中の場合、画面上の図形をリサイズ可能とする
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        this._focusedRect = this._context.drawStack.getCurrent()
-
-        this._focusedRect.setOriginPos()
-        this._focusedRect.setOriginScale()
+        focusedShape.setOriginPos()
+        focusedShape.setOriginScale()
     }
 
     /**
@@ -76,10 +75,6 @@ export default class RetangleDrawing extends BaseDrawing{
     mousemoveEvent(event) {
 
         if (!this._context.isMousedown) {
-            return
-        }
-
-        if (this._focusedRect === null) {
             return
         }
 
@@ -109,28 +104,18 @@ export default class RetangleDrawing extends BaseDrawing{
         return this._context.menu.activeType === DrawConst.menu.DrawType.RECTANGLE
     }
 
-    isRectFocused() {
-
-        if (this._context.focus.focusedIndex === -1) {
-            return false
-        }
-        
-        const focusedShape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
-
-        return focusedShape.shapeType === DrawConst.shape.ShapeType.RECT || focusedShape.shapeType === DrawConst.shape.ShapeType.BOX
-    }
     /**
      * 図形のリサイズを実行
      * 
-     * @param {PointRectangle} pointRectangle リサイズ対象の図形
+     * @param {Shape} resizeShape リサイズ対象の図形
      * @param {Event} event  イベントオブジェクト
      */
-    resize(pointRectangle, event) {
+    resize(resizeShape, event) {
 
         const x = this.getCanvasX(event.clientX)
         const y = this.getCanvasY(event.clientY)
 
-        this._resizeHandler.shape = pointRectangle
+        this._resizeHandler.shape = resizeShape
         this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
     }
 

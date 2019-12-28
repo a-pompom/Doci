@@ -23,7 +23,7 @@ export default class TextDrawing extends BaseDrawing{
     init() {
 
         this._originTextDOM.addEventListener('keydown', (event) => {
-            this.keydownEvent(event)
+            this.setupEvent('keydown', event)
         })
 
         this._originTextDOM.addEventListener('blur', (event) => {
@@ -40,7 +40,7 @@ export default class TextDrawing extends BaseDrawing{
      */
     setupEvent(eventType, event) {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.DELETE)) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.TEXT)) {
             return
         }
         

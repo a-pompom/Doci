@@ -24,7 +24,11 @@ export default class MoveDrawing extends BaseDrawing{
      */
     setupEvent(eventType, event) {
 
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.DELETE)) {
+        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
+            return
+        }
+
+        if (!this._context.focus.isFocused()) {
             return
         }
         
@@ -38,14 +42,6 @@ export default class MoveDrawing extends BaseDrawing{
      * @param {Event} event イベントオブジェクト
      */
     mousedownEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
-            return
-        }
-
-        if (!this._context.focus.isFocused()) {
-            return
-        }
 
         this._context.isMousedown = true
 
@@ -61,10 +57,6 @@ export default class MoveDrawing extends BaseDrawing{
      * @param {Event} event イベントオブジェクト
      */
     mousemoveEvent(event) {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
-            return
-        }
 
         if (!this._context.isMousedown) {
             return
@@ -83,10 +75,6 @@ export default class MoveDrawing extends BaseDrawing{
      * マウスを離したときの処理 フォーカス終了イベントを発火 
      */
     mouseupEvent() {
-
-        if (!this.isTheModeActive(DrawConst.menu.DrawMode.MOVE)) {
-            return
-        }
 
         this._context.focus.outFocus()
 

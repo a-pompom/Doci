@@ -138,4 +138,8 @@ export default class Shape {
     get shapeType() {
         return this._shapeType
     }
+
+    get resizable() {
+        return this._resizable
+    }
 }

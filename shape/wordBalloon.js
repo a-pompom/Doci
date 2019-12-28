@@ -95,6 +95,7 @@ export default class WordBalloon extends Shape{
      */
     defineAttribute() {
         this._shapeType = DrawConst.shape.ShapeType.BOX
+        this._resizable = true
         this._hasArea = true
     }
 

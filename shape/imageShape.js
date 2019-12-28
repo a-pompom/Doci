@@ -33,6 +33,7 @@ export default class ImageShape extends Shape {
      */
     defineAttribute() {
         this._shapeType = DrawConst.shape.ShapeType.IMAGE
+        this._resizable = true
         this._hasArea = true
     }
 

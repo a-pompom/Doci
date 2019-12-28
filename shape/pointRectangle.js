@@ -39,6 +39,7 @@ export default class PointRectangle extends Shape{
      */
     defineAttribute() {
         this._shapeType = DrawConst.shape.ShapeType.RECT
+        this._resizable = true
         this._hasArea = false
     }
 
