@@ -11,6 +11,7 @@ import RectangleDrawing from '../drawing/rectangleDrawing.js'
 import ImageDrawing from '../drawing/imageDrawing.js'
 import CursorDrawing from '../drawing/cursorDrawing.js'
 
+import CanvasToClipboardHandler from './canvasToClipboardHandler.js'
 /**
  * 描画機能を扱うハンドラ
  * 
@@ -39,6 +40,8 @@ export default class DrawingHandler{
     }
 
     init() {
+
+        const canvasToClipboard = new CanvasToClipboardHandler(this._context)
 
         // アプリで実行され得るイベントの種類
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
