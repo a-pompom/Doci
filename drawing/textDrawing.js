@@ -7,6 +7,7 @@ import TextService from '../service/textService.js'
 /**
  * テキストの描画を管理
  * @property {DOM} originTextDOM 入力テキストを保持するためのテキストエリアのDOM
+ * @property {TextService} service テキスト操作のロジック部分を扱うサービス
  */
 export default class TextDrawing extends BaseDrawing{
 
@@ -83,7 +84,6 @@ export default class TextDrawing extends BaseDrawing{
             return
         }
 
-        console.log(shape.canIncludeText)
         // 図形内に描画
         if (shape.canIncludeText && 
                 this._context.focus.focusMode === DrawConst.focus.FocusMode.INSIDE) {

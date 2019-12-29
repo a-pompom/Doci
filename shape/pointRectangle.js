@@ -17,16 +17,6 @@ export default class PointRectangle extends Shape{
     }
 
     /**
-     * キャンバス上のオブジェクト全体を描画
-     * drawBaseではスタック内の全てのオブジェクトをdrawメソッドで描画しているので、
-     * メソッドを分離
-     */
-    fullDraw() {
-        super.drawBase()
-        this.draw()
-    }
-
-    /**
      * 四角の枠をキャンバス上に描画
      */
     draw() {
@@ -38,7 +28,6 @@ export default class PointRectangle extends Shape{
      * 属性を定義 四角で、領域を持たないものとする
      */
     defineAttribute() {
-        this._shapeType = DrawConst.shape.ShapeType.RECT
         this._resizable = true
         this._hasArea = false
     }

@@ -3,6 +3,9 @@ import Shape from '../base/shape.js'
 
 /**
  * キャンバス内の画像を扱うためのクラス 
+ * 
+ * @property {Object} context 描画コンテキスト
+ * @property {Image} imageSource 描画するイメージを格納したオブジェクト HTMLのimgに相当
  */
 export default class ImageShape extends Shape {
 
@@ -12,12 +15,6 @@ export default class ImageShape extends Shape {
         this._imageSource = imageSource
 
         this.defineAttribute()
-    }
-
-    fullDraw() {
-
-        this.drawBase()
-        this.draw()
     }
 
     /**
@@ -32,8 +29,6 @@ export default class ImageShape extends Shape {
      * 属性値を設定 領域を持つ画像として定義
      */
     defineAttribute() {
-        this._shapeType = DrawConst.shape.ShapeType.IMAGE
-        this._resizable = true
         this._hasArea = true
     }
 

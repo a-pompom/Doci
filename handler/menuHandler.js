@@ -75,10 +75,6 @@ export default class MenuHandler {
 
     }
 
-    modifyFocusMessage(modifyedText) {
-        this._messageForFocusDOM.textContent = modifyedText
-    }
-
     get activeMode() {
         return this._activeMode
     }

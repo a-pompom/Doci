@@ -4,6 +4,7 @@ import {DrawConst} from '../const/drawingConst.js'
  * キャンバス上に描画される図形を表す
  * @property {Object} context 描画用コンテキスト
  * 
+ * 属性
  * @property {number} x 描画開始x座標
  * @property {number} y 描画開始y座標
  * @property {number} width 幅
@@ -14,8 +15,11 @@ import {DrawConst} from '../const/drawingConst.js'
  * @property {number} originWidth リサイズ前の幅 リサイズ時の動きを滑らかにするために利用
  * @property {number} originHeight リサイズ前の高さ
  * 
- * @property {ShapeType} shapeType 図形の種類
+ * メタ属性 
  * @property {boolean} hasArea 領域を持つか 領域を持たないものは、内側を図形とみなさないよう区別するために利用
+ * @property {boolean} canIncludeText 図形の内部にテキストを保持できるか 吹き出しなどの図形が相当
+ * @property {boolean} resizable リサイズが可能か 基本図形はすべて可能
+ * @property {ShapeType} shapeType 図形の種類 テキストと基本図形を識別するために利用
  */
 export default class Shape {
 
@@ -41,7 +45,14 @@ export default class Shape {
     }
 
     /**
-     * 自身を描画する際の前処理を行う
+     * キャンバス全体を再描画 各描画管理クラスから呼ばれるインタフェース部分としての役割を持つ
+     */
+    fullDraw() {
+        this.drawBase()
+    }
+
+    /**
+     * キャンバス全体の再描画の実装部分
      */
     drawBase() {
         this.clear()

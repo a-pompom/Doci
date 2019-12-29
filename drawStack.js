@@ -1,15 +1,16 @@
 /**
  * キャンバス上に描画されたオブジェクトを管理するためのクラス
  * 以下の用途で利用
- * ・Undo
  * ・既存の描画済みオブジェクトを保持 リサイズ時にはキャンバスを一度クリアする必要があるため、状態として保持しておく
+ * 
+ * @property {Array} stack 描画対象の図形を格納したスタック
+ * @property {number} currentIndex 現在描画中の要素のインデックス 基本は最後に描画された要素を表す
  */
 export default class DrawStack {
     constructor() {
 
         this._stack = []
-        this._selectedDrawing = 0
-        this._currentIndex = 0
+        this._currentIndex = -1
     }
 
     /**
@@ -38,15 +39,6 @@ export default class DrawStack {
     }
 
     /**
-     * スタックの現在参照中の要素を変更
-     * 
-     * @param {number} index スタックを更新するインデックス
-     */
-    modifyCurrent(index) {
-        this._currentIndex = index
-    }
-
-    /**
      * 描画スタックから指定要素を削除
      * 
      * @param {number} index 削除対象のインデックス
@@ -64,10 +56,6 @@ export default class DrawStack {
     draw() {
 
         this._stack.forEach((shape) => {
-            // 現在参照中の要素は、更新で別途描画されるので、対象外とする
-            if (shape === this.getCurrent()) {
-                return
-            }
 
             shape.draw()
         })
