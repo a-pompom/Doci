@@ -16,6 +16,7 @@ export default class Text {
         this._height = 0
 
         this._hasArea = false
+        this._canIncludeText = false
         this._shapeType = DrawConst.shape.ShapeType.TEXT
     }
 
@@ -78,6 +79,10 @@ export default class Text {
 
     get hasArea() {
         return this._hasArea
+    }
+
+    get canIncludeText() {
+        return this._canIncludeText
     }
 
     get shapeType() {

@@ -1,15 +1,14 @@
 export default class TextService {
 
-    constructor(context, textDrawing) {
+    constructor(context, originTextDOM) {
 
         this._context = context
-        this._textDrawing = textDrawing
+        this._originTextDOM = originTextDOM
     }
 
     handleClickEvent(text) {
         
-        this.setTextDOMPos(text.x + 15, text.y + 20)
-        this.setTextDOMScale(text.width, text.height)
+        this.setTextDOMAttribute(text)
 
         this._originTextDOM.value = text.originText
         this._originTextDOM.focus()
@@ -17,8 +16,7 @@ export default class TextService {
 
     handleBoxClickEvent(boxShape) {
 
-        this.setTextDOMPos(boxShape.x + 15, boxShape.y + 20)
-        this.setTextDOMScale(boxShape.width, boxShape.height)
+        this.setTextDOMAttribute(boxShape)
 
         this._originTextDOM.value = boxShape.boxText.originText
         this._originTextDOM.focus()
@@ -26,6 +24,7 @@ export default class TextService {
 
     handleKeyEvent(shape) {
 
+        console.log(shape)
         // 図形領域内に文字列を描画する場合、テキスト描画開始位置を図形の左上に設定
         if (shape.canIncludeText) {
 
@@ -47,6 +46,12 @@ export default class TextService {
         this._originTextDOM.style.left = 0
         this._originTextDOM.style.width = 0
         this._originTextDOM.style.height = 0
+    }
+
+    setTextDOMAttribute(shape) {
+
+        this.setTextDOMPos(shape.x + 15, shape.y + 20)
+        this.setTextDOMScale(shape.width, shape.height)
     }
     
     /**

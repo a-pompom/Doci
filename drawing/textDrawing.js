@@ -14,7 +14,7 @@ export default class TextDrawing extends BaseDrawing{
         super(context)
         this._originTextDOM = document.getElementById('inputText')
 
-        this._service = new TextService(this._context, this)
+        this._service = new TextService(this._context, this._originTextDOM)
 
         this.init()
     }
@@ -67,13 +67,13 @@ export default class TextDrawing extends BaseDrawing{
 
             this._service.handleClickEvent(text)
 
-            this._context.drawStack.append(boxText)
+            this._context.drawStack.append(text)
 
             return
         }
 
         // 編集
-        const shape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
+        const shape = this.getDrawingShape()
 
         // テキスト編集
         if (shape.shapeType === DrawConst.shape.ShapeType.TEXT) {
@@ -83,6 +83,7 @@ export default class TextDrawing extends BaseDrawing{
             return
         }
 
+        console.log(shape.canIncludeText)
         // 図形内に描画
         if (shape.canIncludeText && 
                 this._context.focus.focusMode === DrawConst.focus.FocusMode.INSIDE) {
@@ -109,9 +110,7 @@ export default class TextDrawing extends BaseDrawing{
 
         }
 
-        const shape = this.getFocusedShape()
-
-        this._service.handleKeyEvent(shape)
+        this._service.handleKeyEvent(this.getDrawingShape())
     }
 
     /**

@@ -36,10 +36,9 @@ export default class CursorDrawing extends BaseDrawing{
         this.inspectText()
         
         this.inspectMove()
+        this.inspectDelete()
 
         this.inspectResize()
-
-
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 
@@ -55,6 +54,11 @@ export default class CursorDrawing extends BaseDrawing{
         }
 
         if (!this._context.menu.activeResizable) {
+            return
+        }
+
+        const resizeTargetShape = this.getDrawingShape()
+        if (!resizeTargetShape.resizable) {
             return
         }
 
@@ -133,10 +137,17 @@ export default class CursorDrawing extends BaseDrawing{
             return
         }
 
-        const shape = this._context.drawStack.getByIndex(this._context.focus.focusedIndex)
+        const shape = this.getDrawingShape()
 
         if (shape.shapeType === DrawConst.shape.ShapeType.TEXT) {
 
+            this._context.canvas.style.cursor = "text"
+
+            return
+        }
+
+        if (shape.canIncludeText) {
+            
             this._context.canvas.style.cursor = "text"
 
             return
@@ -158,6 +169,19 @@ export default class CursorDrawing extends BaseDrawing{
         this._context.canvas.style.cursor = "grab"
 
         return
+    }
+
+    inspectDelete() {
+
+        if (this._context.menu.activeMode !== DrawConst.menu.DrawMode.DELETE) {
+            return
+        }
+
+        if (this._context.focus.isFocused()) {
+
+            this._context.canvas.style.cursor = "grabbing"
+            return
+        }
     }
 
     isDirectionFocused(focusedAngle) {

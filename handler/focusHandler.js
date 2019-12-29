@@ -40,7 +40,7 @@ export default class FocusHandler {
                 break
             }
 
-            if (!shape.hasArea()) {
+            if (!shape.hasArea) {
                 continue
             }
 
