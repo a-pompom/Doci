@@ -1,3 +1,5 @@
+import {DrawConst} from '../const/drawingConst.js'
+
 /**
  * キャンバス上に描画される図形を表す
  * @property {Object} context 描画用コンテキスト
@@ -31,9 +33,11 @@ export default class Shape {
         this._originWidth = 0
         this._originHeight = 0
 
-        this._shapeType = null
-        this._resizable = false
         this._hasArea = false
+        this._canIncludeText = false
+
+        this._resizable = true
+        this._shapeType = DrawConst.shape.ShapeType.SHAPE
     }
 
     /**
@@ -77,13 +81,6 @@ export default class Shape {
      * 属性値を設定 実装は各サブクラスに委譲
      */
     defineAttribute() {
-    }
-
-    /**
-     * 領域を有するかを取得
-     */
-    hasArea() {
-        return this._hasArea
     }
 
     //  ------------------------------------------------getter setter ----------------------------------------------------
@@ -134,12 +131,16 @@ export default class Shape {
     get color() {
         return this._color
     }
-
-    get shapeType() {
-        return this._shapeType
+    get hasArea() {
+        return this._hasArea
     }
-
+    get canIncludeText() {
+        return this._canIncludeText
+    }
     get resizable() {
         return this._resizable
+    }
+    get shapeType() {
+        return this._shapeType
     }
 }

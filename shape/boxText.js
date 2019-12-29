@@ -1,5 +1,5 @@
 import { DrawConst } from '../const/drawingConst.js'
-import Shape from '../base/shape.js'
+import Text from '../base/text.js'
 
 /**
  * 領域内の文字列を扱うためのクラス
@@ -7,7 +7,7 @@ import Shape from '../base/shape.js'
  * @property {string} originText 元の文字列 編集する際に利用
  * @property {number} boxWidth キャンバス上の文字列を挿入する領域の幅
  */
-export default class BoxText extends Shape {
+export default class BoxText extends Text {
 
     constructor(context, startX, startY, boxWidth) {
 
@@ -15,9 +15,6 @@ export default class BoxText extends Shape {
         this.defineAttribute()
 
         this._text = []
-        this._originTextDOM = document.getElementById('inputText')
-        this._originText = ''
-
         this._boxWidth = boxWidth ? boxWidth : 200
 
         this.init()
@@ -133,8 +130,6 @@ export default class BoxText extends Shape {
      * 属性値を設定 領域を持つテキストとして定義
      */
     defineAttribute() {
-        this._shapeType = DrawConst.shape.ShapeType.TEXT
-        this._resizable = false
         this._hasArea = true
     }
 

@@ -4,7 +4,7 @@ import BaseDrawing from '../base/baseDrawing.js'
 import PointRectangle from '../shape/pointRectangle.js'
 import WordBalloon from '../shape/WordBalloon.js'
 
-import ResizeHandler from '../handler/resizeHandler.js'
+import ResizeService from '../service/resizeService.js'
 
 /**
  * 四角の描画を管理
@@ -15,10 +15,8 @@ import ResizeHandler from '../handler/resizeHandler.js'
 export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
         super(context)
-        this._isMousedown = false
-        this._focusedRect = null
 
-        this._resizeHandler = new ResizeHandler()
+        this._resizeService = new ResizeService(context)
     }
 
     /**
@@ -31,6 +29,15 @@ export default class RetangleDrawing extends BaseDrawing{
 
         if (!this.isRectangleActive()) {
             return
+        }
+
+        // フォーカス中の場合、対象の図形がリサイズ可能でないなら描画しない
+        if (this._context.focus.isFocused()) {
+
+            const focusedShape = this.getDrawingShape()
+            if (!focusedShape.resizable) {
+                return
+            }
         }
         
         this[`${eventType}Event`].call(this,event)
@@ -52,20 +59,11 @@ export default class RetangleDrawing extends BaseDrawing{
             const rectangle = this.getRectangle(this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
 
             this._context.drawStack.append(rectangle)
-            this._focusedRect = rectangle
 
             return
         }
 
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        const focusedShape = this._context.drawStack.getCurrent()
-
-        if (!focusedShape.resizable) {
-            return
-        }
-
-        focusedShape.setOriginPos()
-        focusedShape.setOriginScale()
+        this._resizeService.initResizeEvent(this.getDrawingShape())
     }
 
     /**
@@ -78,11 +76,14 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
-        // リサイズした後、画面上に図形を描画
-        const rectangle = this._context.drawStack.getCurrent()
-        this.resize(rectangle, event)
+        const shape = this.getDrawingShape()
 
-        rectangle.fullDraw()
+        // リサイズした後、画面上に図形を描画
+        const x = this.getCanvasX(event.clientX)
+        const y = this.getCanvasY(event.clientY)
+        this._resizeService.resize(shape, x, y)
+
+        shape.fullDraw()
     }
     
     /**
@@ -102,21 +103,6 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     isRectangleActive() {
         return this._context.menu.activeType === DrawConst.menu.DrawType.RECTANGLE
-    }
-
-    /**
-     * 図形のリサイズを実行
-     * 
-     * @param {Shape} resizeShape リサイズ対象の図形
-     * @param {Event} event  イベントオブジェクト
-     */
-    resize(resizeShape, event) {
-
-        const x = this.getCanvasX(event.clientX)
-        const y = this.getCanvasY(event.clientY)
-
-        this._resizeHandler.shape = resizeShape
-        this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
     }
 
     /**

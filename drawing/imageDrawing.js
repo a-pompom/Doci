@@ -1,11 +1,9 @@
-
-
 import { DrawConst } from '../const/drawingConst.js'
 import BaseDrawing from '../base/baseDrawing.js'
 
 import ImageShape from '../shape/imageShape.js'
 
-import ResizeHandler from '../handler/resizeHandler.js'
+import ResizeService from '../service/resizeService.js'
 
 /**
  * 画像の描画を管理
@@ -19,8 +17,7 @@ export default class ImageDrawing extends BaseDrawing{
         this._posX = 0
         this._posY = 0
 
-        this._focusedImage = null
-        this._resizeHandler = new ResizeHandler()
+        this._resizeService = new ResizeService(context)
 
         this.init()
     }
@@ -41,6 +38,11 @@ export default class ImageDrawing extends BaseDrawing{
         if (!this._context.focus.isFocused()) {
             return
         }
+        // 対象の図形がリサイズ可能でないなら描画しない
+        const focusedShape = this.getDrawingShape()
+        if (!focusedShape.resizable) {
+            return
+        }
         
         this[`${eventType}Event`].call(this,event)
     }
@@ -53,7 +55,6 @@ export default class ImageDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     pasteEvent(event) {
-        console.log('paste event called')
 
         const pastedImage = new Image()
         const clipboardItem = event.clipboardData.items[0]
@@ -85,15 +86,7 @@ export default class ImageDrawing extends BaseDrawing{
 
         this._context.isMousedown = true
 
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-        const focusedShape = this._context.drawStack.getCurrent()
-
-        if (!focusedShape.resizable) {
-            return
-        }
-
-        focusedShape.setOriginPos()
-        focusedShape.setOriginScale()
+        this._resizeService.initResizeEvent(this.getDrawingShape())
     }
 
     /**
@@ -110,8 +103,11 @@ export default class ImageDrawing extends BaseDrawing{
         this._posY = this.getCanvasY(event.clientY)
 
         // リサイズした後、画面上に図形を描画
-        const imageShape = this._context.drawStack.getCurrent()
-        this.resize(imageShape, event)
+        const imageShape = this.getDrawingShape()
+        const x = this.getCanvasX(event.clientX)
+        const y = this.getCanvasY(event.clientY)
+
+        this._resizeService.resize(imageShape, x, y)
 
         imageShape.fullDraw()
     }
@@ -127,21 +123,4 @@ export default class ImageDrawing extends BaseDrawing{
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 
-
-
-    /**
-     * 図形のリサイズを実行
-     * 
-     * @param {Shape} resizeShape リサイズ対象の図形
-     * @param {Event} event  イベントオブジェクト
-     */
-    resize(resizeShape, event) {
-
-        const x = this.getCanvasX(event.clientX)
-        const y = this.getCanvasY(event.clientY)
-
-        this._resizeHandler.shape = resizeShape
-        this._resizeHandler.resize(x, y, this._context.focus.focusedAngle)
-    }
-
 }

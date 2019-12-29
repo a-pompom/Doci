@@ -13,6 +13,7 @@ export default class MenuHandler {
     constructor() {
         this._activeMode = DrawConst.menu.DrawMode.NONE
         this._activeType = DrawConst.menu.DrawType.NONE
+        this._activeResizable = false
 
         this._messageForFocusDOM = document.getElementById('focusText')
 
@@ -20,32 +21,38 @@ export default class MenuHandler {
             {
                 element: document.getElementById('rectangleModeButton'),
                 mode: DrawConst.menu.DrawMode.RECTANGLE,
-                type: DrawConst.menu.DrawType.RECTANGLE
+                type: DrawConst.menu.DrawType.RECTANGLE,
+                resizable: true
             },
             {
                 element: document.getElementById('textModeButton'),
                 mode: DrawConst.menu.DrawMode.TEXT,
-                type: DrawConst.menu.DrawType.TEXT
+                type: DrawConst.menu.DrawType.TEXT,
+                resizable: false
             },
             {
                 element: document.getElementById('wordBalloonModeButton'),
                 mode: DrawConst.menu.DrawMode.WORD_BALLOON,
-                type: DrawConst.menu.DrawType.RECTANGLE
+                type: DrawConst.menu.DrawType.RECTANGLE,
+                resizable: true
             },
             {
                 element: document.getElementById('imageModeButton'),
                 mode: DrawConst.menu.DrawMode.IMAGE,
                 type: DrawConst.menu.DrawType.IMAGE,
+                resizable: true
             },
             {
                 element: document.getElementById('moveModeButton'),
                 mode: DrawConst.menu.DrawMode.MOVE,
-                type: DrawConst.menu.DrawType.NONE
+                type: DrawConst.menu.DrawType.NONE,
+                resizable: false
             },
             {
                 element: document.getElementById('deleteModeButton'),
                 mode: DrawConst.menu.DrawMode.DELETE,
-                type: DrawConst.menu.DrawType.NONE
+                type: DrawConst.menu.DrawType.NONE,
+                resizable: false
             },
         ]
 
@@ -62,6 +69,7 @@ export default class MenuHandler {
 
                 this._activeMode = menu.mode
                 this._activeType = menu.type
+                this._activeResizable = menu.resizable
             })
         })
 
@@ -77,6 +85,10 @@ export default class MenuHandler {
 
     get activeType() {
         return this._activeType
+    }
+
+    get activeResizable() {
+        return this._activeResizable
     }
 
 }

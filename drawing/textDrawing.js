@@ -2,6 +2,8 @@ import BoxText from '../shape/boxText.js'
 import { DrawConst } from '../const/drawingConst.js'
 import BaseDrawing from '../base/baseDrawing.js'
 
+import TextService from '../service/textService.js'
+
 /**
  * テキストの描画を管理
  * @property {DOM} originTextDOM 入力テキストを保持するためのテキストエリアのDOM
@@ -11,6 +13,8 @@ export default class TextDrawing extends BaseDrawing{
     constructor(context) {
         super(context)
         this._originTextDOM = document.getElementById('inputText')
+
+        this._service = new TextService(this._context, this._originTextDOM)
 
         this.init()
     }
@@ -59,32 +63,29 @@ export default class TextDrawing extends BaseDrawing{
         // 新規描画
         if (!this._context.focus.isFocused()) {
 
-            const boxText = new BoxText(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY)) 
-            this.setTextDOMPos(boxText.x, boxText.y)
+            const text = new BoxText(this._context, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY)) 
 
-            this._context.drawStack.append(boxText)
+            this._service.handleClickEvent(text)
+
+            this._context.drawStack.append(text)
 
             return
         }
 
         // 編集
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-
-        const shape = this._context.drawStack.getCurrent()
+        const shape = this.getDrawingShape()
 
         // テキスト編集
         if (shape.shapeType === DrawConst.shape.ShapeType.TEXT) {
 
-            this.setTextDOMPos(shape.x, shape.y)
-            this.setTextDOMScale(shape.width, shape.height)
+            this._service.handleClickEvent(shape)
 
-            this._originTextDOM.value = shape.originText
-
-            this._originTextDOM.focus()
+            return
         }
 
+        console.log(shape.canIncludeText)
         // 図形内に描画
-        if (shape.shapeType === DrawConst.shape.ShapeType.BOX && 
+        if (shape.canIncludeText && 
                 this._context.focus.focusMode === DrawConst.focus.FocusMode.INSIDE) {
                     
             // 図形内に新規描画
@@ -92,11 +93,7 @@ export default class TextDrawing extends BaseDrawing{
                 shape.boxText = new BoxText(this._context, shape.x +15, shape.y + 20, shape.width)
             }
 
-            this.setTextDOMPos(shape.x + 15, shape.y + 20)
-            this.setTextDOMScale(shape.width, shape.height)
-
-            this._originTextDOM.value = shape.boxText.originText
-            this._originTextDOM.focus()
+            this._service.handleBoxClickEvent(shape)
         }
     }
 
@@ -113,21 +110,7 @@ export default class TextDrawing extends BaseDrawing{
 
         }
 
-        const shape = this._context.drawStack.getCurrent()
-
-        // 図形領域内に文字列を描画する場合、テキスト描画開始位置を図形の左上に設定
-        if (shape.shapeType === DrawConst.shape.ShapeType.BOX) {
-
-            this.setTextDOMPos(shape.x + 15, shape.y + 20)
-
-            shape.updateText()
-            shape.fullDraw()
-            return
-        }
-
-        shape.update()
-        shape.fullDraw()
-
+        this._service.handleKeyEvent(this.getDrawingShape())
     }
 
     /**
@@ -136,33 +119,8 @@ export default class TextDrawing extends BaseDrawing{
      * @param {Event} event 
      */
     blurEvent(event) {
-        this._originTextDOM.style.top = 0
-        this._originTextDOM.style.left = 0
-        this._originTextDOM.style.width = 0
-        this._originTextDOM.style.height = 0
 
-    }
-    // ----------------------------------------------- メソッド ----------------------------------------------- 
-
-    /**
-     * 
-     * @param {number} posX テキスト入力エリアのx座標
-     * @param {number} posY テキスト入力エリアのy座標
-     */
-    setTextDOMPos(posX, posY) {
-        this._originTextDOM.style.top = posY + 60 + 'px'
-        this._originTextDOM.style.left = posX + 'px'
-    }
-
-    /**
-     * 
-     * @param {number} scaleX テキスト入力エリアの幅
-     * @param {number} scaleY テキスト入力エリアの高さ
-     */
-    setTextDOMScale(scaleX, scaleY) {
-        this._originTextDOM.style.width = scaleX + 'px'
-        this._originTextDOM.style.height = scaleY + 50 + 'px'
-
+        this._service.handleBlurEvent()
     }
 
 }

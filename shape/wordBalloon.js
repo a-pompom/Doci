@@ -94,7 +94,7 @@ export default class WordBalloon extends Shape{
      * 属性を設定 文字列つきの図形で、領域を有する
      */
     defineAttribute() {
-        this._shapeType = DrawConst.shape.ShapeType.BOX
+        this._canIncludeText = true
         this._resizable = true
         this._hasArea = true
     }
