@@ -1,3 +1,9 @@
+/**
+ * フォーカスの方法 リサイズ等の操作で利用
+ * ・NONE: 対象なし
+ * ・BORDER: 枠部分にフォーカス
+ * ・INSIDE: 領域内部にフォーカス
+ */
 export const FocusMode = {
     NONE: Symbol('focus-none'),
     BORDER: Symbol('border'),

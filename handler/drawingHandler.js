@@ -54,6 +54,7 @@ export default class DrawingHandler{
 
             // 各描画機能で扱うイベントを取得
             drawingList.forEach((drawing, index) => {
+
                 if (typeof drawing[`${event}Event`] === 'function') {
                     targetEvents.push(index)
                 }
@@ -63,7 +64,8 @@ export default class DrawingHandler{
             this._context.canvas.addEventListener(event, (eventArg) => {
 
                 targetEvents.forEach((targetIndex) => {
-                    
+
+                    // インターセプターで前処理を実行した後、イベント処理を発火
                     drawingList[targetIndex]['setupEvent'].call(drawingList[targetIndex],event, eventArg)
                 })
 

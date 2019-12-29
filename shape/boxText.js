@@ -3,8 +3,8 @@ import Text from '../base/text.js'
 
 /**
  * 領域内の文字列を扱うためのクラス
+ * @property {Object} context 描画コンテキスト
  * @property {Array} text 入力文字列を改行及びキャンバス上の領域の幅をもとに分割したもの
- * @property {string} originText 元の文字列 編集する際に利用
  * @property {number} boxWidth キャンバス上の文字列を挿入する領域の幅
  */
 export default class BoxText extends Text {
@@ -32,12 +32,6 @@ export default class BoxText extends Text {
         this.width = 20
     }
 
-
-    fullDraw() {
-        this.drawBase()
-        this.draw()
-    }
-
     /**
      * 領域文字列を描画
      */
@@ -50,9 +44,21 @@ export default class BoxText extends Text {
     }
 
     /**
+     * 吹き出しなどのテキストを内包できる図形がリサイズ・移動したときに内部のテキストの位置も更新
+     * 
+     * @param {number} x 移動後のx座標
+     * @param {number} y 移動後のy座標
+     */
+    updatePos(x, y) {
+        this.x = x + 20
+        this.y = y + 15
+    }
+
+    /**
      * 入力された文字列をもとに、現在有効な領域内のテキストを更新
      */
     update() {
+
         this._originText = this._originTextDOM.value
 
         this._text = []

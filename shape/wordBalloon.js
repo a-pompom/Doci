@@ -20,16 +20,6 @@ export default class WordBalloon extends Shape{
     }
 
     /**
-     * キャンバス上のオブジェクト全体を描画
-     * drawBaseではスタック内の全てのオブジェクトをdrawメソッドで描画しているので、
-     * メソッドを分離
-     */
-    fullDraw() {
-        super.drawBase()
-        this.draw()
-    }
-
-    /**
      * 吹き出しをキャンバス上に描画
      */
     draw() {
@@ -39,12 +29,15 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.strokeStyle = this._color
         this._context.canvasContext.strokeRect(this.x, this.y, this.width, this.height)
 
+        // 吹き出しのしっぽ部分
         this.drawTail()
 
         this._context.canvasContext.fillStyle = '#000000'
 
+        // 吹き出し内の文字列
         if (this._boxText !== null) {
 
+            this._boxText.updatePos(this.x, this.y)
             this._boxText.draw()
         }
     }
@@ -95,7 +88,6 @@ export default class WordBalloon extends Shape{
      */
     defineAttribute() {
         this._canIncludeText = true
-        this._resizable = true
         this._hasArea = true
     }
 

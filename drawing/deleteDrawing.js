@@ -7,8 +7,9 @@ import MetaShape from '../shape/metaShape.js'
 /**
  * 図形の削除を描画
  * 
- * @property {number} moveStartX 移動開始地点のx座標
- * @property {number} moveStartY 移動開始地点のy座標
+ * @property {Object} context 描画コンテキスト
+ * @property {MetaShape} metaShape 削除済みを描画するためのメタ図形
+ * 
  */
 export default class DeleteDrawing extends BaseDrawing{
 
@@ -40,7 +41,7 @@ export default class DeleteDrawing extends BaseDrawing{
     // ----------------------------------------------- イベント処理 ----------------------------------------------- 
 
     /**
-     * マウス押下時の処理 描画開始イベントを発火
+     * マウス押下時の処理 削除処理を発火
      * @param {Event} event イベントオブジェクト
      */
     clickEvent(event) {

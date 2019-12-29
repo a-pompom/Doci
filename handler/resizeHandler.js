@@ -10,22 +10,6 @@ export default class ResizeHandler {
         this._shape = null
     }
 
-    resize(x, y, focusedAngle) {
-
-        // キャンバスではx,yは左上が指定されるので、上向き/左向きにリサイズする場合、
-        // 描画開始位置をカーソルに合わせる
-        const posX = x >= this._shape.originX ? this._shape.originX : x
-        const posY = y >= this._shape.originY ? this._shape.originY : y
-
-        this.updatePos(posX, posY, focusedAngle)
-
-        // 元の位置と現在の位置の差分から、リサイズの変動分を導出し、描画位置・スケールに反映
-        const scaleX = Math.abs(this._shape.originX - x)
-        const scaleY = Math.abs(this._shape.originY - y)
-
-        this.modifyScale(scaleX, scaleY, focusedAngle)
-    }
-
     /**
      * リサイズによって更新された図形の描画開始座標を反映
      * 

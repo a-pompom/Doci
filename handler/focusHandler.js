@@ -44,6 +44,7 @@ export default class FocusHandler {
                 continue
             }
 
+            // 領域内フォーカス
             this.inspectInsideFocus(shape, pos, i)
 
             if (this.isFocused()) {
@@ -64,24 +65,22 @@ export default class FocusHandler {
         const height = shape.height
         const width = shape.width
 
+        // マウスの座標が枠に相当する領域上に存在することをフォーカス中と判定
+
         // 上横 
         if ((pos.x >= shape.x - range && pos.x <= shape.x + range + width)    && (pos.y >= shape.y-range && pos.y <= shape.y + range))  {
-            console.log('border')
             this.setFocusTarget(index, DrawConst.focus.FocusAngle.TOP)
         }
         // 左縦
         if ((pos.y >= shape.y - range && pos.y  <= shape.y + range + height)  && (pos.x >= shape.x-range && pos.x <= shape.x+range)) {
-            console.log('border')
             this.setFocusTarget(index, DrawConst.focus.FocusAngle.LEFT)
         }
         // 右縦
         if ((pos.y >= shape.y - range && pos.y  <= shape.y + range + height)  && (pos.x >= shape.x-range + width && pos.x <= shape.x+range + width)) {
-            console.log('border')
             this.setFocusTarget(index, DrawConst.focus.FocusAngle.RIGHT)
         }
         // 下横
         if ((pos.x >= shape.x - range && pos.x <= shape.x + range + width )   && (pos.y >= shape.y-range + height && pos.y <= shape.y + range + height))  {
-            console.log('border')
             this.setFocusTarget(index, DrawConst.focus.FocusAngle.BOTTOM)
         }
     }

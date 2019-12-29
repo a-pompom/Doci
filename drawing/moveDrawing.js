@@ -4,6 +4,8 @@ import BaseDrawing from '../base/baseDrawing.js'
 /**
  * 図形の移動を描画
  * 
+ * @property {Object} contexgt 描画コンテキスト
+ * 
  * @property {number} moveStartX 移動開始地点のx座標
  * @property {number} moveStartY 移動開始地点のy座標
  */
@@ -46,8 +48,6 @@ export default class MoveDrawing extends BaseDrawing{
         this._context.isMousedown = true
 
         // フォーカス中の場合、画面上の図形を移動可能とする
-        this._context.drawStack.modifyCurrent(this._context.focus.focusedIndex)
-
         this._moveStartX = this.getCanvasX(event.clientX)
         this._moveStartY = this.getCanvasY(event.clientY)
     }
@@ -62,7 +62,7 @@ export default class MoveDrawing extends BaseDrawing{
             return
         }
 
-        const shape = this._context.drawStack.getCurrent()
+        const shape = this.getDrawingShape()
 
         const canvasX = this.getCanvasX(event.clientX)
         const canvasY = this.getCanvasY(event.clientY)

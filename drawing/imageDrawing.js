@@ -29,11 +29,20 @@ export default class ImageDrawing extends BaseDrawing{
         })
     }
 
+    /**
+     * イベントの前処理を実行 リサイズを管理
+     * 
+     * @param {string} eventType 
+     * @param {Event} event 
+     */
     setupEvent(eventType, event) {
 
         if (!this.isTheModeActive(DrawConst.menu.DrawMode.IMAGE)) {
             return
         }
+
+        this._posX = this.getCanvasX(event.clientX)
+        this._posY = this.getCanvasY(event.clientY)
 
         if (!this._context.focus.isFocused()) {
             return
@@ -51,31 +60,20 @@ export default class ImageDrawing extends BaseDrawing{
 
     /**
      * 貼り付け時に実行されるイベント
+     * 画像をキャンバス上に描画
      * 
      * @param {Event} event 
      */
     pasteEvent(event) {
 
-        const pastedImage = new Image()
         const clipboardItem = event.clipboardData.items[0]
-        const blob = clipboardItem.getAsFile()
-        const urlObj = window.URL
 
-        const source = urlObj.createObjectURL(blob)
-
-        pastedImage.onload = () => {
-
-            const imageShape = new ImageShape(this._context, this._posX, this._posY, pastedImage)
-            imageShape.width = pastedImage.width
-            imageShape.height = pastedImage.height
-
-            imageShape.fullDraw()
-
-            this._context.drawStack.append(imageShape)
-
+        // 画像のみを描画対象とする
+        if (!clipboardItem.type.includes('image')) {
+            return
         }
 
-        pastedImage.src = source
+        this.createImage(clipboardItem)
     }
 
     /**
@@ -99,13 +97,11 @@ export default class ImageDrawing extends BaseDrawing{
             return
         }
 
-        this._posX = this.getCanvasX(event.clientX)
-        this._posY = this.getCanvasY(event.clientY)
+        const x = this.getCanvasX(event.clientX)
+        const y = this.getCanvasY(event.clientY)
 
         // リサイズした後、画面上に図形を描画
         const imageShape = this.getDrawingShape()
-        const x = this.getCanvasX(event.clientX)
-        const y = this.getCanvasY(event.clientY)
 
         this._resizeService.resize(imageShape, x, y)
 
@@ -123,4 +119,34 @@ export default class ImageDrawing extends BaseDrawing{
     }
 
     // ----------------------------------------------- メソッド ----------------------------------------------- 
+
+    /**
+     * クリップボードから画像を取得し、キャンバスに描画
+     * 
+     * @param {File} clipboardItem クリップボードの画像
+     */
+    createImage(clipboardItem) {
+        const pastedImage = new Image()
+
+        const blob = clipboardItem.getAsFile()
+        const urlObj = window.URL
+
+        const source = urlObj.createObjectURL(blob)
+
+        // imgタグのsrc属性が定まる、すなわち画像の読み込みが完了してから描画を行う
+        pastedImage.onload = () => {
+
+            const imageShape = new ImageShape(this._context, this._posX, this._posY, pastedImage)
+
+            imageShape.width = pastedImage.width
+            imageShape.height = pastedImage.height
+
+            this._context.drawStack.append(imageShape)
+
+            imageShape.fullDraw()
+        }
+
+        // 描画処理の前に実行 Imageオブジェクトとクリップボードの画像を紐付け
+        pastedImage.src = source
+    }
 }

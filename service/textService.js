@@ -1,3 +1,9 @@
+/**
+ * テキストの描画のロジック部分を管理するサービス
+ * 
+ * @property {Object} context 描画コンテキスト
+ * @property {DOM} originTextDOM キャンバスに表示する文字を格納するためのテキストエリア
+ */
 export default class TextService {
 
     constructor(context, originTextDOM) {
@@ -6,6 +12,11 @@ export default class TextService {
         this._originTextDOM = originTextDOM
     }
 
+    /**
+     * クリックイベントを処理 テキストを描画するためにDOM要素の設定を行う
+     * 
+     * @param {Text} text 描画対象テキスト
+     */
     handleClickEvent(text) {
         
         this.setTextDOMAttribute(text)
@@ -14,6 +25,11 @@ export default class TextService {
         this._originTextDOM.focus()
     }
 
+    /**
+     * クリックイベントを処理 図形内にテキストを描画するためにDOM要素の設定を行う
+     * 
+     * @param {Shape} boxShape テキストを内部に保持可能な図形
+     */
     handleBoxClickEvent(boxShape) {
 
         this.setTextDOMAttribute(boxShape)
@@ -22,9 +38,13 @@ export default class TextService {
         this._originTextDOM.focus()
     }
 
+    /**
+     * キーイベントを処理 キー入力の内容をキャンバスに反映
+     * 
+     * @param {Shape} shape テキスト
+     */
     handleKeyEvent(shape) {
 
-        console.log(shape)
         // 図形領域内に文字列を描画する場合、テキスト描画開始位置を図形の左上に設定
         if (shape.canIncludeText) {
 
@@ -40,6 +60,9 @@ export default class TextService {
         shape.fullDraw()
     }
 
+    /**
+     * フォーカスが外れたときの処理 DOM要素を初期化
+     */
     handleBlurEvent() {
 
         this._originTextDOM.style.top = 0
@@ -48,6 +71,11 @@ export default class TextService {
         this._originTextDOM.style.height = 0
     }
 
+    /**
+     * DOM要素の位置・大きさを設定
+     * 
+     * @param {Shape} shape 
+     */
     setTextDOMAttribute(shape) {
 
         this.setTextDOMPos(shape.x + 15, shape.y + 20)

@@ -9,8 +9,7 @@ import ResizeService from '../service/resizeService.js'
 /**
  * 四角の描画を管理
  * @property {Object} context 描画コンテキスト
- * @property {boolean} isMousedown マウスが押下されているか リサイズイベントの有無を判断
- * @property {ResizeHandler} resizeHandler リサイズを扱うハンドラ
+ * @property {ResizeService} resizeService リサイズ機能を扱うサービス
  */
 export default class RetangleDrawing extends BaseDrawing{
     constructor(context) {
@@ -63,6 +62,7 @@ export default class RetangleDrawing extends BaseDrawing{
             return
         }
 
+        // リサイズ
         this._resizeService.initResizeEvent(this.getDrawingShape())
     }
 
@@ -72,6 +72,7 @@ export default class RetangleDrawing extends BaseDrawing{
      */
     mousemoveEvent(event) {
 
+        // マウス押下中でない場合、描画・リサイズは不要
         if (!this._context.isMousedown) {
             return
         }
@@ -122,5 +123,4 @@ export default class RetangleDrawing extends BaseDrawing{
 
         return
     }
-
 }

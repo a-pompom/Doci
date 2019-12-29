@@ -1,10 +1,12 @@
+import BaseDrawing from '../base/baseDrawing.js'
+
 /**
  * フォーカス等のキャンバスに表れない描画要素を管理
  */
-export default class MetaDrawing {
+export default class MetaDrawing extends BaseDrawing{
 
     constructor(context) {
-        this._context = context
+        super(context)
     }
     
     /**
@@ -25,9 +27,7 @@ export default class MetaDrawing {
 
         const shapeList = this._context.drawStack.stack
 
-        const canvasRect = this._context.canvas.getBoundingClientRect();
-        
-        this._context.focus.inspectShapeFocus(shapeList, event.clientX - canvasRect.left, event.clientY - canvasRect.top)
+        this._context.focus.inspectShapeFocus(shapeList, this.getCanvasX(event.clientX), this.getCanvasY(event.clientY))
     }
 
 }
