@@ -1,0 +1,93 @@
+.button {
+
+    &--drawing {
+        
+        @extend %button--simple;
+
+        font-size: 2.8rem;
+        
+        width: 80px;
+        height: 80px;
+
+        background-color: $lightest; 
+        color: $accent-strong;
+
+        &:hover {
+            background-color: $accent-strong;
+        }
+    }
+
+    &--copy {
+
+        @extend %button--simple;
+
+        font-size: 2.2rem;
+
+        width: 100px;
+        height: 80px;
+
+        background-color: $lightest; 
+        color: $accent-strong;
+
+        &:hover {
+            background-color: $accent-strong;
+        }
+    }
+
+}
+
+.drawing-icon {
+    position: absolute;
+
+    bottom: 20px;
+    left: 20px;
+}
+
+.stack-thumbnail {
+    border: 1px solid #e3e3e3;
+}
+
+.short-cut-balloon {
+
+    width: 275px;
+    height: 200px;
+
+    position: relative;
+    
+    margin: 20px 10px 20px 100px;
+    padding: 4px 40px;
+    
+    font-size: 1.1rem;
+    background-color: $accent-middle;
+    border-radius: 30px;
+
+    &::before {
+
+        content: "";
+
+        position: absolute;
+        left: -38px;
+        width: 13px;
+        height: 12px;
+        bottom: 0;
+
+        background-color: $accent-middle;
+        border-radius: 50%;
+
+    }
+
+    &::after {
+
+        content: "";
+
+        position: absolute;
+        left: -24px;
+        width: 20px;
+        height: 18px;
+        bottom: 3px;
+
+        background-color: $accent-middle;
+        border-radius: 50%;
+    }
+  }
+  

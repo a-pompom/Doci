@@ -12,6 +12,7 @@ import ImageDrawing from '../drawing/imageDrawing.js'
 import CursorDrawing from '../drawing/cursorDrawing.js'
 
 import CanvasToClipboardHandler from './canvasToClipboardHandler.js'
+import StackHandler from './stackHandler.js'
 /**
  * 描画機能を扱うハンドラ
  * 
@@ -26,22 +27,37 @@ import CanvasToClipboardHandler from './canvasToClipboardHandler.js'
 export default class DrawingHandler{
 
     constructor() {
-        this._context = {
-            canvas: document.getElementById('myCanvas'),
-            canvasContext: document.getElementById('myCanvas').getContext('2d'),
-            isMousedown: false,
+        this._context = this.getContext()
 
-            drawStack: new DrawStack(),
+        this.init()
+    }
+
+    getContext() {
+
+        const canvas = document.getElementById('myCanvas')
+        const drawStackList = this.getDrawStackList(9)
+        const currentStack = 0
+        
+        return {
+            canvas: canvas,
+            canvasContext: canvas.getContext('2d'),
+            isMousedown: false,
+            currentStack: currentStack,
+
+            drawStackList: drawStackList,
+            drawStack: drawStackList[currentStack],
             menu: new MenuHandler(),
             focus: new FocusHandler(),
         }
 
-        this.init()
     }
 
     init() {
 
         const canvasToClipboard = new CanvasToClipboardHandler(this._context)
+        const stackHandler = new StackHandler(this._context)
+
+        this.setCanvasScale()
 
         // アプリで実行され得るイベントの種類
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
@@ -76,6 +92,22 @@ export default class DrawingHandler{
 
         })
 
+    }
+
+    getDrawStackList(stackLength) {
+        let drawStackList = []
+
+        for (let i=0; i<stackLength; i++) {
+            drawStackList.push(new DrawStack())
+        }
+
+        return drawStackList
+    }
+
+    setCanvasScale() {
+
+        this._context.canvas.width = document.body.clientWidth - 270
+        this._context.canvas.height = document.body.clientHeight
     }
 
 }

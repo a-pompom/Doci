@@ -38,6 +38,11 @@ export default class RetangleDrawing extends BaseDrawing{
                 return
             }
         }
+
+        // 図形の中にフォーカスしている場合、図形の中に新たに四角を描画可能とするため、フォーカスを解除
+        if (this._context.focus.focusMode === DrawConst.focus.FocusMode.INSIDE) {
+            this._context.focus.outFocus()
+        }
         
         this[`${eventType}Event`].call(this,event)
     }

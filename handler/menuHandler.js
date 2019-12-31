@@ -57,6 +57,7 @@ export default class MenuHandler {
         ]
 
         this.initMenu()
+        this.initShortCutMenu()
     }
 
     /**
@@ -73,6 +74,23 @@ export default class MenuHandler {
             })
         })
 
+    }
+
+    /**
+     * ショートカット表示用メニューを初期化
+     * アイコンにマウスを近づけることで各メニューのショートカットを表示
+     */
+    initShortCutMenu() {
+
+        const shortCutMenu = document.getElementById('shortCutMenu')
+        const shortCutTips = document.getElementById('shortCutTips')
+
+        shortCutTips.addEventListener('mouseover', () => {
+            shortCutMenu.classList.remove('invisible')
+        })
+        shortCutTips.addEventListener('mouseout', () => {
+            shortCutMenu.classList.add('invisible')
+        })
     }
 
     get activeMode() {
