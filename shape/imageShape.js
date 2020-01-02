@@ -12,6 +12,20 @@ export default class ImageShape extends Shape {
     constructor(context, startX, startY, imageSource) {
 
         super(context, startX, startY)
+        this._ratio = 1.0
+
+        if (imageSource.width > context.canvas.width) {
+
+            this._ratio = context.canvas.width / imageSource.width
+        }
+
+        if (imageSource.height > context.canvas.height) {
+
+            this.ratio = context.canvas.height / imageSource.height
+        }
+
+        this.width = imageSource.width * this._ratio
+        this.height = imageSource.height * this._ratio
         this._imageSource = imageSource
 
         this.defineAttribute()

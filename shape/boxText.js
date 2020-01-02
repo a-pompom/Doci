@@ -15,7 +15,7 @@ export default class BoxText extends Text {
         this.defineAttribute()
 
         this._text = []
-        this._boxWidth = boxWidth ? boxWidth : 200
+        this._boxWidth = boxWidth ? boxWidth : context.canvas.width - startX
 
         this.init()
     }
@@ -29,7 +29,11 @@ export default class BoxText extends Text {
         this._originTextDOM.style.height = '20px'
         this._originTextDOM.focus()
 
+        this._context.canvasContext.font = 'lighter normal 18px sans-serif'
+        this._context.canvasContext.lineWidth = 1
+
         this.width = 20
+        this.height  = 20
     }
 
     /**
@@ -38,7 +42,6 @@ export default class BoxText extends Text {
     draw() {
 
         this._text.forEach((rowText, index) => {
-            this._context.canvasContext.font = '12px sans-serif'
             this._context.canvasContext.fillText(rowText, this.x, this.y + index* 20)
         })
     }
@@ -51,7 +54,7 @@ export default class BoxText extends Text {
      */
     updatePos(x, y) {
         this.x = x + 20
-        this.y = y + 15
+        this.y = y + 30
     }
 
     /**
@@ -89,10 +92,12 @@ export default class BoxText extends Text {
             this.width = fragmentWidth >= this.width ? fragmentWidth : this.width
         })
 
-        this.height = (this._text.length) * 20
+        this.height = (this._text.length + 1) * 25
 
-        this._originTextDOM.style.width = this.width + 'px'
-        this._originTextDOM.style.height = this.height + 'px'
+        this._originTextDOM.style.width = `${this.width + 20}px`
+        this._originTextDOM.style.height = `${this.height}px`
+
+        this._originTextDOM.focus()
     }
 
     /**
@@ -120,7 +125,7 @@ export default class BoxText extends Text {
      * 
      */
     isOverFit(fragmentTextWidth) {
-        return fragmentTextWidth >= this._boxWidth
+        return fragmentTextWidth >= this._boxWidth -20
     }
 
     /**

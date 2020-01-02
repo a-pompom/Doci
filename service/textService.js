@@ -45,14 +45,10 @@ export default class TextService {
      */
     handleKeyEvent(shape) {
 
-        // 図形領域内に文字列を描画する場合、テキスト描画開始位置を図形の左上に設定
         if (shape.canIncludeText) {
 
-            this.setTextDOMPos(shape.x + 15, shape.y + 20)
-
-            shape.updateText()
+            shape.boxText.update()
             shape.fullDraw()
-
             return
         }
 
@@ -69,6 +65,10 @@ export default class TextService {
         this._originTextDOM.style.left = 0
         this._originTextDOM.style.width = 0
         this._originTextDOM.style.height = 0
+
+        this._originTextDOM.value = ''
+
+        this._originTextDOM.blur()
     }
 
     /**
@@ -77,8 +77,15 @@ export default class TextService {
      * @param {Shape} shape 
      */
     setTextDOMAttribute(shape) {
+        // 図形領域内に文字列を描画する場合、テキスト描画開始位置を図形の左上に設定
+        if (shape.canIncludeText) {
 
-        this.setTextDOMPos(shape.x + 15, shape.y + 20)
+            this.setTextDOMPos(shape.x + 20, shape.y + 30)
+            this.setTextDOMScale(shape.width -20, shape.height -30)
+            return
+        }
+
+        this.setTextDOMPos(shape.x, shape.y)
         this.setTextDOMScale(shape.width, shape.height)
     }
     
@@ -88,8 +95,8 @@ export default class TextService {
      * @param {number} posY テキスト入力エリアのy座標
      */
     setTextDOMPos(posX, posY) {
-        this._originTextDOM.style.top = posY + 60 + 'px'
-        this._originTextDOM.style.left = posX + 'px'
+        this._originTextDOM.style.top = posY - 20 + 'px'
+        this._originTextDOM.style.left = posX + 80 + 'px'
     }
 
     /**
@@ -99,7 +106,7 @@ export default class TextService {
      */
     setTextDOMScale(scaleX, scaleY) {
         this._originTextDOM.style.width = scaleX + 'px'
-        this._originTextDOM.style.height = scaleY + 50 + 'px'
+        this._originTextDOM.style.height = scaleY +'px'
 
     }
 

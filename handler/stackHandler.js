@@ -1,4 +1,5 @@
 import {DrawConst} from '../const/drawingConst.js'
+import DrawingUtil from '../drawingUtil.js'
 import MetaShape from '../shape/metaShape.js'
 
 export default class StackHandler {
@@ -25,25 +26,45 @@ export default class StackHandler {
 
             stackDOM.addEventListener('click', () => {
 
-                if (this._context.drawStackList[this._currentStack].length !== 0) {
+                this.registerHandleEvent(i)
 
-                    this.createThumbNail(this._currentStack)
+            })
+
+            document.addEventListener('keydown', (event) => {
+
+                if (DrawingUtil.isTextInputMode() || event.keyCode !== DrawConst.stack.StackKeyCode[`Key_${i+1}`]) {
+
+                    return
                 }
-                
-                this._context.drawStack = this._context.drawStackList[i]
-                this._currentStack = i
-                this._context.focus.outFocus()
 
-                this._metaShape.draw(this._metaShape.drawBase, this._metaShape)
+                this.registerHandleEvent(i)
 
-                if (this._context.drawStack.stack.length !== 0) {
-
-                    this._context.drawStack.draw()
-
-                }
             })
 
         }
+    }
+
+    registerHandleEvent(index) {
+
+        if (this._context.drawStackList[this._currentStack].length !== 0) {
+
+            this.createThumbNail(this._currentStack)
+        }
+        DrawingUtil.deactivateClass(`image-${this._currentStack}`, 'active-stack')
+        
+        this._context.drawStack = this._context.drawStackList[index]
+        this._currentStack = index
+        DrawingUtil.activateClass(`image-${this._currentStack}`, 'active-stack')
+        this._context.focus.outFocus()
+
+        this._metaShape.draw(this._metaShape.drawBase, this._metaShape)
+
+        if (this._context.drawStack.stack.length !== 0) {
+
+            this._context.drawStack.draw()
+
+        }
+
     }
 
     createThumbNail(index) {
@@ -70,5 +91,13 @@ export default class StackHandler {
             imageDOM.height = this._stackScale
         }
 
+    }
+
+    activate(index) {
+        document.getElementById(`image-${index}`).classList.add('active-stack')
+    }
+
+    deactivate(index) {
+        document.getElementById(`image-${index}`).classList.remove('active-stack')
     }
 }

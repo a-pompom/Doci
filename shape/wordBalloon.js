@@ -59,10 +59,14 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.beginPath()
         this._context.canvasContext.moveTo(headX, headY)
         this._context.canvasContext.lineTo(headX, tailY)
-        this._context.canvasContext.moveTo(headX, tailY)
         this._context.canvasContext.lineTo(tailX, headY)
-        this._context.canvasContext.moveTo(tailX, headY)
+        this._context.canvasContext.lineTo(headX, headY)
         this._context.canvasContext.closePath()
+
+        this._context.canvasContext.fillStyle = "#FFF"
+        this._context.canvasContext.fill()
+
+        this._context.canvasContext.strokeStyle = "#F00"
         this._context.canvasContext.stroke()
 
         // 吹き出しのしっぽ部分と四角の共通部分、すなわち、底辺部分の線は消しておく方が吹き出しとして自然なので、消去

@@ -80,14 +80,20 @@ export default class CursorDrawing extends BaseDrawing{
      */
     inspectText() {
 
-        if (this._context.focus.focusMode !== DrawConst.focus.FocusMode.INSIDE) {
+        if (!this._context.focus.isFocused()) {
             return
         }
 
         const shape = this.getDrawingShape()
 
+        if (this._context.focus.focusMode === DrawConst.focus.FocusMode.INSIDE && shape.canIncludeText) {
+
+            this._context.canvas.style.cursor = "text"
+            return
+        }
+
         // テキスト・もしくはテキストを内包可能な図形の内部にフォーカスした場合にカーソルを変更
-        if (shape.shapeType === DrawConst.shape.ShapeType.TEXT || shape.canIncludeText) {
+        if (shape.shapeType === DrawConst.shape.ShapeType.TEXT) {
 
             this._context.canvas.style.cursor = "text"
 

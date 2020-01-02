@@ -90,7 +90,9 @@ export default class TextDrawing extends BaseDrawing{
                     
             // 図形内に新規描画
             if (shape.boxText === null) {
-                shape.boxText = new BoxText(this._context, shape.x +15, shape.y + 20, shape.width)
+                console.log('inside box created')
+                console.log(shape.y)
+                shape.boxText = new BoxText(this._context, shape.x, shape.y, shape.width)
             }
 
             this._service.handleBoxClickEvent(shape)
@@ -106,8 +108,11 @@ export default class TextDrawing extends BaseDrawing{
 
         // Escキー押下でも終了可能とする
         if (event.keyCode === 27) {
-            this._originTextDOM.blur()
 
+            this._service.handleKeyEvent(this.getDrawingShape())
+            this.blurEvent()
+
+            return
         }
 
         this._service.handleKeyEvent(this.getDrawingShape())
@@ -116,9 +121,8 @@ export default class TextDrawing extends BaseDrawing{
     /**
      * フォーカスが外れたときに実行されるイベント テキスト入力エリアを初期化
      * 
-     * @param {Event} event 
      */
-    blurEvent(event) {
+    blurEvent() {
 
         this._service.handleBlurEvent()
     }

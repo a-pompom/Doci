@@ -21,3 +21,12 @@ export const DrawType = {
     TEXT: Symbol('draw-type-text'),
     IMAGE: Symbol('draw-type-image')
 }
+
+export const KeyCode = {
+    Key_R: 82,
+    Key_T: 84,
+    Key_W: 87,
+    Key_I: 73,
+    Key_M: 77,
+    Key_D: 68
+}

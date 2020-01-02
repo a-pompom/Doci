@@ -28,11 +28,17 @@ a {
 
 textarea {
   -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  font-size: 18px;
+  line-height: 1.0;
+  font-family: 'Noto Sans JP', sans-serif;
   border: 0;
   resize: none; }
   textarea:focus {
-    background: none;
-    outline: none; }
+    outline: none;
+    border: none;
+    box-shadow: none; }
 
 .button--drawing, .button--copy {
   position: relative;
@@ -48,6 +54,13 @@ textarea {
 
 .invisible {
   display: none; }
+
+.active-stack {
+  background-color: #C8CCD4; }
+
+.active-menu {
+  color: #fff !important;
+  background-color: #CB72AA !important; }
 
 .container {
   display: flex;
@@ -66,17 +79,17 @@ textarea {
   width: 80px;
   height: 80px;
   background-color: #F4F3F6;
-  color: #4893C6; }
+  color: #CB72AA; }
   .button--drawing:hover {
-    background-color: #4893C6; }
+    background-color: #CB72AA; }
 .button--copy {
   font-size: 2.2rem;
-  width: 100px;
+  width: 90px;
   height: 80px;
   background-color: #F4F3F6;
-  color: #4893C6; }
+  color: #CB72AA; }
   .button--copy:hover {
-    background-color: #4893C6; }
+    background-color: #CB72AA; }
 
 .drawing-icon {
   position: absolute;
@@ -87,14 +100,16 @@ textarea {
   border: 1px solid #e3e3e3; }
 
 .short-cut-balloon {
-  width: 275px;
-  height: 200px;
+  width: 340px;
+  height: 220px;
   position: relative;
   margin: 20px 10px 20px 100px;
-  padding: 4px 40px;
-  font-size: 1.1rem;
-  background-color: #C1D2E9;
+  padding: 10px 20px;
+  background-color: #C6C7D3;
   border-radius: 30px; }
+  .short-cut-balloon p {
+    font-size: 1.3rem;
+    line-height: 1.3; }
   .short-cut-balloon::before {
     content: "";
     position: absolute;
@@ -102,7 +117,7 @@ textarea {
     width: 13px;
     height: 12px;
     bottom: 0;
-    background-color: #C1D2E9;
+    background-color: #C6C7D3;
     border-radius: 50%; }
   .short-cut-balloon::after {
     content: "";
@@ -111,7 +126,41 @@ textarea {
     width: 20px;
     height: 18px;
     bottom: 3px;
-    background-color: #C1D2E9;
+    background-color: #C6C7D3;
     border-radius: 50%; }
+
+.copied-message-balloon {
+  width: 150px;
+  height: 80px;
+  position: relative;
+  margin: 2px 3px 5px 10;
+  padding: 30px 15px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #C8CCD4;
+  border-radius: 7px; }
+  .copied-message-balloon::before {
+    content: "";
+    position: absolute;
+    right: -34px;
+    width: 6px;
+    height: 5px;
+    bottom: 0;
+    background-color: #C8CCD4;
+    border-radius: 50%; }
+  .copied-message-balloon::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    width: 12px;
+    height: 10px;
+    bottom: 3px;
+    background-color: #C8CCD4;
+    border-radius: 50%; }
+  .copied-message-balloon-wrapper {
+    position: absolute;
+    bottom: 45px;
+    right: 170px; }
 
 /*# sourceMappingURL=style.css.map */

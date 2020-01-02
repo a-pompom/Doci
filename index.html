@@ -2,29 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>JS COMMENT</title>
+    <title>DOCi</title>
     <link rel="shortcut icon" href="./images/favicon.ico" >
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap&subset=japanese" rel="stylesheet">
     <script src="https://kit.fontawesome.com/adb99f990b.js" crossorigin="anonymous"></script>
     <link href="./style.css" rel="stylesheet">
 </head>
     <meta charset="UTF-8">
-<style>
-
-    #inputText {
-        width: 0px;
-        height: 0px;
-        font-size: 12px;
-        line-height: 1.5;
-        font-family: sans-serif;
-    }
-
-    textarea:focus, textarea:active {
-        outline: none;
-        border: none;
-        box-shadow: none;
-    }
-</style>
 <body>
     <div class="container">
         <div class="drawing--menu">
@@ -66,22 +50,28 @@
                 <li id="shortCutTips" class="drawing-icon">
                     <div id="shortCutMenu" class="short-cut-balloon invisible">
                         <p>
-                            □: 赤枠(R)
+                            □: 赤枠(Rectangle)
                         </p>
                         <p>
-                            T: テキスト(T)
+                            T: テキスト(Text)
                         </p>
                         <p>
-                            <i class="far fa-comment"></i>: 吹き出し(W)
+                            <i class="far fa-comment"></i>: 吹き出し(Word-balloon)
                         </p>
                         <p>
-                            <i class="fas fa-image"></i>: 画像(I)
+                            <i class="fas fa-image"></i>: 画像(Image)
                         </p>
                         <p>
-                            <i class="far fa-hand-rock"></i>: オブジェクトの移動(M)
+                            <i class="far fa-hand-rock"></i>: オブジェクトの移動(Move)
                         </p>
                         <p>
-                            <i class="fas fa-bomb"></i>: オブジェクトの削除(D)
+                            <i class="fas fa-bomb"></i>: オブジェクトの削除(Delete)
+                        </p>
+                        <p>
+                            1 ~ 9: キャンバスの切り替え
+                        </p>
+                        <p>
+                            <i class="far fa-clipboard"></i>: キャンバスのコピー(Copy)
                         </p>
 
                     </div>
@@ -103,7 +93,7 @@
             <ul>
                 <li>
                     <figure id="stackButton-0" class="stack-thumbnail">
-                        <img id="image-0">
+                        <img id="image-0" class="active-stack">
                         <figcaption>1</figcaption>
                     </figure>
                 </li>
@@ -139,7 +129,7 @@
                 </li>
                 <li>
                     <figure id="stackButton-6" class="stack-thumbnail">
-                        <img id="image-6" style="background-color: #e3e3e3;">
+                        <img id="image-6">
                         <figcaption>7</figcaption>
                     </figure>
                 </li>
@@ -162,9 +152,21 @@
                 </li>
             </ul>
 
+            <div id="copiedMessage" class="copied-message-balloon-wrapper invisible">
+                
+                <div class="copied-message-balloon">
+                    <p>
+                        COPIED!!!
+                    </p>
+                </div>
+
+            </div>
+
         </div>
 
         <textarea id="inputText" style="position: absolute; overflow: hidden; resize:none; border: none; box-shadow: none;"></textarea>
+
+
 
     </div>
 

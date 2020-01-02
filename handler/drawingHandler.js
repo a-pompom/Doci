@@ -35,12 +35,13 @@ export default class DrawingHandler{
     getContext() {
 
         const canvas = document.getElementById('myCanvas')
+        const canvasContext = canvas.getContext('2d')
         const drawStackList = this.getDrawStackList(9)
         const currentStack = 0
         
         return {
             canvas: canvas,
-            canvasContext: canvas.getContext('2d'),
+            canvasContext: canvasContext,
             isMousedown: false,
             currentStack: currentStack,
 
@@ -106,7 +107,7 @@ export default class DrawingHandler{
 
     setCanvasScale() {
 
-        this._context.canvas.width = document.body.clientWidth - 270
+        this._context.canvas.width = document.body.clientWidth - 160
         this._context.canvas.height = document.body.clientHeight
     }
 
