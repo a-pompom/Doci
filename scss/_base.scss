@@ -4,7 +4,7 @@ body {
   height: 100%;
 	
   font-size: 90%;	
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: sans-serif;
 	
   margin: 0;
   padding: 0;
@@ -41,11 +41,15 @@ a {
 
 textarea {
 	-webkit-appearance: none;
+
 	width: 0;
 	height: 0;
+
+	position: absolute;
+	overflow-y: hidden;
+
 	font-size: 18px;
-	line-height: 1.0;
-	font-family: 'Noto Sans JP', sans-serif;
+	line-height: 1.1;
 	
 	border: 0;
 	resize: none;

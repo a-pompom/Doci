@@ -124,7 +124,7 @@ export default class TextDrawing extends BaseDrawing{
      */
     blurEvent() {
 
-        this._service.handleBlurEvent()
+        this._service.handleBlurEvent(this.getDrawingShape())
     }
 
 }

@@ -38,15 +38,18 @@ export default class CanvasToClipboardHandler {
      * キャンバスをクリップボードにコピー
      */
     setClipBoard() {
+        const canvasForClip = this.getClipCanvas()
 
-        this._context.canvas.toBlob((blob) => {
+        console.log(this._context.canvas.width)
+        canvasForClip.toBlob((blob) => { 
 
             const clipboardItem =  new ClipboardItem({ [blob.type]: blob})
 
             navigator.clipboard.write([clipboardItem])
 
             this.showCopiedMessage()
-        }, 'image/png', 1.00)
+        }, 'image/png', 1)
+
     }
 
     showCopiedMessage() {
@@ -59,5 +62,18 @@ export default class CanvasToClipboardHandler {
             copiedMessage.classList.add('invisible')
 
         }, 500)
+    }
+
+    getClipCanvas() {
+        const canvasForClip = document.createElement('canvas')
+
+        const ctx = canvasForClip.getContext('2d')
+        canvasForClip.width = this._context.canvas.width / (window.devicePixelRatio +0.4)
+        canvasForClip.height = this._context.canvas.height / (window.devicePixelRatio +0.4)
+
+        ctx.drawImage(this._context.canvas, 0,0, canvasForClip.width, canvasForClip.height)
+        console.log(canvasForClip.width)
+
+        return canvasForClip
     }
 }

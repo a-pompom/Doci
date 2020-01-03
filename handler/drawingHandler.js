@@ -38,7 +38,7 @@ export default class DrawingHandler{
         const canvasContext = canvas.getContext('2d')
         const drawStackList = this.getDrawStackList(9)
         const currentStack = 0
-        
+
         return {
             canvas: canvas,
             canvasContext: canvasContext,
@@ -106,9 +106,15 @@ export default class DrawingHandler{
     }
 
     setCanvasScale() {
+        const ratio = window.devicePixelRatio + 0.4
 
-        this._context.canvas.width = document.body.clientWidth - 160
-        this._context.canvas.height = document.body.clientHeight
+        this._context.canvas.width = (document.body.clientWidth - 160) *ratio
+        this._context.canvas.height = document.body.clientHeight *ratio
+
+        this._context.canvas.style.width = `${(document.body.clientWidth -160)}px`
+        this._context.canvas.style.height = `${(document.body.clientHeight)}px`
+
+        this._context.canvasContext.setTransform(ratio,0,0,ratio,0,0)
     }
 
 }

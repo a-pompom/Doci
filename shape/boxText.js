@@ -29,8 +29,8 @@ export default class BoxText extends Text {
         this._originTextDOM.style.height = '20px'
         this._originTextDOM.focus()
 
-        this._context.canvasContext.font = 'lighter normal 18px sans-serif'
-        this._context.canvasContext.lineWidth = 1
+        this._context.canvasContext.font = 'normal normal 100 18px sans-serif'
+
 
         this.width = 20
         this.height  = 20

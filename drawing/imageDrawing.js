@@ -137,7 +137,6 @@ export default class ImageDrawing extends BaseDrawing{
         pastedImage.onload = () => {
 
             const imageShape = new ImageShape(this._context, this._posX, this._posY, pastedImage)
-            console.log('emit paste')
 
             this._context.drawStack.append(imageShape)
 

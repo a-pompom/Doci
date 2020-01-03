@@ -48,18 +48,23 @@ export default class TextService {
         if (shape.canIncludeText) {
 
             shape.boxText.update()
-            shape.fullDraw()
             return
         }
 
         shape.update()
-        shape.fullDraw()
     }
 
     /**
      * フォーカスが外れたときの処理 DOM要素を初期化
      */
-    handleBlurEvent() {
+    handleBlurEvent(shape) {
+        if (shape.canIncludeText) {
+
+            shape.fullDraw()
+            return
+        }
+
+        shape.fullDraw()
 
         this._originTextDOM.style.top = 0
         this._originTextDOM.style.left = 0
@@ -95,8 +100,8 @@ export default class TextService {
      * @param {number} posY テキスト入力エリアのy座標
      */
     setTextDOMPos(posX, posY) {
-        this._originTextDOM.style.top = posY - 20 + 'px'
-        this._originTextDOM.style.left = posX + 80 + 'px'
+        this._originTextDOM.style.top = posY - 15 + 'px'
+        this._originTextDOM.style.left = posX + 75 + 'px'
     }
 
     /**
