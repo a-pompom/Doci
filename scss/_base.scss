@@ -39,6 +39,7 @@ a {
 	}
 }
 
+// キャンバスの表示に合わせる
 textarea {
 	-webkit-appearance: none;
 
@@ -49,7 +50,7 @@ textarea {
 	overflow-y: hidden;
 
 	font-size: 18px;
-	line-height: 1.1;
+	line-height: 1.12;
 	
 	border: 0;
 	resize: none;

@@ -1,3 +1,4 @@
+// ボタン
 .button {
 
     &--drawing {
@@ -36,6 +37,7 @@
 
 }
 
+// アイコン・スタック
 .drawing-icon {
     position: absolute;
 
@@ -47,6 +49,7 @@
     border: 1px solid #e3e3e3;
 }
 
+// ショートカットTIPSの吹き出し
 .short-cut-balloon {
 
     width: 340px;
@@ -96,6 +99,7 @@
     }
   }
   
+  // コピー成功のメッセージ
 .copied-message-balloon {
 
     width: 150px;

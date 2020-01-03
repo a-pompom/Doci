@@ -10,6 +10,8 @@
     <meta charset="UTF-8">
 <body>
     <div class="container">
+
+        <!-- 画面左のメニュー -->
         <div class="drawing--menu">
             
             <ul>
@@ -46,6 +48,7 @@
                     </button>
                 </li>
 
+                <!-- ショートカットキーなどのTIPS アイコンにフォーカスで表示 -->
                 <li id="shortCutTips" class="drawing-icon">
                     <div id="shortCutMenu" class="short-cut-balloon invisible">
                         <p>
@@ -80,13 +83,14 @@
 
         </div>
 
-
+        <!-- キャンバス -->
         <div class="drawing--canvas">
 
             <canvas id="myCanvas"></canvas>
 
         </div>
 
+        <!-- 描画スタック -->
         <div class="drawing--stack">
 
             <ul>
@@ -144,6 +148,8 @@
                         <figcaption>9</figcaption>
                     </figure>
                 </li>
+                
+                <!-- クリップボードにアクティブなスタックのキャンバスをコピー -->
                 <li>
                     <button id="canvasToClipboardButton" class="button--copy">
                         <i class="far fa-clipboard"></i>Copy
@@ -151,6 +157,7 @@
                 </li>
             </ul>
 
+            <!-- コピーが成功したことを示すメッセージ コピー時に0.5秒のみ表示 -->
             <div id="copiedMessage" class="copied-message-balloon-wrapper invisible">
                 
                 <div class="copied-message-balloon">
@@ -163,16 +170,13 @@
 
         </div>
 
+        <!-- テキスト入力を受け付けるためのテキストエリア キャンバスではテキスト入力を受け付けられないので、
+             キャンバスに覆いかぶさるように設置することで擬似的に入力機能を実現
+         -->
         <textarea id="inputText"></textarea>
 
     </div>
 
-
     <script type="module" src="./script.js"></script>
-
-
-
-
 </body>
-
 </html>
