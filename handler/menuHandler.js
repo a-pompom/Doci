@@ -3,11 +3,18 @@ import DrawingUtil from '../drawingUtil.js'
 
 /**
  * キャンバスを操作する際のメニュー管理するクラス
- * @property {string} activeMode 現在有効なモード[赤枠・文字列・吹き出しが存在] 
+ * @property {DrawMode} activeMode 現在有効なモード[赤枠・文字列・吹き出しが存在] 
+ * @property {DrawType} activeType 描画モード
+ * @property {number} activeIndex 現在有効なメニュー 画面表示のアクティブ要素の切り替えで利用
+ * @property {boolean} activeResizable 現在有効なメニュー要素でリサイズ機能が利用できるか
+ * 
  * @property {Array<Object>} menuList 各メニュー要素
  *     element: メニューを表すDOM要素
  *     mode: メニューと紐づくモード
  *     type: メニューと紐づくタイプ
+ *     index: メニューのインデックス
+ *     resizable: リサイズ機能が使えるか
+ *     keyCode: ショートカットキー機能で利用
  */
 export default class MenuHandler {
     
@@ -75,7 +82,7 @@ export default class MenuHandler {
     }
 
     /**
-     * メニューに対してクリックイベントを登録
+     * メニューに対してクリック/ショートカットキーイベントを登録
      */
     initMenu() {
 
@@ -114,6 +121,11 @@ export default class MenuHandler {
         })
     }
 
+    /**
+     * 有効なメニューを切り替える
+     * 
+     * @param {Object} menu メニュー要素
+     */
     registerHandleEvent(menu) {
 
         DrawingUtil.deactivateClass(this._menuList[this._activeIndex].element.id, 'active-menu')

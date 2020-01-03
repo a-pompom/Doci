@@ -14,4 +14,8 @@ export default class DrawingUtil {
         document.getElementById(element).classList.remove(activeClass)
     }
 
+    static getPixelRatio() {
+        return window.devicePixelRatio + 0.4
+    }
+
 }

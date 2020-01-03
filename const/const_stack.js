@@ -3,6 +3,9 @@
  */
 export const StackLength = 9
 
+/**
+ * スタックのショートカットのキーコード
+ */
 export const StackKeyCode = {
     Key_1: 49,
     Key_2: 50,

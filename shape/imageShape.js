@@ -1,4 +1,4 @@
-import { DrawConst } from '../const/drawingConst.js'
+import DrawingUtil from '../drawingUtil.js'
 import Shape from '../base/shape.js'
 
 /**
@@ -14,18 +14,20 @@ export default class ImageShape extends Shape {
         super(context, startX, startY)
         this._ratio = 1.0
 
-        if (imageSource.width > context.canvas.width) {
+        // キャンバスより大きな画像は縮小
+        if (imageSource.width > (context.canvas.width / DrawingUtil.getPixelRatio())) {
 
-            this._ratio = context.canvas.width / imageSource.width
+            this._ratio = (context.canvas.width / DrawingUtil.getPixelRatio()) / imageSource.width
         }
 
-        if (imageSource.height > context.canvas.height) {
+        if (imageSource.height > (context.canvas.height / DrawingUtil.getPixelRatio())) {
 
-            this.ratio = context.canvas.height / imageSource.height
+            this._ratio = (context.canvas.height / DrawingUtil.getPixelRatio()) / imageSource.height
         }
 
         this.width = imageSource.width * this._ratio
         this.height = imageSource.height * this._ratio
+
         this._imageSource = imageSource
 
         this.defineAttribute()

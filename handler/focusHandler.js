@@ -25,7 +25,7 @@ export default class FocusHandler {
 
         this.outFocus()
 
-        // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±5pxを対象範囲とする
+        // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±10pxを対象範囲とする
         const range = 10
         const pos = {x: posX, y: posY}
 

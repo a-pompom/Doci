@@ -8,6 +8,12 @@ import ResizeService from '../service/resizeService.js'
 /**
  * 画像の描画を管理
  * 
+ * @property {number} posX 画像の描画位置x座標
+ * @property {number} posY 画像の描画位置y座標
+ * 
+ * @property {ResizeService} resizeService リサイズ機能を管理するサービス
+ * 
+ * 
  */
 export default class ImageDrawing extends BaseDrawing{
 
@@ -22,6 +28,9 @@ export default class ImageDrawing extends BaseDrawing{
         this.init()
     }
 
+    /**
+     * 初期処理 貼り付けイベントを監視
+     */
     init() {
         document.addEventListener('paste', (event) => {
 
@@ -66,6 +75,7 @@ export default class ImageDrawing extends BaseDrawing{
      */
     pasteEvent(event) {
 
+        // pasteEvnetからクリップボードの画像を取得
         const clipboardItem = event.clipboardData.items[0]
 
         // 画像のみを描画対象とする
@@ -77,7 +87,7 @@ export default class ImageDrawing extends BaseDrawing{
     }
 
     /**
-     * マウス押下時の処理 描画開始イベントを発火
+     * マウス押下時の処理 リサイズ初期化イベントを発火
      * @param {Event} event イベントオブジェクト
      */
     mousedownEvent(event) {
@@ -101,11 +111,11 @@ export default class ImageDrawing extends BaseDrawing{
         const y = this.getCanvasY(event.clientY)
 
         // リサイズした後、画面上に図形を描画
-        const imageShape = this.getDrawingShape()
+        const shape = this.getDrawingShape()
 
-        this._resizeService.resize(imageShape, x, y)
+        this._resizeService.resize(shape, x, y)
 
-        imageShape.fullDraw()
+        shape.fullDraw()
     }
     
     /**
@@ -126,6 +136,7 @@ export default class ImageDrawing extends BaseDrawing{
      * @param {File} clipboardItem クリップボードの画像
      */
     createImage(clipboardItem) {
+
         const pastedImage = new Image()
 
         const blob = clipboardItem.getAsFile()
