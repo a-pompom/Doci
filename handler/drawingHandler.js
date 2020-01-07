@@ -1,3 +1,4 @@
+import DrawingUtil from '../drawingUtil.js'
 import MenuHandler from './menuHandler.js'
 
 import FocusHandler from './focusHandler.js'
@@ -106,7 +107,7 @@ export default class DrawingHandler{
     }
 
     setCanvasScale() {
-        const ratio = window.devicePixelRatio + 0.4
+        const ratio = DrawingUtil.getPixelRatio()
 
         this._context.canvas.width = (document.body.clientWidth - 160) *ratio
         this._context.canvas.height = document.body.clientHeight *ratio

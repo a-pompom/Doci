@@ -15,7 +15,7 @@ export default class DrawingUtil {
     }
 
     static getPixelRatio() {
-        return window.devicePixelRatio + 0.4
+        return window.devicePixelRatio + (0.4 * window.devicePixelRatio)
     }
 
 }

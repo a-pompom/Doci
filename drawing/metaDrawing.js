@@ -7,8 +7,9 @@ export default class MetaDrawing extends BaseDrawing{
 
     constructor(context) {
         super(context)
+
     }
-    
+
     /**
      * イベントの前処理を実行 主に描画モードの判定で利用
      * 

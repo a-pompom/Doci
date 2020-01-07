@@ -58,11 +58,6 @@ export default class TextService {
      * フォーカスが外れたときの処理 DOM要素を初期化
      */
     handleBlurEvent(shape) {
-        if (shape.canIncludeText) {
-
-            shape.fullDraw()
-            return
-        }
 
         shape.fullDraw()
 
