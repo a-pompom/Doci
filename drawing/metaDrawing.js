@@ -7,8 +7,9 @@ export default class MetaDrawing extends BaseDrawing{
 
     constructor(context) {
         super(context)
+
     }
-    
+
     /**
      * イベントの前処理を実行 主に描画モードの判定で利用
      * 
@@ -20,6 +21,11 @@ export default class MetaDrawing extends BaseDrawing{
         this[`${eventType}Event`].call(this,event)
     }
 
+    /**
+     * フォーカスイベントを監視
+     * 
+     * @param {Event} event 
+     */
     mousemoveEvent(event) {
         if (this._context.isMousedown) {
             return

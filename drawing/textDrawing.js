@@ -8,6 +8,7 @@ import TextService from '../service/textService.js'
  * テキストの描画を管理
  * @property {DOM} originTextDOM 入力テキストを保持するためのテキストエリアのDOM
  * @property {TextService} service テキスト操作のロジック部分を扱うサービス
+ * @property {Number} blurKeyCode フォーカスを外すショートカットキーのキーコード
  */
 export default class TextDrawing extends BaseDrawing{
 
@@ -16,6 +17,8 @@ export default class TextDrawing extends BaseDrawing{
         this._originTextDOM = document.getElementById('inputText')
 
         this._service = new TextService(this._context, this._originTextDOM)
+
+        this._blurKeyCode = 27
 
         this.init()
     }
@@ -61,6 +64,10 @@ export default class TextDrawing extends BaseDrawing{
      */
     clickEvent(event) {
 
+        if (document.activeElement === this._originTextDOM) {
+            return
+        }
+
         // 新規描画
         if (!this._context.focus.isFocused()) {
 
@@ -90,7 +97,7 @@ export default class TextDrawing extends BaseDrawing{
                     
             // 図形内に新規描画
             if (shape.boxText === null) {
-                shape.boxText = new BoxText(this._context, shape.x +15, shape.y + 20, shape.width)
+                shape.boxText = new BoxText(this._context, shape.x, shape.y, shape.width)
             }
 
             this._service.handleBoxClickEvent(shape)
@@ -105,9 +112,12 @@ export default class TextDrawing extends BaseDrawing{
     keydownEvent(event) {
 
         // Escキー押下でも終了可能とする
-        if (event.keyCode === 27) {
+        if (event.keyCode === this._blurKeyCode) {
+
+            this._service.handleKeyEvent(this.getDrawingShape())
             this._originTextDOM.blur()
 
+            return
         }
 
         this._service.handleKeyEvent(this.getDrawingShape())
@@ -116,11 +126,10 @@ export default class TextDrawing extends BaseDrawing{
     /**
      * フォーカスが外れたときに実行されるイベント テキスト入力エリアを初期化
      * 
-     * @param {Event} event 
      */
-    blurEvent(event) {
+    blurEvent() {
 
-        this._service.handleBlurEvent()
+        this._service.handleBlurEvent(this.getDrawingShape())
     }
 
 }

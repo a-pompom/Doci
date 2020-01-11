@@ -16,6 +16,7 @@ export default class FocusHandler {
     }
 
     /**
+     * 図形に対するフォーカスが発生しているか監視
      * 
      * @param {Array<Shape>} shapeList フォーカス対象になり得る描画中の図形のリスト
      * @param {number} posX キャンバス中のカーソルX座標
@@ -25,7 +26,7 @@ export default class FocusHandler {
 
         this.outFocus()
 
-        // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±5pxを対象範囲とする
+        // 図形の線の幅のみをフォーカス範囲にすると、フォーカスしづらくなってしまうので、図形の線±10pxを対象範囲とする
         const range = 10
         const pos = {x: posX, y: posY}
 
@@ -54,6 +55,7 @@ export default class FocusHandler {
     }
 
     /**
+     * 図形の枠部分に対してフォーカスが発生しているか監視 リサイズのトリガーとして利用
      * 
      * @param {Shape} shape フォーカスが発生しているかを判定する対象の図形
      * @param {object} pos マウスの座標

@@ -15,6 +15,7 @@ export default class WordBalloon extends Shape{
 
         this._color = '#FF0000'
         this._fillColor = '#FFFFFF'
+        this._textColor = '#000000'
 
         this._boxText = null
     }
@@ -32,7 +33,7 @@ export default class WordBalloon extends Shape{
         // 吹き出しのしっぽ部分
         this.drawTail()
 
-        this._context.canvasContext.fillStyle = '#000000'
+        this._context.canvasContext.fillStyle = this._textColor
 
         // 吹き出し内の文字列
         if (this._boxText !== null) {
@@ -59,28 +60,29 @@ export default class WordBalloon extends Shape{
         this._context.canvasContext.beginPath()
         this._context.canvasContext.moveTo(headX, headY)
         this._context.canvasContext.lineTo(headX, tailY)
-        this._context.canvasContext.moveTo(headX, tailY)
         this._context.canvasContext.lineTo(tailX, headY)
-        this._context.canvasContext.moveTo(tailX, headY)
+        this._context.canvasContext.lineTo(headX, headY)
         this._context.canvasContext.closePath()
+
+        this._context.canvasContext.fillStyle = this._fillColor
+        this._context.canvasContext.fill()
+
+        this._context.canvasContext.strokeStyle = this._color
         this._context.canvasContext.stroke()
 
         // 吹き出しのしっぽ部分と四角の共通部分、すなわち、底辺部分の線は消しておく方が吹き出しとして自然なので、消去
         // 三角形の辺と同一の長さで描画すると、微細な隙間が生じてしまうので、少し幅を持たせる
         const DELTA_X = 2
+        this._context.canvasContext.strokeStyle = this._fillColor
         this._context.canvasContext.beginPath()
-        this._context.canvasContext.globalCompositeOperation = 'destination-out'
         this._context.canvasContext.moveTo(headX, headY)
         this._context.canvasContext.lineTo(tailX - DELTA_X, headY)
         this._context.canvasContext.closePath()
 
-        // destination-outでの上書きは、複数回行わないと色が薄まる程度になってしまうので、完全に消去される4回程度実行
-        this._context.canvasContext.stroke()
-        this._context.canvasContext.stroke()
-        this._context.canvasContext.stroke()
-        this._context.canvasContext.stroke()
-
-        this._context.canvasContext.globalCompositeOperation = 'source-over'
+        // destination-outでの上書きは、複数回行わないと色が薄まる程度になってしまうので、完全に消去される10回程度実行
+        for(let i=0; i<10; i++){
+            this._context.canvasContext.stroke()
+        }
     }
 
     /**

@@ -23,12 +23,20 @@ export default class DrawStack {
     }
 
     /**
+     * 描画スタックから要素を削除
+     */
+    pop() {
+        this._stack.pop()
+        this._currentIndex --
+    }
+
+    /**
      * 現在描画中の要素を取得
      */
     getCurrent() {
 
         if (this._currentIndex === -1) {
-            return null
+            return this._stack[this._stack.length-1]
         }
 
         return this._stack[this._currentIndex]

@@ -68,7 +68,6 @@ export default class MoveDrawing extends BaseDrawing{
         const canvasY = this.getCanvasY(event.clientY)
 
         this.move(shape, canvasX, canvasY)
-
     }
     
     /**
@@ -110,5 +109,4 @@ export default class MoveDrawing extends BaseDrawing{
         this._moveStartX = canvasX
         this._moveStartY = canvasY
     }
-
 }

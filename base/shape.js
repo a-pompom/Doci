@@ -1,4 +1,5 @@
 import {DrawConst} from '../const/drawingConst.js'
+import ShapeFunction from './shapeFunction.js'
 
 /**
  * キャンバス上に描画される図形を表す
@@ -26,6 +27,8 @@ export default class Shape {
     constructor(context, startX, startY) {
         this._context = context
 
+        this._shapeFunction = new ShapeFunction(this._context)
+
         this._x = startX
         this._y = startY
 
@@ -48,31 +51,15 @@ export default class Shape {
      * キャンバス全体を再描画 各描画管理クラスから呼ばれるインタフェース部分としての役割を持つ
      */
     fullDraw() {
-        this.drawBase()
+        this._shapeFunction.fullDraw()
+
     }
 
     /**
      * キャンバス全体の再描画の実装部分
      */
     drawBase() {
-        this.clear()
-        this.drawStack()
-    }
-
-    /**
-     * 既存の描画済みオブジェクトをキャンバスに描画
-     */
-    drawStack() {
-        this._context.drawStack.draw()
-    }
-
-    /**
-     * リサイズで伸縮した図形をキャンバス上に残さないよう、毎回画面をクリア
-     */
-    clear() {
-        const canvasWidth = this._context.canvas.width
-        const canvasHeight = this._context.canvas.height
-        this._context.canvasContext.clearRect(0, 0, canvasWidth, canvasHeight)
+        this._shapeFunction.drawBase()
     }
 
     /**
