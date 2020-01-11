@@ -61,6 +61,10 @@ export default class TextDrawing extends BaseDrawing{
      */
     clickEvent(event) {
 
+        if (document.activeElement === this._originTextDOM) {
+            return
+        }
+
         // 新規描画
         if (!this._context.focus.isFocused()) {
 
