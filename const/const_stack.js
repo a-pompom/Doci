@@ -1,7 +1,14 @@
 /**
  * 描画スタックの大きさ
+ * あまり増やしすぎてもスクロールが発生したり、描画領域が狭まったりとデメリットが目立つようになるので、
+ * 数値の1~9までを割り当てるため、9個とする
  */
 export const StackLength = 9
+
+export const StackWidth = 80
+export const StackHeightCoefficient = 20
+
+export const StackScaleCoefficient = {base: 10, ratio: 8}
 
 /**
  * スタックのショートカットのキーコード

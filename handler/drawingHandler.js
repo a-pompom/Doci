@@ -1,6 +1,6 @@
-import MenuHandler from './menuHandler.js'
+import {DrawConst} from '../const/drawingConst.js'
+import DrawingUtil from '../drawingUtil.js'
 
-import FocusHandler from './focusHandler.js'
 import DrawStack from '../drawStack.js'
 
 import MetaDrawing from '../drawing/metaDrawing.js'
@@ -13,6 +13,8 @@ import CursorDrawing from '../drawing/cursorDrawing.js'
 
 import CanvasToClipboardHandler from './canvasToClipboardHandler.js'
 import StackHandler from './stackHandler.js'
+import MenuHandler from './menuHandler.js'
+import FocusHandler from './focusHandler.js'
 /**
  * 描画機能を扱うハンドラ
  * 
@@ -27,6 +29,7 @@ import StackHandler from './stackHandler.js'
 export default class DrawingHandler{
 
     constructor() {
+
         this._context = this.getContext()
 
         this.init()
@@ -36,7 +39,7 @@ export default class DrawingHandler{
 
         const canvas = document.getElementById('myCanvas')
         const canvasContext = canvas.getContext('2d')
-        const drawStackList = this.getDrawStackList(9)
+        const drawStackList = this.getDrawStackList(DrawConst.stack.StackLength)
         const currentStack = 0
 
         return {
@@ -55,8 +58,7 @@ export default class DrawingHandler{
 
     init() {
 
-        const canvasToClipboard = new CanvasToClipboardHandler(this._context)
-        const stackHandler = new StackHandler(this._context)
+        this.inistHandler()
 
         this.setCanvasScale()
 
@@ -95,6 +97,25 @@ export default class DrawingHandler{
 
     }
 
+    /**
+     * 描画機能で利用するハンドラを初期化
+     */
+    inistHandler() {
+
+        const handlerList = [CanvasToClipboardHandler, StackHandler]
+
+        handlerList.forEach((handler) => {
+
+            new handler(this._context)
+
+        })
+    }
+
+    /**
+     * 描画スタックのリストを生成
+     * 
+     * @param {Number} stackLength スタックの大きさ
+     */
     getDrawStackList(stackLength) {
         let drawStackList = []
 
@@ -105,16 +126,23 @@ export default class DrawingHandler{
         return drawStackList
     }
 
+    /**
+     * キャンバスの大きさを以下の点で設定
+     * 
+     * ・メニュー領域を差し引いた幅にすること
+     * ・線がぼやけないよう解像度を調整
+     */
     setCanvasScale() {
-        const ratio = window.devicePixelRatio + 0.4
+        const ratio = DrawingUtil.getPixelRatio()
 
-        this._context.canvas.width = (document.body.clientWidth - 160) *ratio
+        // ぼやけないよう解像度に合わせて大きさを設定
+        this._context.canvas.width = (document.body.clientWidth - DrawConst.menu.MENU_WIDTH) *ratio
         this._context.canvas.height = document.body.clientHeight *ratio
 
-        this._context.canvas.style.width = `${(document.body.clientWidth -160)}px`
+        // メニュー領域を差し引いて実サイズを設定
+        this._context.canvas.style.width = `${(document.body.clientWidth -DrawConst.menu.MENU_WIDTH)}px`
         this._context.canvas.style.height = `${(document.body.clientHeight)}px`
 
         this._context.canvasContext.setTransform(ratio,0,0,ratio,0,0)
     }
-
 }

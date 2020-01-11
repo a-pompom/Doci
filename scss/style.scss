@@ -1,6 +1,6 @@
 @import "base";
-@import "colors";
-@import "mixin";
+@import "./settings/colors";
+@import "./tools/mixin";
 
 @import "./simpleModule/button";
 @import "./simpleModule/control";

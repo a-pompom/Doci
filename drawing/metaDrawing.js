@@ -20,6 +20,11 @@ export default class MetaDrawing extends BaseDrawing{
         this[`${eventType}Event`].call(this,event)
     }
 
+    /**
+     * フォーカスイベントを監視
+     * 
+     * @param {Event} event 
+     */
     mousemoveEvent(event) {
         if (this._context.isMousedown) {
             return
