@@ -1,6 +1,5 @@
 import {DrawConst} from '../const/drawingConst.js'
 import DrawingUtil from '../drawingUtil.js'
-
 import DrawStack from '../drawStack.js'
 
 import MetaDrawing from '../drawing/metaDrawing.js'
@@ -22,7 +21,10 @@ import FocusHandler from './focusHandler.js'
  *     ・canvas: キャンバス
  *     ・canvasContext: キャンバスのコンテキスト
  *     ・isMousedown: マウスが押下されているか
- *     ・drawStack: 描画スタック
+ *     ・currentStack: 現在描画中のスタックのインデックス
+ * 
+ *     ・drawStackList: 描画スタック
+ *     ・drawStack: 現在描画中の描画スタック
  *     ・menu: メニューを管理
  *     ・focus: フォーカス機能を管理
  */
@@ -35,6 +37,9 @@ export default class DrawingHandler{
         this.init()
     }
 
+    /**
+     * コンテキストを取得
+     */
     getContext() {
 
         const canvas = document.getElementById('myCanvas')
@@ -56,6 +61,10 @@ export default class DrawingHandler{
 
     }
 
+    /**
+     * 初期処理
+     * ハンドラ・描画オブジェクトの初期化を行う
+     */
     init() {
 
         this.inistHandler()
@@ -90,11 +99,8 @@ export default class DrawingHandler{
                     // インターセプターで前処理を実行した後、イベント処理を発火
                     drawingList[targetIndex]['setupEvent'].call(drawingList[targetIndex],event, eventArg)
                 })
-
             })
-
         })
-
     }
 
     /**

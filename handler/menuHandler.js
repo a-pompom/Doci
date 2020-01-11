@@ -114,10 +114,10 @@ export default class MenuHandler {
         const shortCutTips = document.getElementById('shortCutTips')
 
         shortCutTips.addEventListener('mouseover', () => {
-            shortCutMenu.classList.remove('invisible')
+            shortCutMenu.classList.remove(DrawConst.cssClass.CSS_Class.INVISIBLE)
         })
         shortCutTips.addEventListener('mouseout', () => {
-            shortCutMenu.classList.add('invisible')
+            shortCutMenu.classList.add(DrawConst.cssClass.CSS_Class.INVISIBLE)
         })
     }
 
@@ -128,7 +128,7 @@ export default class MenuHandler {
      */
     registerHandleEvent(menu) {
 
-        DrawingUtil.deactivateClass(this._menuList[this._activeIndex].element.id, 'active-menu')
+        DrawingUtil.deactivateClass(this._menuList[this._activeIndex].element.id, DrawConst.cssClass.CSS_Class.ACTIVE_MENU)
 
         this._activeMode = menu.mode
         this._activeType = menu.type
@@ -136,7 +136,7 @@ export default class MenuHandler {
 
         this._activeIndex = menu.index
 
-        DrawingUtil.activateClass(menu.element.id, 'active-menu')
+        DrawingUtil.activateClass(menu.element.id, DrawConst.cssClass.CSS_Class.ACTIVE_MENU)
     }
 
 

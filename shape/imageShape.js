@@ -47,6 +47,4 @@ export default class ImageShape extends Shape {
     defineAttribute() {
         this._hasArea = true
     }
-
-
 }
