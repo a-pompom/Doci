@@ -53,6 +53,17 @@ export default class ShapeFuncion {
         this._context.canvasContext.fillStyle = DrawConst.excel.cellColors.background
         this._context.canvasContext.fillRect(0, 0, this._context.canvas.width, this._context.canvas.height)
 
+        let cellWidth = document.getElementById('cellWidth').value
+        let cellHeight = document.getElementById('cellHeight').value
+
+        if (cellWidth === '' || cellHeight === '') {
+            this._context.canvasContext.fillStyle = DrawConst.excel.cellColors.text
+            return
+        }
+
+        cellWidth = parseFloat(cellWidth)
+        cellHeight = parseFloat(cellHeight)
+
         let x = 0
         let y = 0
 
@@ -69,7 +80,7 @@ export default class ShapeFuncion {
             this._context.canvasContext.stroke()
 
             // 解像度の影響でキャンバスの大きさは変動しているので、PixelRatioを係数として乗算
-            y+= DrawConst.excel.cellScale.y * DrawingUtil.getPixelRatio()
+            y+= cellHeight * DrawingUtil.getPixelRatio()
         }
 
         while(x < this._context.canvas.width) {
@@ -82,7 +93,7 @@ export default class ShapeFuncion {
             this._context.canvasContext.stroke()
 
             // 解像度の影響でキャンバスの大きさは変動しているので、PixelRatioを係数として乗算
-            x+= DrawConst.excel.cellScale.x * DrawingUtil.getPixelRatio()
+            x+= cellWidth * DrawingUtil.getPixelRatio()
         }
 
         this._context.canvasContext.fillStyle = DrawConst.excel.cellColors.text

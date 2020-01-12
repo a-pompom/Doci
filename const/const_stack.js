@@ -8,7 +8,7 @@ export const StackLength = 9
 export const StackWidth = 80
 export const StackHeightCoefficient = 20
 
-export const StackScaleCoefficient = {base: 10, ratio: 8}
+export const StackScaleCoefficient = {base: 11, ratio: 8}
 
 /**
  * スタックのショートカットのキーコード

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body {
   width: 100%;
@@ -41,6 +42,28 @@ textarea {
     border: none;
     box-shadow: none; }
 
+input {
+  border: 0; }
+  input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none; }
+
+/*
+下線のみを持つシンプルなテキスト入力
+フォーカスでプレースホルダが移動し、アクティブになったことを表すために
+下線の色が変化する
+@parameter $color {map} (
+	textColor: 入力テキストの色
+	accentColor: アクティブ時にボーダー・プレースホルダに付与される色　
+	nonActiveColor: デフォルドで表示される色
+)
+@parameter $scale {map} (
+	perWidth: 入力要素の幅 パーセント形式で記述
+	height: 入力要素の高さ
+)
+@parameter $fontSize {number} 文字の大きさ
+*/
 .button--drawing, .button--copy {
   position: relative;
   display: inline-block;
@@ -99,6 +122,52 @@ textarea {
 
 .stack-thumbnail {
   border: 1px solid #e3e3e3; }
+
+.cell-area {
+  margin-top: 20px; }
+
+.cell-input {
+  width: 80px;
+  height: 32px;
+  display: inline-block;
+  position: relative;
+  margin-top: 10px; }
+  .cell-input input, .cell-input textarea {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    font-size: 1rem;
+    padding: 12px 0;
+    border-bottom: 2px solid #C8CCD4;
+    color: #223254;
+    transition: all .15s ease; }
+    .cell-input input:hover, .cell-input textarea:hover {
+      background-color: rgba(34, 50, 84, 0.03); }
+    .cell-input input:not(:placeholder-shown) ~ span[class$="__placeholder"], .cell-input textarea:not(:placeholder-shown) ~ span[class$="__placeholder"] {
+      color: #CB72AA;
+      transform: translateY(-17.6px) scale(0.85); }
+    .cell-input input:focus ~ span[class$="__placeholder"], .cell-input textarea:focus ~ span[class$="__placeholder"] {
+      color: #CB72AA;
+      transform: translateY(-17.6px) scale(0.85); }
+      .cell-input input:focus ~ span[class$="__placeholder"] + span[class$="__border"], .cell-input textarea:focus ~ span[class$="__placeholder"] + span[class$="__border"] {
+        transform: scaleX(1); }
+  .cell-input__placeholder {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    color: #C8CCD4;
+    transform-origin: 0 0;
+    transition: all 0.2s ease; }
+  .cell-input__border {
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #CB72AA;
+    transform: scaleX(0);
+    transform-origin: 0 0;
+    transition: all .15s ease; }
 
 .short-cut-balloon {
   width: 340px;
