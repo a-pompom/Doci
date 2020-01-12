@@ -47,12 +47,15 @@ export default class ShapeFuncion {
      * 背景を描画 
      * デスクトップのExcelアプリでは、透明なキャンバスをコピーすると、透明色である黒で塗りつぶされてしまっていたので、
      * セルを擬似的に描画しておくことで、Excelに配置しても違和感がないようにした
+     * また、セルの指定がない場合は白塗りとしておく
      */
     drawBackground() {
 
+        // ベースの白背景
         this._context.canvasContext.fillStyle = DrawConst.excel.cellColors.background
         this._context.canvasContext.fillRect(0, 0, this._context.canvas.width, this._context.canvas.height)
 
+        // 入力値に応じてセルを描画 入力が空の場合は白背景のままとする
         let cellWidth = document.getElementById('cellWidth').value
         let cellHeight = document.getElementById('cellHeight').value
 

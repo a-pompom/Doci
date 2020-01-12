@@ -5,9 +5,11 @@
  */
 export const StackLength = 9
 
+// メニューボタンと幅を合わせ、高さは幅にスタック番号を格納する領域 + マージンを加味したものとする
 export const StackWidth = 80
 export const StackHeightCoefficient = 20
 
+// SPAっぽい感じにしたいので、1画面内に収まるよう比率を調整
 export const StackScaleCoefficient = {base: 11, ratio: 8}
 
 /**
