@@ -53,7 +53,6 @@ export default class StackHandler {
                 }
 
                 this.registerHandleEvent(i)
-
             })
         }
     }
@@ -102,11 +101,16 @@ export default class StackHandler {
             this.createThumbNail(this._currentStack)
         }
 
+        // 切り替えの必要がない場合は、以降の処理をスキップ
+        if (this._currentStack === index) {
+            return
+        }
+
         // 描画スタックの切り替え
-        DrawingUtil.deactivateClass(`image-${this._currentStack}`, 'active-stack')
+        DrawingUtil.deactivateClass(`image-cap-${this._currentStack}`, 'active-stack')
         this._context.drawStack = this._context.drawStackList[index]
         this._currentStack = index
-        DrawingUtil.activateClass(`image-${this._currentStack}`, 'active-stack')
+        DrawingUtil.activateClass(`image-cap-${this._currentStack}`, 'active-stack')
 
         // 切り替わった後のキャンバスを再描画
         this._context.focus.outFocus()

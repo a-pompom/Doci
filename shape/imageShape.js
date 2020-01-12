@@ -45,6 +45,6 @@ export default class ImageShape extends Shape {
      * 属性値を設定 領域を持つ画像として定義
      */
     defineAttribute() {
-        this._hasArea = true
+        this._hasArea = false
     }
 }
