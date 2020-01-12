@@ -49,6 +49,19 @@
     border: 1px solid #e3e3e3;
 }
 
+.cell-area {
+    margin-top: 20px;
+}
+
+.cell-input {
+    $color: ("textColor": $darkest, "accentColor":$accent-strong, "nonActiveColor": $light);
+	$scale: ("perWidth": 80px, "height": 32px);
+    @include input-simple($color, $scale, 1.0rem);
+    
+    margin-top: 10px;
+}
+
+
 // ショートカットTIPSの吹き出し
 .short-cut-balloon {
 

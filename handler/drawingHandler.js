@@ -9,6 +9,7 @@ import TextDrawing from '../drawing/textDrawing.js'
 import RectangleDrawing from '../drawing/rectangleDrawing.js'
 import ImageDrawing from '../drawing/imageDrawing.js'
 import CursorDrawing from '../drawing/cursorDrawing.js'
+import CellDrawing from '../drawing/cellDrawing.js'
 
 import CanvasToClipboardHandler from './canvasToClipboardHandler.js'
 import StackHandler from './stackHandler.js'
@@ -75,7 +76,7 @@ export default class DrawingHandler{
         const occurEvents = ['mousedown', 'mousemove', 'mouseup', 'click']
         // アプリで描画されるオブジェクト
         const drawingList = [
-            new MetaDrawing(this._context),
+            new MetaDrawing(this._context), new CellDrawing(this._context),
             new RectangleDrawing(this._context), new TextDrawing(this._context), new ImageDrawing(this._context),
             new MoveDrawing(this._context), new DeleteDrawing(this._context), new CursorDrawing(this._context)
         ]
