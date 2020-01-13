@@ -1,6 +1,6 @@
 # Doci
 
-![動作デモ](assets/Doci.gif)
+![動作デモ](./assets/doci.gif)
 
 
 # 概要
