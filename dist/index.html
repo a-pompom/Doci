@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DOCi</title>
+    <link rel="shortcut icon" href="./images/favicon.ico" >
+    <script src="https://kit.fontawesome.com/adb99f990b.js" crossorigin="anonymous"></script>
+    <link href="./style.css" rel="stylesheet">
+</head>
+    <meta charset="UTF-8">
+<body>
+    <div class="container">
+
+        <!-- 画面左のメニュー -->
+        <div class="drawing--menu">
+            
+            <ul>
+                <li>
+                    <button id="rectangleModeButton" class="button--drawing">
+                        □
+                    </button>
+                </li>
+                <li>
+                    <button id="textModeButton" class="button--drawing">
+                        T
+                    </button>
+                </li>
+                <li>
+                    <button id="wordBalloonModeButton" class="button--drawing">
+                        <i class="far fa-comment"></i>
+                    </button>
+                </li>
+                <li>
+                    <button id="imageModeButton" class="button--drawing">
+                        <i class="fas fa-image"></i>
+                    </button>
+                </li>
+                <li></li>
+
+                <li>
+                    <button id="moveModeButton" class="button--drawing">
+                        <i class="far fa-hand-rock"></i>
+                    </button>
+                </li>
+                <li>
+
+                    <button id="deleteModeButton" class="button--drawing">
+                        <i class="fas fa-bomb"></i>
+                    </button>
+                </li>
+
+                <li>
+                    <div class="cell-area">
+                        <label for="cellWidth" class="cell-input">
+                            <input type="text" placeholder="&nbsp;" id="cellWidth">
+                            <span class="cell-input__placeholder">Cell Width</span>
+                            <span class="cell-input__border"></span>
+                        </label>
+                        <label for="cellHeight" class="cell-input">
+                            <input type="text" placeholder="&nbsp;" id="cellHeight">
+                            <span class="cell-input__placeholder">Cell Height</span>
+                            <span class="cell-input__border"></span>
+                        </label>
+                    </div>
+                </li>
+
+
+                <!-- ショートカットキーなどのTIPS アイコンにフォーカスで表示 -->
+                <li id="shortCutTips" class="drawing-icon">
+                    <div id="shortCutMenu" class="short-cut-balloon invisible">
+                        <p>
+                            □: 赤枠(Rectangle)
+                        </p>
+                        <p>
+                            T: テキスト(Text)
+                        </p>
+                        <p>
+                            <i class="far fa-comment"></i>: 吹き出し(Word-balloon)
+                        </p>
+                        <p>
+                            <i class="fas fa-image"></i>: 画像(Image)
+                        </p>
+                        <p>
+                            <i class="far fa-hand-rock"></i>: オブジェクトの移動(Move)
+                        </p>
+                        <p>
+                            <i class="fas fa-bomb"></i>: オブジェクトの削除(Delete)
+                        </p>
+                        <p>
+                            1 ~ 9: キャンバスの切り替え
+                        </p>
+                        <p>
+                            <i class="far fa-clipboard"></i>: キャンバスのコピー(Copy)
+                        </p>
+
+                    </div>
+                    <img src="./images/doci.png">
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- キャンバス -->
+        <div class="drawing--canvas">
+
+            <canvas id="myCanvas"></canvas>
+
+        </div>
+
+        <!-- 描画スタック -->
+        <div class="drawing--stack">
+
+            <ul>
+                <li>
+                    <figure id="stackButton-0" class="stack-thumbnail">
+                        <img id="image-0">
+                        <figcaption id="image-cap-0" class="active-stack">1</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-1" class="stack-thumbnail">
+                        <img id="image-1">
+                        <figcaption id="image-cap-1">2</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-2" class="stack-thumbnail">
+                        <img id="image-2">
+                        <figcaption id="image-cap-2">3</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-3" class="stack-thumbnail">
+                        <img id="image-3">
+                        <figcaption id="image-cap-3">4</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-4" class="stack-thumbnail">
+                        <img id="image-4">
+                        <figcaption id="image-cap-4">5</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-5" class="stack-thumbnail">
+                        <img id="image-5">
+                        <figcaption id="image-cap-5">6</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-6" class="stack-thumbnail">
+                        <img id="image-6">
+                        <figcaption id="image-cap-6">7</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-7" class="stack-thumbnail">
+                        <img id="image-7">
+                        <figcaption id="image-cap-7">8</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure id="stackButton-8" class="stack-thumbnail">
+                        <img id="image-8">
+                        <figcaption id="image-cap-8">9</figcaption>
+                    </figure>
+                </li>
+                
+                <!-- クリップボードにアクティブなスタックのキャンバスをコピー -->
+                <li>
+                    <button id="canvasToClipboardButton" class="button--copy">
+                        <i class="far fa-clipboard"></i>Copy
+                    </button>
+                </li>
+            </ul>
+
+            <!-- コピーが成功したことを示すメッセージ コピー時に0.5秒のみ表示 -->
+            <div id="copiedMessage" class="copied-message-balloon-wrapper invisible">
+                
+                <div class="copied-message-balloon">
+                    <p>
+                        COPIED!!!
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- テキスト入力を受け付けるためのテキストエリア キャンバスではテキスト入力を受け付けられないので、
+             キャンバスに覆いかぶさるように設置することで擬似的に入力機能を実現
+         -->
+        <textarea id="inputText"></textarea>
+
+    </div>
+
+    <script type="module" src="./script.js"></script>
+</body>
+</html>

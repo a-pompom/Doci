@@ -1,0 +1,236 @@
+@charset "UTF-8";
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 90%;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #4d464f; }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+
+ul {
+  list-style: none; }
+
+p {
+  line-height: 1rem; }
+
+a {
+  display: block;
+  text-decoration: none;
+  color: #4d464f; }
+  a:checked {
+    color: #4d464f; }
+
+textarea {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  overflow-y: hidden;
+  font-size: 18px;
+  line-height: 1.12;
+  border: 0;
+  resize: none; }
+  textarea:focus {
+    outline: none;
+    border: none;
+    box-shadow: none; }
+
+input {
+  border: 0; }
+  input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none; }
+
+/*
+下線のみを持つシンプルなテキスト入力
+フォーカスでプレースホルダが移動し、アクティブになったことを表すために
+下線の色が変化する
+@parameter $color {map} (
+	textColor: 入力テキストの色
+	accentColor: アクティブ時にボーダー・プレースホルダに付与される色　
+	nonActiveColor: デフォルドで表示される色
+)
+@parameter $scale {map} (
+	perWidth: 入力要素の幅 パーセント形式で記述
+	height: 入力要素の高さ
+)
+@parameter $fontSize {number} 文字の大きさ
+*/
+.button--drawing, .button--copy {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer; }
+
+.button--drawing, .button--copy {
+  transition: .4s; }
+  .button--drawing:hover, .button--copy:hover {
+    color: #fff; }
+
+.invisible {
+  display: none; }
+
+.active-stack {
+  background-color: #C8CCD4; }
+
+.active-menu {
+  color: #fff !important;
+  background-color: #CB72AA !important; }
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%; }
+  .container--menu {
+    width: 80px;
+    height: 100%; }
+  .container--stack {
+    width: 100px;
+    height: 100%; }
+
+.button--drawing {
+  font-size: 2.8rem;
+  width: 80px;
+  height: 80px;
+  background-color: #F4F3F6;
+  color: #CB72AA; }
+  .button--drawing:hover {
+    background-color: #CB72AA; }
+.button--copy {
+  font-size: 2.2rem;
+  width: 90px;
+  height: 80px;
+  background-color: #F4F3F6;
+  color: #CB72AA; }
+  .button--copy:hover {
+    background-color: #CB72AA; }
+
+.drawing-icon {
+  position: absolute;
+  bottom: 20px;
+  left: 20px; }
+
+.stack-thumbnail {
+  border: 1px solid #e3e3e3; }
+
+.cell-area {
+  margin-top: 20px; }
+
+.cell-input {
+  width: 80px;
+  height: 32px;
+  display: inline-block;
+  position: relative;
+  margin-top: 10px; }
+  .cell-input input, .cell-input textarea {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    font-size: 1rem;
+    padding: 12px 0;
+    border-bottom: 2px solid #C8CCD4;
+    color: #223254;
+    transition: all .15s ease; }
+    .cell-input input:hover, .cell-input textarea:hover {
+      background-color: rgba(34, 50, 84, 0.03); }
+    .cell-input input:not(:placeholder-shown) ~ span[class$="__placeholder"], .cell-input textarea:not(:placeholder-shown) ~ span[class$="__placeholder"] {
+      color: #CB72AA;
+      transform: translateY(-17.6px) scale(0.85); }
+    .cell-input input:focus ~ span[class$="__placeholder"], .cell-input textarea:focus ~ span[class$="__placeholder"] {
+      color: #CB72AA;
+      transform: translateY(-17.6px) scale(0.85); }
+      .cell-input input:focus ~ span[class$="__placeholder"] + span[class$="__border"], .cell-input textarea:focus ~ span[class$="__placeholder"] + span[class$="__border"] {
+        transform: scaleX(1); }
+  .cell-input__placeholder {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    color: #C8CCD4;
+    transform-origin: 0 0;
+    transition: all 0.2s ease; }
+  .cell-input__border {
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #CB72AA;
+    transform: scaleX(0);
+    transform-origin: 0 0;
+    transition: all .15s ease; }
+
+.short-cut-balloon {
+  width: 340px;
+  height: 220px;
+  position: relative;
+  margin: 20px 10px 20px 100px;
+  padding: 10px 20px;
+  background-color: #C6C7D3;
+  border-radius: 30px; }
+  .short-cut-balloon p {
+    font-size: 1.3rem;
+    line-height: 1.3; }
+  .short-cut-balloon::before {
+    content: "";
+    position: absolute;
+    left: -38px;
+    width: 13px;
+    height: 12px;
+    bottom: 0;
+    background-color: #C6C7D3;
+    border-radius: 50%; }
+  .short-cut-balloon::after {
+    content: "";
+    position: absolute;
+    left: -24px;
+    width: 20px;
+    height: 18px;
+    bottom: 3px;
+    background-color: #C6C7D3;
+    border-radius: 50%; }
+
+.copied-message-balloon {
+  width: 150px;
+  height: 80px;
+  position: relative;
+  margin: 2px 3px 5px 10;
+  padding: 30px 15px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #C8CCD4;
+  border-radius: 7px; }
+  .copied-message-balloon::before {
+    content: "";
+    position: absolute;
+    right: -34px;
+    width: 6px;
+    height: 5px;
+    bottom: 0;
+    background-color: #C8CCD4;
+    border-radius: 50%; }
+  .copied-message-balloon::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    width: 12px;
+    height: 10px;
+    bottom: 3px;
+    background-color: #C8CCD4;
+    border-radius: 50%; }
+  .copied-message-balloon-wrapper {
+    position: absolute;
+    bottom: 45px;
+    right: 170px; }
+
+/*# sourceMappingURL=style.css.map */
